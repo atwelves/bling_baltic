@@ -1,0 +1,125 @@
+!!>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+!! NEMO/TOP1 :  Configuration namelist : used to overwrite defaults values defined in SHARED/namelist_top_ref
+!>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+!-----------------------------------------------------------------------
+&namtrc_run      !   run information
+!-----------------------------------------------------------------------
+   ln_top_euler  = .false.
+/
+!-----------------------------------------------------------------------
+&namtrc          !   tracers definition
+!-----------------------------------------------------------------------
+   jp_bgc        =  6
+!
+   ln_pisces     =  .false.
+   ln_my_trc     =  .false.
+   ln_age        =  .false.
+   ln_cfc11      =  .false.
+   ln_cfc12      =  .false.
+   ln_c14        =  .false.
+   ln_bling      =  .true.
+!
+   ln_trcdta     =  .true.  !  Initialisation from data input file (T) or not (F)
+   ln_trcbc      =  .true.  !  Enables Boundary conditions
+!                !           !                                           !             !         !
+!                !    name   !           title of the field              !   units     ! init    ! sbc    ! cbc    !  obc    !  ais
+   sn_tracer(1)   = 'vopo4' , 'Dissolved phosphate                    ',  'mol/m³'     , .true.  , .false., .false. , .true. , .false.
+   sn_tracer(2)   = 'vodop' , 'Dissolved organic phosphate            ',  'mol/m³'     , .true.  , .false., .false. , .true. , .false.
+   sn_tracer(3)   = 'vofed' , 'Dissolved iron concentration           ',  'mol/m³'     , .true.  , .false., .false., .true. , .false.
+   sn_tracer(4)   = 'vooxy' , 'Dissolved oxygen concentration         ',  'mol/m³'     , .true.  , .false., .false., .true. , .false.
+   sn_tracer(5)   = 'vodic' , 'Dissolved inorganic carbon             ',  'mol/m³'     , .true.  , .false., .false., .true. , .false.
+   sn_tracer(6)   = 'voalk' , 'Total alkalinity concentration         ',  'mol/m³'     , .true.  , .false., .false., .true. , .false.
+/
+!-----------------------------------------------------------------------
+&namage          !   AGE 
+!-----------------------------------------------------------------------
+/
+!-----------------------------------------------------------------------
+&namtrc_dta      !    Initialisation from data input file
+!-----------------------------------------------------------------------
+!                !  file name   ! frequency (hours) ! variable  ! time interp. !  clim  ! 'yearly'/ ! weights  ! rotation ! land/sea mask !
+!                !              !  (if <0  months)  !   name    !   (logical)  !  (T/F) ! 'monthly' ! filename ! pairing  ! filename      !
+   sn_trcdta(1)  = 'data_sal_new_degen.nc',        -1        ,  'vosaline'  ,    .true.   , .true. , 'yearly'  , ''       , ''   , ''
+   sn_trcdta(2)  = 'data_sal_new_degen.nc',        -1        ,  'vosaline'   ,    .true.   , .true. , 'yearly'  , ''       , ''   , ''
+   sn_trcdta(3)  = 'data_sal_new_degen.nc',        -1         ,  'vosaline'     ,    .true.    , .true. , 'yearly'  , ''       , ''   , ''
+   sn_trcdta(4)  = 'data_sal_new_degen.nc',        -1         ,  'vosaline'    ,    .true.    , .true. , 'yearly'  , ''       , ''   , ''
+   sn_trcdta(5)  = 'data_sal_new_degen.nc',        -1         ,  'vosaline'     ,    .true.    , .true. , 'yearly'  , ''       , ''   , ''
+   sn_trcdta(6)  = 'data_sal_new_degen.nc',        -1         ,  'vosaline'    ,    .true.    , .true. , 'yearly'  , ''       , ''   , ''
+   rn_trfac(1)   = 0.00001   !  multiplicative factor
+   rn_trfac(2)   = 0.00001
+   rn_trfac(3)   = 0.0000001  
+   rn_trfac(4)   = 0.01 
+   rn_trfac(5)   = 0.1
+   rn_trfac(6)  = 1.0   
+/
+!-----------------------------------------------------------------------
+&namtrc_adv      !   advection scheme for passive tracer                (default: NO selection)
+!-----------------------------------------------------------------------
+   ln_trcadv_mus =  .true.   !  MUSCL scheme
+      ln_mus_ups =  .true.         !  use upstream scheme near river mouths
+/
+!-----------------------------------------------------------------------
+&namtrc_ldf      !   lateral diffusion scheme for passive tracer        (default: NO selection)
+!-----------------------------------------------------------------------
+   ln_trcldf_tra   =  .true.     !  use active tracer setting
+/
+!-----------------------------------------------------------------------
+&namtrc_rad      !  treatment of negative concentrations 
+!-----------------------------------------------------------------------
+/
+!-----------------------------------------------------------------------
+&namtrc_snk      !  sedimentation of particles
+!-----------------------------------------------------------------------
+/
+!-----------------------------------------------------------------------
+&namtrc_dmp      !   passive tracer newtonian damping   
+!-----------------------------------------------------------------------
+/
+!-----------------------------------------------------------------------
+&namtrc_ice      !    Representation of sea ice growth & melt effects
+!-----------------------------------------------------------------------
+/
+!-----------------------------------------------------------------------
+&namtrc_trd      !   diagnostics on tracer trends                       ('key_trdtrc')
+!----------------------------------------------------------------------
+/
+!----------------------------------------------------------------------
+&namtrc_bc       !   data for boundary conditions
+!-----------------------------------------------------------------------
+   cn_dir_sbc    =  './'     !  root directory for the location of SURFACE data files
+   cn_dir_cbc    =  './'     !  root directory for the location of COASTAL data files
+   cn_dir_obc    =  './'     !  root directory for the location of OPEN data files
+   !                !  file name        ! frequency (hours) ! variable      ! time interp. !  clim  ! 'yearly'/ ! weights  ! rotation ! land/sea mask !
+   !                !                   !  (if <0  months)  !   name        !   (logical)  !  (T/F) ! 'monthly' ! filename ! pairing  ! filename      !
+   sn_trcobc(1)  =  'bdy_ts'           ,        1.       , 'vosaline',    .true.   , .false. , 'daily'  , ''       , ''       , ''          !
+   sn_trcobc(2)  =  'bdy_ts'           ,        1.        , 'vosaline' ,   .true.   , .false.,  'daily'  , ''       , ''       , ''          !
+   sn_trcobc(3)  =  'bdy_ts'           ,        1.       , 'vosaline',    .true.   , .false. , 'daily'  , ''       , ''       , ''          !
+   sn_trcobc(4)  =  'bdy_ts'           ,        1.        , 'vosaline' ,   .true.   , .false.,  'daily'  , ''       , ''       , ''          !   
+   sn_trcobc(5)  =  'bdy_ts'           ,        1.       , 'vosaline',    .true.   , .false. , 'daily'  , ''       , ''       , ''          !
+   sn_trcobc(6)  =  'bdy_ts'           ,        1.        , 'vosaline' ,   .true.   , .false.,  'daily'  , ''       , ''       , ''          !
+   rn_trofac(1)  =  0.00001
+   rn_trofac(2)  =  0.00001
+   rn_trofac(3)  =  0.0000001
+   rn_trofac(4)  =  0.01
+   rn_trofac(5)  =  0.1
+   rn_trofac(6)  =  1.0
+   cn_dir_cbc    =  './'     !  root directory for the location of COASTAL data files
+   cn_dir_obc    =  './'     !  root directory for the location of OPEN data files
+   ln_rnf_ctl    = .false.   !  Remove runoff dilution on tracers with absent river load
+   rn_sbc_time   =  86400.   !  Time scaling factor for SBC data (seconds in a day)
+   rn_cbc_time   =  86400.   !  Time scaling factor for CBC data (seconds in a day)
+/
+!----------------------------------------------------------------------
+&namtrc_bdy      !   Setup of tracer boundary conditions
+!-----------------------------------------------------------------------
+   cn_trc(1)  = 'orlanski'
+   cn_trc(2)  = 'orlanski'
+   cn_trc(3)  = 'orlanski'
+   cn_trc(4)  = 'orlanski'
+   cn_trc(5)  = 'orlanski'
+   cn_trc(6)  = 'orlanski'
+/
+!-----------------------------------------------------------------------
+&namtrc_ais      !  Representation of Antarctic Ice Sheet tracers supply
+!-----------------------------------------------------------------------
+/

@@ -1,0 +1,23 @@
+<?xml version="1.0"?>
+
+<!--
+============================================================================================================
+=                                           output files definition                                        =
+=                                            Define your own filesfor ocean dynamics context               =
+=                                         put the variables you want...                                    =
+============================================================================================================
+    -->
+
+    <file_definition type="one_file" name="@expname@_@freq@_@startdate@_@enddate@" sync_freq="1ts" min_digits="4">
+
+      <file_group id="1ts" output_freq="1ts" output_level="10" enabled=".TRUE."> <!-- 1h files -->
+        <file id="file32" name_suffix="_bling_T" description="bling variables" >
+		<field field_ref="vopo4"       name="po4"      operation="instant" /> 
+		<field field_ref="vodop"        name="dop"       operation="instant" />
+		<field field_ref="vofed"       name="fe"      operation="instant" />
+                <field field_ref="vooxy"        name="oxy"       operation="instant"  />
+		<field field_ref="vodic"       name="dic"      operation="instant" />
+                <field field_ref="voalk"        name="alk"       operation="instant" />
+	</file>
+      </file_group>
+   </file_definition>

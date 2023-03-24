@@ -1,0 +1,29 @@
+<?xml version="1.0"?>
+<!-- $id$ -->
+
+<!--
+============================================================================================================
+=                                  definition of all existing variables                                    =
+=                                            DO NOT CHANGE                                                 =
+============================================================================================================
+-->
+<field_definition level="1" prec="4" operation="average" enabled=".TRUE." default_value="1.e20" > <!-- time step automaticaly defined -->
+
+  <!--
+      ============================================================================================================
+      Tracer model variables
+      ============================================================================================================
+  -->
+
+  <!-- ptrc on T grid -->
+
+  <field_group id="bling_T" grid_ref="grid_T_3D">
+    <field id="vopo4"        long_name="Dissolved phosphate"        unit="mol/m³" />
+    <field id="vodop"         long_name="Dissolved organic phosphate"        unit="mol/m³" /> 
+    <field id="vofed"        long_name="Dissolved iron concentration"        unit="mol/m³" />
+    <field id="vooxy"         long_name="Dissolved oxygen concentration"        unit="mol/m³" />
+    <field id="vodic"        long_name="Dissolved inorganic carbon"        unit="mol/m³" />
+    <field id="voalk"         long_name="Total alkalinity concentration"        unit="mol/m³" />
+  </field_group>
+
+</field_definition>

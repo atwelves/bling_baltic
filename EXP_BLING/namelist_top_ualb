@@ -1,0 +1,188 @@
+!!>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+!! NEMO/TOP1 :  1 - tracer definition                     (namtrc    )
+!!              2 - tracer data initialisation            (namtrc_dta)
+!!              3 - tracer advection                      (namtrc_adv)
+!!              4 - tracer lateral diffusion              (namtrc_ldf)
+!!              5 - tracer vertical physics               (namtrc_zdf)
+!!              6 - tracer newtonian damping              (namtrc_dmp)
+!!              7 - dynamical tracer trends               (namtrc_trd)
+!!              8 - tracer output diagonstics             (namtrc_dia)
+!>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+!'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+&namtrc_run     !   tracers definition
+!,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
+   nn_dttrc      =  1         !  time step frequency for passive sn_tracers
+!LC increase n_write because timesetp was decreased e.g. timestep 1080 nn_write = 400; timestep =180 nn_write = 2400
+!   nn_writetrc   =  400       !  time step frequency for sn_tracer outputs
+   nn_writetrc   = 2400       !  time step frequency for sn_tracer outputs
+!   ln_rsttr      = .false.  !  start from a restart file (T) or not (F)
+   ln_rsttr      = .true.  !  start from a restart file (T) or not (F)
+   nn_rsttr      =  1    !  restart control = 0 initial time step is not compared to the restart file value
+                              !                  = 1 do not use the value in the restart file
+                              !                  = 2 calendar parameters read in the restart file
+!   ln_top_euler  = .false.    !  use Euler time-stepping for TOP
+   ln_top_euler  = .true.    !  use Euler time-stepping for TOP
+   cn_trcrst_indir = "./"           !  directory from which to read input passive tracer restarts
+   cn_trcrst_outdir = "./"          !  directory to which to write output passive tracer restarts
+   cn_trcrst_in  = "restart_trc"   !  suffix of pass. sn_tracer restart name (input)
+   cn_trcrst_out = "restart_trc"   !  suffix of pass. sn_tracer restart name (output)
+/
+!-----------------------------------------------------------------------
+&namtrc     !   tracers definition
+!-----------------------------------------------------------------------
+   ln_trcdta     = .true.        !  Initialisation from data input file (T) or not (F)
+   ln_trcdmp     = .false.        !  add a damping termn (T) or not (F)
+   ln_trcdmp_clo = .false.        !  Restoring of tracer on closed seas
+!
+!                !    name   !           title of the field         ! initial data ! initial data ! save   !
+!                !           !                                      !  units       ! from file    ! or not ! 
+!                !           !                                      !              ! or not       !        !
+   sn_tracer(1)  = 'vopo4' , 'Dissolved phosphate            BLING' ,  'mol/m3'    ,   .true.    ,  .true.
+   sn_tracer(2)  = 'vodop' , 'Dissolved organic phosphate    BLING' ,  'mol/m3'    ,   .true.    ,  .true.
+   sn_tracer(3)  = 'vofed' , 'Dissolved iron concentration   BLING' ,  'mol/m3'    ,   .true.    ,  .true.
+   sn_tracer(4)  = 'vooxy' , 'Dissolved oxygen concentration BLING' ,  'mol/m3'    ,   .true.    ,  .true.
+   sn_tracer(5)  = 'vodic' , 'Dissolved inorganic carbon     BLING' ,  'mol/m3'    ,   .true.    ,  .true.
+   sn_tracer(6)  = 'voalk' , 'Total Alkalinity Concentration BLING' ,  'mol/m3'    ,   .true.    ,  .true.
+   sn_tracer(7)  = 'TRC07' , 'Greenland Meltwater                 ' ,  'unitless'  ,  .false.    ,  .true.
+   sn_tracer(8)  = 'TRC08' , 'Hudson Bay Complex river input      ' ,  'unitless'  ,  .false.    ,  .true.
+   sn_tracer(9)  = 'TRC09' , 'Labrador Sea Water within MLD       ' ,  'unitless'  ,  .false.    ,  .true.
+   sn_tracer(10) = 'TRC10' , 'CAA Arctic outflow                  ' ,  'unitless'  ,  .false.    ,  .true.
+   sn_tracer(11) = 'TRC11' , 'Atlantic Water into Arctic Ocean    ' ,  'unitless'  ,  .false.    ,  .true.
+   sn_tracer(12) = 'TRC12' , 'Pacific Inflow into Arctic Ocean    ' ,  'unitless'  ,  .false.    ,  .true.
+   sn_tracer(13) = 'TRC13' , 'All Arctic Rivers (CAD, CAA, Russia)' ,  'unitless'  ,  .false.    ,  .true.
+  
+/
+!-----------------------------------------------------------------------
+&nammytrc_ctl     !    Initialisation from data input file
+!                 !  isDta   !    isFreq   !  nFreq  ! initYear ! initMon  ! initDay  ! minMaskV  ! maxMaskV
+  myTracer_ctl(1) = .false.  ,    .true.   ,   -2    ,    1981  ,    1     ,    1     ,     1     ,     7
+  myTracer_ctl(2) = .false.  ,    .true.   ,   -2    ,    1981  ,    1     ,    1     ,     13    ,     13
+  myTracer_ctl(3) = .false.  ,    .true.   ,   -2    ,    1981  ,    1     ,    1     ,     16    ,     16
+  myTracer_ctl(4) = .false.  ,    .true.   ,   -2    ,    1981  ,    1     ,    1     ,     4180  ,     4270
+  myTracer_ctl(5) = .false.  ,    .true.   ,   -2    ,    1981  ,    1     ,    1     ,     5033  ,     5360
+  myTracer_ctl(6) = .false.  ,    .true.   ,   -2    ,    1981  ,    1     ,    1     ,     3180  ,     3180
+  myTracer_ctl(7) = .false.  ,    .true.   ,   -2    ,    1981  ,    1     ,    1     ,     8     ,     12
+
+/
+!-----------------------------------------------------------------------
+&namtrc_dta      !    Initialisation from data input file
+!-----------------------------------------------------------------------
+!
+!              !  file name ! frequency (hours) ! variable   ! time interp. !  clim  ! 'yearly'/ ! weights  ! rotation ! land/sea mask !
+!              !            !  (if <0  months)  !   name     !   (logical)  !  (T/F) ! 'monthly' ! filename ! pairing  !    filename   !
+   sn_trcdta(1) = 'IC_PO4'  ,        -12        ,  'vopo4'     ,   .false.    , .true. , 'yearly'  , ''       , ''     , ''
+   sn_trcdta(2) = 'IC_DOP'  ,        -12        ,  'vodop'     ,   .false.    , .true. , 'yearly'  , ''       , ''     , ''
+   sn_trcdta(3) = 'IC_FED'  ,        -12        ,  'vofed'     ,   .false.    , .true. , 'yearly'  , ''       , ''     , ''
+   sn_trcdta(4) = 'IC_OXY'  ,        -12        ,  'vooxy'     ,   .false.    , .true. , 'yearly'  , ''       , ''     , ''
+   sn_trcdta(5) = 'IC_DIC'  ,        -12        ,  'vodic'     ,   .false.    , .true. , 'yearly'  , ''       , ''     , ''
+   sn_trcdta(6) = 'IC_ALK'  ,        -12        ,  'voalk'     ,   .false.    , .true. , 'yearly'  , ''       , ''     , ''
+
+   cn_dir        =  './'      !  root directory for the location of the data files
+   rn_trfac(1)   =   1.0      !  multiplicative factor
+   rn_trfac(2)   =   1.0      !  -      -      -     -
+   rn_trfac(3)   =   1.0      !  -      -      -     -
+   rn_trfac(4)   =   1.0      !  -      -      -     -
+   rn_trfac(5)   =   1.0      !  -      -      -     -
+   rn_trfac(6)   =   1.0      !  -      -      -     -
+/
+!-----------------------------------------------------------------------
+&namtrc_adv    !   advection scheme for passive tracer 
+!-----------------------------------------------------------------------
+   ln_trcadv_cen2   =  .false.  !  2nd order centered scheme   
+   ln_trcadv_tvd    =  .true.   !  TVD scheme
+   ln_trcadv_muscl  =  .false.  !  MUSCL scheme
+   ln_trcadv_muscl2 =  .false.  !  MUSCL2 scheme + cen2 at boundaries
+   ln_trcadv_ubs    =  .false.  !  UBS scheme
+   ln_trcadv_qck    =  .false.  !  QUICKEST scheme
+   ln_trcadv_msc_ups =  .false. !  use upstream scheme within muscl
+/
+!-----------------------------------------------------------------------
+&namtrc_ldf    !   lateral diffusion scheme for passive tracer 
+!-----------------------------------------------------------------------
+                                !  Type of the operator : 
+   ln_trcldf_lap    =  .true.   !     laplacian operator       
+   ln_trcldf_bilap  =  .false.  !     bilaplacian operator     
+                                !  Direction of action  :
+   ln_trcldf_level  =  .false.  !     iso-level                
+   ln_trcldf_hor    =  .false.  !     horizontal (geopotential)         (require "key_ldfslp" when ln_sco=T)
+   ln_trcldf_iso    =  .true.   !     iso-neutral                       (require "key_ldfslp")
+!                               !  Coefficient
+   rn_ahtrc_0       =  300.0    !  horizontal eddy diffusivity for tracers [m2/s]
+   rn_ahtrb_0       =     0.0   !  background eddy diffusivity for ldf_iso [m2/s]
+   rn_fact_lap      =     1.0   !  enhanced zonal eddy diffusivity
+/
+!-----------------------------------------------------------------------
+&namtrc_zdf        !   vertical physics
+!-----------------------------------------------------------------------
+   ln_trczdf_exp   =  .false.  !  split explicit (T) or implicit (F) time stepping
+   nn_trczdf_exp   =   3       !  number of sub-timestep for ln_trczdfexp=T
+/
+!-----------------------------------------------------------------------
+&namtrc_rad        !  treatment of negative concentrations 
+!-----------------------------------------------------------------------
+   ln_trcrad   =  .true.  !  artificially correct negative concentrations (T) or not (F)
+/
+!-----------------------------------------------------------------------
+&namtrc_dmp    !   passive tracer newtonian damping   
+!-----------------------------------------------------------------------
+   nn_zdmp_tr  =    1      !  vertical   shape =0    damping throughout the water column
+                           !                   =1 no damping in the mixing layer (kz  criteria)
+                           !                   =2 no damping in the mixed  layer (rho crieria)
+   cn_resto_tr  = 'resto_tr.nc'    !  create a damping.coeff NetCDF file (=1) or not (=0)
+  !nn_hdmp_tr  =   -2      !  horizontal shape =-1, damping in Med and Red Seas only
+  !                        !                   =XX, damping poleward of XX degrees (XX>0)
+  !                        !                      + F(distance-to-coast) + Red and Med Seas
+  !                        !                   =-2 customized
+  !nn_zdmp_tr  =    1      !  vertical   shape =0    damping throughout the water column
+  !                        !                   =1 no damping in the mixing layer (kz  criteria)
+  !                        !                   =2 no damping in the mixed  layer (rho crieria)
+  !rn_surf_tr  =   50.     !  surface time scale of damping   [days]
+  !rn_bot_tr   =  360.     !  bottom  time scale of damping   [days]
+  !rn_dep_tr   =  800.     !  depth of transition between rn_surf and rn_bot [meters]
+  !nn_file_tr  =    0      !  create a damping.coeff NetCDF file (=1) or not (=0)
+/
+!-----------------------------------------------------------------------
+&namtrc_ice       !    Representation of sea ice growth & melt effects
+!-----------------------------------------------------------------------
+  nn_ice_tr   =  -1        !  tracer concentration in sea ice 
+                           !    =-1 (no vvl: identical cc in ice and ocean / vvl: cc_ice = 0)
+                           !    = 0 (no vvl: cc_ice = zero / vvl: cc_ice = )
+                           !    = 1 prescribed to a namelist value (implemented in pisces only)
+/
+!-----------------------------------------------------------------------
+&namtrc_trd       !   diagnostics on tracer trends        ('key_trdtrc')
+!                          or mixed-layer trends          ('key_trdmld_trc')
+!----------------------------------------------------------------------
+! LC increase time step frequencye because timestep decreased (see above LC Dec. 2018)
+!   nn_trd_trc  =  400       !  time step frequency and tracers trends
+   nn_trd_trc  =  2400       !  time step frequency and tracers trends
+   nn_ctls_trc =  0       !  control surface type in mixed-layer trends (0,1 or n<jpk)
+   rn_ucf_trc  =  1    !  unit conversion factor (=1 -> /seconds ; =86400. -> /day)
+   ln_trdmld_trc_restart = .false.  !  restart for ML diagnostics
+   ln_trdmld_trc_instant = .true.  !  flag to diagnose trends of instantantaneous or mean ML T/S
+   ln_trdtrc(1)  =   .true.
+   ln_trdtrc(2)  =   .true.
+   ln_trdtrc(3)  =   .true.
+   ln_trdtrc(4)  =   .true.
+   ln_trdtrc(5)  =   .true.
+   ln_trdtrc(6)  =   .true.
+   ln_trdtrc(7)  =   .true.
+/
+!-----------------------------------------------------------------------
+&namtrc_dia       !   parameters for passive tracer additional diagnostics
+!----------------------------------------------------------------------
+   ln_diatrc     =  .true.   !  save additional diag. (T) or not (F)
+   ln_diabio     =  .false.   !
+! LC increase nn write because timestep decreased (see above LC Dec. 2018) 
+!   nn_writedia   =  400       !  time step frequency for diagnostics
+!   nn_writebio   =  400     
+   nn_writedia   =  2400       !  time step frequency for diagnostics
+   nn_writebio   =  2400
+/
+!----------------------------------------------------------------------
+! namtrc_bc       !   data for boundary conditions
+!-----------------------------------------------------------------------
+&namtrc_bc
+!
+   cn_dir        =  './'      !  root directory for the location of the data files
+/
