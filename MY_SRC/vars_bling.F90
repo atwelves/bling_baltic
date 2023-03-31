@@ -19,6 +19,11 @@ MODULE vars_bling
    REAL(wp), PUBLIC, ALLOCATABLE, SAVE, DIMENSION(:,:,:) :: chl_bling, irr_mem, biomass_p
    REAL(wp), PUBLIC, ALLOCATABLE, SAVE, DIMENSION(:,:,:) :: htotal, co3_ion  !DO_CARBON
    REAL(wp), PUBLIC, ALLOCATABLE, SAVE, DIMENSION(:,:)   :: fpop_b,fpofe_b,fcaco3_b
+   !!! --- AGT --- !!!
+   IF ( ln_nitro ) THEN
+           REAL(wp), PUBLIC, ALLOCATABLE, SAVE, DIMENSION(:,:)   :: fpon_b
+   ENDIF
+   !!! ------ !!!
    REAL(wp), PUBLIC, ALLOCATABLE, SAVE, DIMENSION(:,:)   :: co2_csurf, co2_alpha
 
    REAL(wp), PUBLIC, ALLOCATABLE, SAVE, DIMENSION(:,:,:) :: coast_bling
@@ -65,7 +70,12 @@ MODULE vars_bling
    REAL(wp) :: p_star
    REAL(wp) :: lambda0
    REAL(wp) :: gam_biomass
-   !REAL(wp) :: 
+   !REAL(wp) ::
+   !!! --- AGT --- !!!
+   IF ( ln_nitro ) THEN
+           LOGICAL  :: ln_nitro
+           REAL(wp) :: kno3
+   ENDIF 
    
    !! Optical parameters                                
    !! ------------------                                
@@ -150,6 +160,12 @@ CONTAINS
 
      ! bottom fluxes
      ALLOCATE(  fpop_b(jpi,jpj),  fpofe_b(jpi,jpj), fcaco3_b(jpi,jpj) , STAT=ierr(3) )
+     
+     !!! --- AGT --- !!!
+     IF ( ln_nitro ) THEN
+             ALLOCATE(  fpon_b(jpi,jpj) )
+     ENDIF
+     !!! ------ !!!
 
      ! dust fluxes
      ALLOCATE( dust_bling(jpi,jpj), coast_bling(jpi,jpj,jpk), STAT=ierr(4) )

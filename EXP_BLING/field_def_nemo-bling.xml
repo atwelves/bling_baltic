@@ -24,6 +24,8 @@
     <field id="vooxy"         long_name="Dissolved oxygen concentration"        unit="mol/m³" />
     <field id="vodic"        long_name="Dissolved inorganic carbon"        unit="mol/m³" />
     <field id="voalk"         long_name="Total alkalinity concentration"        unit="mol/m³" />
+    <field id="vono3"        long_name="Dissolved nitrate"        unit="mol/m³" />
+    <field id="vodon"         long_name="Dissolved nitrogen concentration"        unit="mol/m³" />
   </field_group>
 
 </field_definition>

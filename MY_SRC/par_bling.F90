@@ -66,13 +66,15 @@ MODULE par_bling
    INTEGER, PUBLIC, PARAMETER ::   jpOxy_bling = jp_lm + 4     !: Dissolved oxygen
    INTEGER, PUBLIC, PARAMETER ::   jpDIC_bling = jp_lm + 5     !: Dissolved inorganic carbon
    INTEGER, PUBLIC, PARAMETER ::   jpalk_bling = jp_lm + 6     !: Total alkalinity concentration
+   INTEGER, PUBLIC, PARAMETER ::   jpNO3_bling = jp_lm + 7     !: Dissolved nitrate
+   INTEGER, PUBLIC, PARAMETER ::   jpDON_bling = jp_lm + 8     !: Dissolved organic nitrogen
    !DO_CARBON
 
    ! Starting/ending PISCES do-loop indices (N.B. no PISCES : jpl_pcs < jpf_pcs the do-loop are never done)
    INTEGER, PUBLIC, PARAMETER ::   jp_bling0     = jp_lm     + 1              !: First index of BLINGv0 passive tracers
-! AGT 
+   ! AGT : Need to hardcode jp_blg1 = 8 if using nitrogen... 
    INTEGER, PUBLIC, PARAMETER ::  jp_blg0 = 1  !: First index of BLING tracers
-   INTEGER, PUBLIC, PARAMETER ::  jp_blg1 = 6 !: Last  index of BLING tracers
+   INTEGER, PUBLIC, PARAMETER ::  jp_blg1 = 8 !: Last  index of BLING tracers
 !  INTEGER, PUBLIC, PARAMETER ::   jp_bling1     = jp_lm     + 6              !: Last  index of BLINGv0 passive tracers
    INTEGER, PUBLIC, PARAMETER ::   jp_bling0_2d  = jp_lm_2d  + 1              !: First index of BLINGv0 passive tracers
    INTEGER, PUBLIC, PARAMETER ::   jp_bling1_2d  = jp_lm_2d  + jp_bling_2d    !: Last  index of BLINGv0 passive tracers

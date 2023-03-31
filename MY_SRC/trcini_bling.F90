@@ -66,10 +66,19 @@ CONTAINS
         tr(:,:,:,jpOxy_bling,Kmm) = 177.6e-6_wp * tmask(:,:,:) 
         tr(:,:,:,jpDIC_bling,Kmm) = 0.0_wp      * tmask(:,:,:)
         tr(:,:,:,jpalk_bling,Kmm) = 0.0_wp      * tmask(:,:,:)
+        !!! --- AGT: Add nitrogen tracers --- !!!
+        IF ( ln_nitro ) THEN
+                tr(:,:,:,jpNO3_bling,Kmm) = 1.000e-4_wp * tmask(:,:,:)
+                tr(:,:,:,jpDON_bling,Kmm) = 1.000e-6_wp * tmask(:,:,:)
+        ENDIF
+        !!! ------ !!!
       ENDIF
          
       ! initialize diagnostic tracers
       fpop_b   (:,:)   = 0.d0
+      IF ( ln_nitro ) THEN
+              fpon_b (:,:) = 0.d0
+      ENDIF
       fpofe_b  (:,:)   = 0.d0
       fcaco3_b (:,:)   = 0.d0
       co2_csurf(:,:)   = 0.d0

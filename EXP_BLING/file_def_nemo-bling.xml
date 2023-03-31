@@ -17,7 +17,9 @@
 		<field field_ref="vofed"       name="fe"      operation="instant" />
                 <field field_ref="vooxy"        name="oxy"       operation="instant"  />
 		<field field_ref="vodic"       name="dic"      operation="instant" />
-                <field field_ref="voalk"        name="alk"       operation="instant" />
+		<field field_ref="voalk"        name="alk"       operation="instant" />
+		<field field_ref="vono3"       name="no3"      operation="instant" />
+                <field field_ref="vodon"        name="don"       operation="instant" />
 	</file>
       </file_group>
    </file_definition>

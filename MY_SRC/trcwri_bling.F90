@@ -17,7 +17,7 @@ CONTAINS
       INTEGER           :: jn
       CHARACTER(len=20) :: cltra
 
-      DO jn=1, 6
+      DO jn=jp_blg0, jp_blg1
          cltra = TRIM( ctrcnm(jn) )  
          CALL iom_put( cltra, tr(:,:,:,jn,Kmm))
       END DO

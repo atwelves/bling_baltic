@@ -9,7 +9,7 @@
 !-----------------------------------------------------------------------
 &namtrc          !   tracers definition
 !-----------------------------------------------------------------------
-   jp_bgc        =  6
+   jp_bgc        =  8
 !
    ln_pisces     =  .false.
    ln_my_trc     =  .false.
@@ -29,6 +29,8 @@
    sn_tracer(4)   = 'vooxy' , 'Dissolved oxygen concentration         ',  'mol/m³'     , .true.  , .false., .false., .true. , .false.
    sn_tracer(5)   = 'vodic' , 'Dissolved inorganic carbon             ',  'mol/m³'     , .true.  , .false., .false., .true. , .false.
    sn_tracer(6)   = 'voalk' , 'Total alkalinity concentration         ',  'mol/m³'     , .true.  , .false., .false., .true. , .false.
+   sn_tracer(7)   = 'vono3' , 'Dissolved nitrate                      ',  'mol/m³'     , .true.  , .false., .false., .true. , .false.
+   sn_tracer(8)   = 'vodon' , 'Dissolved organic nitrogen             ',  'mol/m³'     , .true.  , .false., .false., .true. , .false.
 /
 !-----------------------------------------------------------------------
 &namage          !   AGE 
@@ -45,12 +47,16 @@
    sn_trcdta(4)  = 'data_sal_new_degen.nc',        -1         ,  'vosaline'    ,    .true.    , .true. , 'yearly'  , ''       , ''   , ''
    sn_trcdta(5)  = 'data_sal_new_degen.nc',        -1         ,  'vosaline'     ,    .true.    , .true. , 'yearly'  , ''       , ''   , ''
    sn_trcdta(6)  = 'data_sal_new_degen.nc',        -1         ,  'vosaline'    ,    .true.    , .true. , 'yearly'  , ''       , ''   , ''
+   sn_trcdta(7)  = 'data_sal_new_degen.nc',        -1         ,  'vosaline'     ,    .true.    , .true. , 'yearly'  , ''       , ''   , ''
+   sn_trcdta(8)  = 'data_sal_new_degen.nc',        -1         ,  'vosaline'    ,    .true.    , .true. , 'yearly'  , ''       , ''   , ''
    rn_trfac(1)   = 0.00001   !  multiplicative factor
    rn_trfac(2)   = 0.00001
    rn_trfac(3)   = 0.0000001  
    rn_trfac(4)   = 0.01 
    rn_trfac(5)   = 0.1
    rn_trfac(6)  = 1.0   
+   rn_trfac(7)   = 0.001   !  multiplicative factor
+   rn_trfac(8)   = 0.001
 /
 !-----------------------------------------------------------------------
 &namtrc_adv      !   advection scheme for passive tracer                (default: NO selection)
@@ -97,12 +103,16 @@
    sn_trcobc(4)  =  'bdy_ts'           ,        1.        , 'vosaline' ,   .true.   , .false.,  'daily'  , ''       , ''       , ''          !   
    sn_trcobc(5)  =  'bdy_ts'           ,        1.       , 'vosaline',    .true.   , .false. , 'daily'  , ''       , ''       , ''          !
    sn_trcobc(6)  =  'bdy_ts'           ,        1.        , 'vosaline' ,   .true.   , .false.,  'daily'  , ''       , ''       , ''          !
+   sn_trcobc(7)  =  'bdy_ts'           ,        1.       , 'vosaline',    .true.   , .false. , 'daily'  , ''       , ''       , ''          !
+   sn_trcobc(8)  =  'bdy_ts'           ,        1.        , 'vosaline' ,   .true.   , .false.,  'daily'  , ''       , ''       , ''          !
    rn_trofac(1)  =  0.00001
    rn_trofac(2)  =  0.00001
    rn_trofac(3)  =  0.0000001
    rn_trofac(4)  =  0.01
    rn_trofac(5)  =  0.1
    rn_trofac(6)  =  1.0
+   rn_trofac(7)  =  0.001
+   rn_trofac(8)  =  0.001
    cn_dir_cbc    =  './'     !  root directory for the location of COASTAL data files
    cn_dir_obc    =  './'     !  root directory for the location of OPEN data files
    ln_rnf_ctl    = .false.   !  Remove runoff dilution on tracers with absent river load
@@ -118,6 +128,8 @@
    cn_trc(4)  = 'orlanski'
    cn_trc(5)  = 'orlanski'
    cn_trc(6)  = 'orlanski'
+   cn_trc(7)  = 'orlanski'
+   cn_trc(8)  = 'orlanski'
 /
 !-----------------------------------------------------------------------
 &namtrc_ais      !  Representation of Antarctic Ice Sheet tracers supply

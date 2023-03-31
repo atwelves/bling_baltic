@@ -51,7 +51,7 @@ CONTAINS
       NAMELIST/namblingrat/    c2n, c2p, oxy2p, n2p, ca2p, rho0_co3sol, ca_remin_depth, htotal_scale_lo, htotal_scale_hi
       NAMELIST/namblingopt/    xkr0, xkb0, xkrp, xkbp, xlr, xlb, rpig, rcchl, gam_irr_mem
       NAMELIST/namblingprod/   pc_0, kappa_eppley, kpo4, kfe, fe2p_max, kfe2p_up, def_fe_min, thetamax_lo, thetamax_hi
-      NAMELIST/namblingprod/   alpha_min, alpha_max, resp_frac, p_star, lambda0, gam_biomass
+      NAMELIST/namblingprod/   alpha_min, alpha_max, resp_frac, p_star, lambda0, gam_biomass, ln_nitro, kno3
       NAMELIST/namblingremin/  wsink0_z, wsink0, wsink_acc, koxy, remin_min, phi_dop, phi_sm
       NAMELIST/namblingremin/  phi_lg, kappa_remin, gamma_dop, gamma_pop
       NAMELIST/namblingairsea/ a_0, a_1, a_2, a_3, a_4, a_5, b_0, b_1, b_2, b_3, c_0

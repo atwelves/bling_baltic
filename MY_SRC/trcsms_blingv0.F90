@@ -53,6 +53,15 @@ CONTAINS
       REAL(wp) :: frac_pop, jp_dop, fe2p_up, fpopkm1
       REAL(wp) :: zzz, wsink, oxy_up
 
+      !!! --- AGT: Add local variables for nitrogen cycle --- !!!
+      IF ( ln_nitro ) THEN
+              REAL(wp) :: fno3, fdon
+              REAL(wp) :: no3_up
+              REAL(wp) :: pc_tot_diaz, biomass_p_ts_diaz, mulamb0expkT
+              REAL(wp) :: jn_don, fponkm1
+      ENDIF
+      !!! ------!!!
+
       ! Iron
       REAL(wp) :: jfe_pofe, fpofekm1
       REAL(wp) :: dum5, dum2, dum3
@@ -79,7 +88,14 @@ CONTAINS
       REAL(wp), ALLOCATABLE, DIMENSION(:,:,:) :: jfe_uptake, jfe_remin, jfe_recycle
       REAL(wp), ALLOCATABLE, DIMENSION(:,:,:) :: jfe_ads_inorg, jfe_ads_org
       REAL(wp), ALLOCATABLE, DIMENSION(:,:,:) :: jpo4, jdop, jfed, joxy
-
+      !!! --- AGT: Declare arrays for nitrogen cycle --- !!!
+      IF( ln_nitro ) THEN
+              REAL(wp), ALLOCATABLE, DIMENSION(:,:,:) :: jno3, jdon
+              REAL(wp), ALLOCATABLE, DIMENSION(:,:,:) :: jn_pon, fpon
+              REAL(wp), ALLOCATABLE, DIMENSION(:,:,:) :: jn_uptake, jn_fix, jn_remin, jn_recycle
+              REAL(wp), ALLOCATABLE, DIMENSION(:,:,:) :: pc_m_diaz, mu_diaz
+      ENDIF
+      !!! ------ !!!
       REAL(wp), ALLOCATABLE, DIMENSION(:)     :: dum4
       REAL(wp), ALLOCATABLE, DIMENSION(:,:,:) :: xnegtr
 
@@ -120,6 +136,20 @@ CONTAINS
       ALLOCATE ( jdop(jpi,jpj,jpk) )
       ALLOCATE ( jfed(jpi,jpj,jpk) )
       ALLOCATE ( joxy(jpi,jpj,jpk) )
+      !!! --- AGT: Allocate memory for nitrogen cycle --- !!! 
+      IF ( ln_nitro ) THEN
+              ALLOCATE ( jno3(jpi,jpj,jpk) )
+              ALLOCATE ( jdon(jpi,jpj,jpk) )
+              ALLOCATE ( jn_pon(jpi,jpj,jpk) )
+              ALLOCATE ( fpon(jpi,jpj,jpk) )
+              ALLOCATE ( jn_uptake(jpi,jpj,jpk) )
+              ALLOCATE ( jn_fix(jpi,jpj,jpk) )
+              ALLOCATE ( jn_remin(jpi,jpj,jpk) )
+              ALLOCATE ( jn_recycle(jpi,jpj,jpk) )
+              ALLOCATE ( pc_m_diaz(jpi,jpj,jpk) )
+              ALLOCATE ( mu_diaz(jpi,jpj,jpk) )
+      !!! ------ !!!
+      ENDIF
       !DO_CARBON
       ALLOCATE ( jca_uptake(jpi,jpj,jpk) )
       ALLOCATE ( jca_reminp(jpi,jpj,jpk) )
@@ -193,6 +223,12 @@ CONTAINS
                fdop = MAX( 0.e0, tr(ji,jj,jk,jpDOP_bling,Kmm) )
                ffed = MAX( 0.e0, tr(ji,jj,jk,jpFed_bling,Kmm) )
                foxy = tr(ji,jj,jk,jpOxy_bling,Kmm)
+               !!! --- AGT: Add fluxes for nitrogen cycle --- !!!
+               IF ( ln_nitro ) THEN
+                       fno3 = MAX( 0.e0, tr(ji,jj,jk,jpNO3_bling,Kmm) )
+                       fdon = MAX( 0.e0, tr(ji,jj,jk,jpDON_bling,Kmm) )
+               !!! ------ !!!
+               ENDIF
 
                ! ----------------------------------------------------------
                ! TEMPERATURE DEPENDENCE
@@ -242,9 +278,18 @@ CONTAINS
                ! Phosphate uptake [no units]
                po4_up = fpo4 /( kpo4 + fpo4 )
 
+               !!! --- AGT: Add nitrogen limitation --- !!!
+               IF ( ln_nitro ) THEN
+                       no3_up = fno3 /( kno3 + fno3 )
+                       ! Maximum production (units of pc_0 [s-1])
+                       pc_m(ji,jj,jk) = pc_0 * expkT(ji,jj,jk) * MIN(po4_up,no3_up,def_fe(ji,jj,jk))
+                       ! add diazotrophs:
+                       pc_m_diaz(ji,jj,jk) = pc_0 * expkT(ji,jj,jk) * MIN(po4_up,def_fe(ji,jj,jk))
+               ELSE 
+               !!! ------ !!!
                ! Maximum production (units of pc_0 [s-1])
                pc_m(ji,jj,jk) = pc_0 * expkT(ji,jj,jk) * MIN(po4_up,def_fe(ji,jj,jk)) 
-
+               ENDIF
 
                ! Iron limitation on photosyntesis machinery
                thetamax_fe=thetamax_lo + (thetamax_hi - thetamax_lo)*def_fe(ji,jj,jk)
@@ -270,7 +315,11 @@ CONTAINS
                ![s-1]
                !pc_tot = pc_m(ji,jj,jk)*(1.d0-EXP(-irr_mix(ji,jj,jk)/(irrk(ji,jj,jk)+epsln)))
                pc_tot = pc_m(ji,jj,jk)*(1.d0-EXP(-irr_inst(ji,jj,jk)/(irrk(ji,jj,jk)+epsln)))
-
+               !!! --- AGT --- !!!
+               IF ( ln_nitro ) THEN
+               pc_tot_diaz = pc_m_diaz(ji,jj,jk)*(1.d0-EXP(-irr_inst(ji,jj,jk)/(irrk(ji,jj,jk)+epsln)))
+               ENDIF
+               !!! ------ !!!
                !-----------------------------------------------------------------------
                ! Next, we account for the maintenance effort that phytoplankton must 
                ! exert in order to combat decay. This is prescribed as a fraction of the
@@ -281,7 +330,11 @@ CONTAINS
 
                ! Net total production [s-1]
                mu(ji,jj,jk) = MAX (0.d0,pc_tot-resp_frac*pc_m(ji,jj,jk))
-
+               !!! --- AGT --- !!!
+               IF ( ln_nitro ) THEN
+               mu_diaz = MAX (0.d0,pc_tot_diaz-resp_frac*pc_m_diaz(ji,jj,jk))
+               ENDIF
+               !!! ------ !!!
                !-----------------------------------------------------------------------
                ! We now must convert this net carbon-specific growth rate to nutrient 
                ! uptake rates, the quantities we are interested in. Since we have no 
@@ -302,6 +355,17 @@ CONTAINS
                biomass_p(ji,jj,jk) =   biomass_p(ji,jj,jk) &
                                     + (biomass_p_ts-biomass_p(ji,jj,jk))*MIN(1.d0,gam_biomass)!*rfact)!*tmask(ji,jj,jk)
 
+               !!! --- AGT: this needs some more thought... --- !!!
+               IF ( ln_nitro ) THEN
+                       mulamb0expkT_diaz = mu_diaz(ji,jj,jk)/(lambda0*expkT(ji,jj,jk))  ![no units]
+                       biomass_p_ts_diaz = p_star*mulamb0expkT_diaz*(1.d0+(mulamb0expkT_diaz)**2)
+                       IF (kt==nittrc000) biomass_p_dz(ji,jj,jk)=biomass_p_ts
+
+                       biomass_p_dz(ji,jj,jk) =   biomass_p_dz(ji,jj,jk) &
+                                    + (biomass_p_ts_diaz-biomass_p_diaz(ji,jj,jk))*MIN(1.d0,gam_biomass)!*rfact)!*tmask(ji,jj,jk)
+               ENDIF
+               !!! ------ !!!
+
                !if (ji==80 .and. jj==60 .and. jk==1) write(*,'(I3,5(1X,E11.4))') kt, &
                !pc_0, expkT(ji,jj,jk), po4_up, def_fe(ji,jj,jk), pc_tot,mu(ji,jj,jk),biomass_p(ji,jj,jk)
 
@@ -314,7 +378,13 @@ CONTAINS
                theta   = thetamax_fe / (1.d0 + (thetamax_fe*alpha_chl*irr_mem(ji,jj,jk))/(2.d0*pc_m(ji,jj,jk)+epsln) )
 
                ! Chl biomass [ug chl/m3]
+               !!! --- AGT: include diazotrophs in chlorophyll calculation --- !!!
+               IF ( ln_nitro ) THEN
+                       chl_dia = (biomass_p(ji,jj,jk)+biomass_p_diaz(ji,jj,jk)) * c2p * 12.011e+6 * theta
+               ELSE
+               !!! ------ !!!
                chl_dia = biomass_p(ji,jj,jk) * c2p * 12.011e+6 * theta !* tmask(ji,jj,jk) 
+               ENDIF
                chl_bling(ji,jj,jk) = MAX(chl_min, chl_dia)
 
                !--------------------------------------------------
@@ -336,9 +406,16 @@ CONTAINS
                ! second step (i.e. there is no dissolved organic iron pool).
                !-----------------------------------------------------------------------
 
+               !!! --- AGT: Add diazotroph contribution... --- !!!
+               IF ( ln_nitro ) THEN
+                       ! Phosphorous uptake flux [mol P/m3/s]
+                       jp_uptake(ji,jj,jk)=biomass_p(ji,jj,jk)*mu(ji,jj,jk) + biomass_p_diaz(ji,jj,jk)*mu_diaz(ji,jj,jk)
+                       !!!!!!!!! how to calculate export fraction with diazotrophs??????
+               ELSE
+               !!! ------ !!!
                ! Phosphorous uptake flux [mol P/m3/s]
                jp_uptake(ji,jj,jk)=biomass_p(ji,jj,jk)*mu(ji,jj,jk)
-
+               ENDIF
                ! [no units]
                frac_pop=(phi_sm+phi_lg*(mulamb0expkT)**2) / (1+(mulamb0expkT)**2) * EXP(kappa_remin*ts(ji,jj,jk,jp_tem,Kmm))
 
@@ -355,7 +432,20 @@ CONTAINS
 
                ! [mol P/m3/s]
                jp_recycle(ji,jj,jk)=jp_uptake(ji,jj,jk)-jp_pop(ji,jj,jk)-jp_dop
-
+               !!! --- AGT: Start by adding nitrogen uptake and recycling as redfield multiple of phosphorous tracer, minus fixation: --- !!!
+               IF ( ln_nitro ) THEN
+                       ! calculate nitrogen fixation
+                       jn_fix(ji,jj,jk) = biomass_p_diaz(ji,jj,jk)*mu_diaz(ji,jj,jk)
+                       ! calculate nitrate uptake
+                       jn_uptake(ji,jj,jk)=n2p*jp_uptake(ji,jj,jk) - jn_fix(ji,jj,jk)
+                       ! calculate particulate flux of nitrogen
+                       jn_pon(ji,jj,jk)=frac_pop*(jn_uptake(ji,jj,jk)+jn_fix(ji,jj,jk))
+                       ! calculate dissolved flux of nitrogen
+                       jn_don=phi_dop*(jn_uptake(ji,jj,jk)+jn_uptake(ji,jj,jk)-jn_pon(ji,jj,jk))
+                       ! calculate nitrate recycling
+                       jn_recycle(ji,jj,jk)=jn_uptake(ji,jj,jk)+jn_fix(ji,jj,jk)-jn_pon(ji,jj,jk)-jn_don(ji,jj,jk)
+               ENDIF
+               !!! ------ !!!
 !DO_CARBON<
                !---------------------------------------------------------------------
                ! As a helpful diagnostic, the implied fraction of production by large 
@@ -368,8 +458,10 @@ CONTAINS
                ! MC. Note: s_over_p = (mu/lambda)**2 for gamma_b=0. 
                ! To do the maths consider jp_uptake=mu*B and lambda=lambda0*expkT  
                ! [no units]
-               s_over_p = ( ( 1.d0 + 4.d0 * jp_uptake(ji,jj,jk) / (lambda0*expkT(ji,jj,jk)*p_star) )**0.5 - 1.d0 ) / 2.d0
 
+               !!! --- AGT: For compatibility with nitro version calculate biomass x growth rate explicitly for non-diazotrophs
+               s_over_p = ( ( 1.d0 + 4.d0 * biomass_p(ji,jj,jk)*mu(ji,jj,jk) / (lambda0*expkT(ji,jj,jk)*p_star) )**0.5 - 1.d0 ) / 2.d0
+               !!! ------ !!!
                ![no units]
                frac_lg(ji,jj,jk) = s_over_p / (1.d0 + s_over_p)
 
@@ -383,7 +475,9 @@ CONTAINS
                !-----------------------------------------------------------------------
 
                ! [mol Ca/m3/s]
-               jca_uptake(ji,jj,jk) = (1.d0-frac_lg(ji,jj,jk))*jp_uptake(ji,jj,jk)*ca2p         
+               !!! --- AGT: For compatibility with nitro version calculate biomass x growth rate explicitly for non-diazotrophs
+               jca_uptake(ji,jj,jk) = (1.d0-frac_lg(ji,jj,jk))*biomass_p(ji,jj,jk)*mu(ji,jj,jk)*ca2p         
+               !!! ------ !!!
 !>DO_CARBON
                !---------------------------------------------------------------------
                ! IRON
@@ -441,7 +535,10 @@ CONTAINS
                jdop(ji,jj,jk) = - gamma_dop*fdop + phi_dop*(jp_uptake(ji,jj,jk)-jp_pop(ji,jj,jk))
                ! [mol Fe/m3/s]
                jfed(ji,jj,jk) =   jfe_recycle(ji,jj,jk)-jfe_uptake(ji,jj,jk)-jfe_ads_inorg(ji,jj,jk)
-
+               !!! --- AGT: Incoroporate nitrogen cycle --- !!!
+               jno3(ji,jj,jk) =   jn_recycle(ji,jj,jk) + gamma_dop*fdon -jn_uptake(ji,jj,jk)
+               jdon(ji,jj,jk) = - gamma_dop*fdon + phi_dop*(jn_uptake(ji,jj,jk)-jn_pon(ji,jj,jk))
+               !!! --- !!!
                !DO_CARBON
                ! [mol C/m3/s]
                jdic(ji,jj,jk) = - jca_uptake(ji,jj,jk) 
@@ -498,6 +595,15 @@ CONTAINS
             fpop(ji,jj,jk)    = jp_pop(ji,jj,jk)*e3t(ji,jj,jk,Kmm)/(1.d0+e3t(ji,jj,jk,Kmm)*zremin(ji,jj,jk)) 
             ! [mol P/m3/s]
             jp_remin(ji,jj,jk)=(jp_pop(ji,jj,jk)*e3t(ji,jj,jk,Kmm)-fpop(ji,jj,jk))/(epsln+e3t(ji,jj,jk,Kmm))
+
+            !!! --- AGT: Add nitrogen remineralization --- !!!
+            IF ( ln_nitro ) THEN
+                    ! [mol N/m2/s]
+                    fpon(ji,jj,jk)    = jp_pon(ji,jj,jk)*e3t(ji,jj,jk,Kmm)/(1.d0+e3t(ji,jj,jk,Kmm)*zremin(ji,jj,jk))
+                    ! [mol N/m3/s]
+                    jn_remin(ji,jj,jk)=(jp_pon(ji,jj,jk)*e3t(ji,jj,jk,Kmm)-fpon(ji,jj,jk))/(epsln+e3t(ji,jj,jk,Kmm))
+            ENDIF
+            !!! ------ !!!
 
             !-----------------------------------------------------------------------
 !DO_CARBON<-
@@ -581,6 +687,17 @@ CONTAINS
                ! [mol P/kg/s]
                jp_remin(ji,jj,jk)=(fpopkm1+jp_pop(ji,jj,jk)*e3t(ji,jj,jk,Kmm)-fpop(ji,jj,jk))/(epsln+e3t(ji,jj,jk,Kmm))
 
+               !!! --- AGT: Add nitrogen remineralization --- !!!
+               IF ( ln_nitro ) THEN    
+                       fponkm1 = fpon(ji,jj,jk-1)
+                       ! [mol N/m2/s]
+                       fpon(ji,jj,jk)    = (fponkm1+jp_pon(ji,jj,jk)*e3t(ji,jj,jk,Kmm))/(1.d0+e3t(ji,jj,jk,Kmm)*zremin(ji,jj,jk))
+                       ! [mol N/m3/s]
+                       jn_remin(ji,jj,jk)= (fponkm1+jp_pon(ji,jj,jk)*e3t(ji,jj,jk,Kmm)-fpon(ji,jj,jk))/(epsln+e3t(ji,jj,jk,Kmm))
+               ENDIF
+               !!! ------ !!!
+
+
 !DO_CARBON<
                co3_solubility=max(  4.95e-7    * exp( 0.05021/(ts(ji,jj,jk,jp_tem,Kmm)+273.15)*zzz )  &
                                    *3.42031e-3 * rho0_co3sol * rho0_co3sol / max(epsln, ts(ji,jj,jk,jp_sal,Kmm))    &
@@ -618,14 +735,27 @@ CONTAINS
                   fpop_b (ji,jj) = fpop(ji,jj,jk)
                   fpofe_b(ji,jj) = fpofe(ji,jj,jk)
                   fcaco3_b(ji,jj) = fcaco3(ji,jj,jk)  !DO_CARBON
+                  !!! --- AGT --- !!!
+                  ! Save fPON at the bottom grid cell to compute bottom fluxes
+                  ! [mol/m2/s]
+                  IF ( ln_nitro ) THEN
+                          fpon_b (ji,jj) = fpon(ji,jj,jk)
+                  ENDIF
+                  !!! ------ !!!
                ENDIF
-           
+
                ! Add remineralization terms to trends
                ! [mol P/m3/s]
                jpo4(ji,jj,jk)=jpo4(ji,jj,jk)+(1.d0-phi_dop)*jp_remin(ji,jj,jk)
                jdop(ji,jj,jk)=jdop(ji,jj,jk)+      phi_dop *jp_remin(ji,jj,jk)
                ! [mol Fe/m3/s]
                jfed(ji,jj,jk)=jfed(ji,jj,jk)+jfe_remin(ji,jj,jk)-jfe_ads_org(ji,jj,jk)
+               IF ( ln_nitro ) THEN 
+                       ! Add remineralization terms to trends
+                       ! [mol N/m3/s]
+                       jno3(ji,jj,jk)=jno3(ji,jj,jk)+(1.d0-phi_dop)*jn_remin(ji,jj,jk)
+                       jdon(ji,jj,jk)=jdon(ji,jj,jk)+      phi_dop *jn_remin(ji,jj,jk)
+               ENDIF
 
             ENDDO 
 
@@ -694,6 +824,13 @@ WRITE(numout,*) '      min oxygen trend        = ', minval(joxy)
       tr(:,:,:,jpDOP_bling,Krhs) = tr(:,:,:,jpDOP_bling,Krhs) + jdop(:,:,:)!*rfact
       tr(:,:,:,jpFed_bling,Krhs) = tr(:,:,:,jpFed_bling,Krhs) + jfed(:,:,:)!*rfact
       tr(:,:,:,jpOxy_bling,Krhs) = tr(:,:,:,jpOxy_bling,Krhs) + joxy(:,:,:)!*rfact
+
+      !!! --- AGT: Add nitrogen terms --- !!!
+      IF ( ln_nitro ) THEN
+              tr(:,:,:,jpNO3_bling,Krhs) = tr(:,:,:,jpNO3_bling,Krhs) + jno3(:,:,:)!*rfact
+              tr(:,:,:,jpDON_bling,Krhs) = tr(:,:,:,jpDON_bling,Krhs) + jdon(:,:,:)!*rfact
+      ENDIF
+      !!! ------ !!!
 
       !jdic(:,:,:)=0.e0
       tr(:,:,:,jpDIC_bling,Krhs) = tr(:,:,:,jpDIC_bling,Krhs) + jdic(:,:,:)!*rfact
@@ -927,6 +1064,21 @@ WRITE(numout,*) '      min oxygen trend        = ', minval(joxy)
       DEALLOCATE ( pco2_surf )
       DEALLOCATE ( dum4 )
       DEALLOCATE ( xnegtr )
+
+      !!! --- AGT --- !!!
+      IF ( ln_nitro ) THEN
+              DEALLOCATE ( jno3 )
+              DEALLOCATE ( jdon )
+              DEALLOCATE ( jn_pon )
+              DEALLOCATE ( fpon )
+              DEALLOCATE ( jn_uptake )
+              DEALLOCATE ( jn_fix )
+              DEALLOCATE ( jn_remin )
+              DEALLOCATE ( jn_recycle )
+              DEALLOCATE ( pc_m_diaz )
+              DEALLOCATE ( mu_diaz )
+      ENDIF
+      !!! ------ !!!
 
       IF( ln_timing == 1 )  CALL timing_stop('trc_sms_bling')
       !

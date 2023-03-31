@@ -69,7 +69,7 @@
    p_star       = 1.7436d-5    ! Pivotal phytoplankton biomass                          [mol P m-3] 
    lambda0      = 0.19         ! Carbon-specific phytoplankton mortality rate           [d-1]
    gam_biomass  = 0.5          ! Biomass adjustment time constant                       [d-1] 
-   ln_nitro     = .false.      ! Enable nitrogen cycle (T) or use original BLING (F)
+   ln_nitro     = .true.      ! Enable nitrogen cycle (T) or use original BLING (F)
 	kno3    = 1.d-3        ! Nitrate uptake half saturation constant                [mol N m-3]
 /
 !'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
