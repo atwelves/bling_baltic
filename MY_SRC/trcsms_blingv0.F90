@@ -441,7 +441,7 @@ CONTAINS
                        ! calculate particulate flux of nitrogen
                        jn_pon(ji,jj,jk)=frac_pop*(jn_uptake(ji,jj,jk)+jn_fix(ji,jj,jk))
                        ! calculate dissolved flux of nitrogen
-                       jn_don=phi_dop*(jn_uptake(ji,jj,jk)+jn_uptake(ji,jj,jk)-jn_pon(ji,jj,jk))
+                       jn_don=phi_dop*(jn_uptake(ji,jj,jk)+jn_fix(ji,jj,jk)-jn_pon(ji,jj,jk))
                        ! calculate nitrate recycling
                        jn_recycle(ji,jj,jk)=jn_uptake(ji,jj,jk)+jn_fix(ji,jj,jk)-jn_pon(ji,jj,jk)-jn_don(ji,jj,jk)
                ENDIF
