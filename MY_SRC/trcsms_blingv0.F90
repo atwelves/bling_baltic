@@ -54,12 +54,12 @@ CONTAINS
       REAL(wp) :: zzz, wsink, oxy_up
 
       !!! --- AGT: Add local variables for nitrogen cycle --- !!!
-      IF ( ln_nitro ) THEN
-              REAL(wp) :: fno3, fdon
-              REAL(wp) :: no3_up
-              REAL(wp) :: pc_tot_diaz, biomass_p_ts_diaz, mulamb0expkT
-              REAL(wp) :: jn_don, fponkm1
-      ENDIF
+      !IF ( ln_nitro ) THEN
+      REAL(wp) :: fno3, fdon
+      REAL(wp) :: no3_up
+      REAL(wp) :: pc_tot_diaz, biomass_p_ts_diaz, mulamb0expkT_diaz
+      REAL(wp) :: jn_don, fponkm1
+      !ENDIF
       !!! ------!!!
 
       ! Iron
@@ -89,12 +89,12 @@ CONTAINS
       REAL(wp), ALLOCATABLE, DIMENSION(:,:,:) :: jfe_ads_inorg, jfe_ads_org
       REAL(wp), ALLOCATABLE, DIMENSION(:,:,:) :: jpo4, jdop, jfed, joxy
       !!! --- AGT: Declare arrays for nitrogen cycle --- !!!
-      IF( ln_nitro ) THEN
-              REAL(wp), ALLOCATABLE, DIMENSION(:,:,:) :: jno3, jdon
-              REAL(wp), ALLOCATABLE, DIMENSION(:,:,:) :: jn_pon, fpon
-              REAL(wp), ALLOCATABLE, DIMENSION(:,:,:) :: jn_uptake, jn_fix, jn_remin, jn_recycle
-              REAL(wp), ALLOCATABLE, DIMENSION(:,:,:) :: pc_m_diaz, mu_diaz
-      ENDIF
+      !IF( ln_nitro ) THEN
+      REAL(wp), ALLOCATABLE, DIMENSION(:,:,:) :: jno3, jdon
+      REAL(wp), ALLOCATABLE, DIMENSION(:,:,:) :: jn_pon, fpon
+      REAL(wp), ALLOCATABLE, DIMENSION(:,:,:) :: jn_uptake, jn_fix, jn_remin, jn_recycle
+      REAL(wp), ALLOCATABLE, DIMENSION(:,:,:) :: pc_m_diaz, mu_diaz
+      !ENDIF
       !!! ------ !!!
       REAL(wp), ALLOCATABLE, DIMENSION(:)     :: dum4
       REAL(wp), ALLOCATABLE, DIMENSION(:,:,:) :: xnegtr
@@ -359,9 +359,9 @@ CONTAINS
                IF ( ln_nitro ) THEN
                        mulamb0expkT_diaz = mu_diaz(ji,jj,jk)/(lambda0*expkT(ji,jj,jk))  ![no units]
                        biomass_p_ts_diaz = p_star*mulamb0expkT_diaz*(1.d0+(mulamb0expkT_diaz)**2)
-                       IF (kt==nittrc000) biomass_p_dz(ji,jj,jk)=biomass_p_ts
+                       IF (kt==nittrc000) biomass_p_diaz(ji,jj,jk)=biomass_p_ts_diaz
 
-                       biomass_p_dz(ji,jj,jk) =   biomass_p_dz(ji,jj,jk) &
+                       biomass_p_diaz(ji,jj,jk) =   biomass_p_diaz(ji,jj,jk) &
                                     + (biomass_p_ts_diaz-biomass_p_diaz(ji,jj,jk))*MIN(1.d0,gam_biomass)!*rfact)!*tmask(ji,jj,jk)
                ENDIF
                !!! ------ !!!
@@ -443,7 +443,7 @@ CONTAINS
                        ! calculate dissolved flux of nitrogen
                        jn_don=phi_dop*(jn_uptake(ji,jj,jk)+jn_fix(ji,jj,jk)-jn_pon(ji,jj,jk))
                        ! calculate nitrate recycling
-                       jn_recycle(ji,jj,jk)=jn_uptake(ji,jj,jk)+jn_fix(ji,jj,jk)-jn_pon(ji,jj,jk)-jn_don(ji,jj,jk)
+                       jn_recycle(ji,jj,jk)=jn_uptake(ji,jj,jk)+jn_fix(ji,jj,jk)-jn_pon(ji,jj,jk)-jn_don
                ENDIF
                !!! ------ !!!
 !DO_CARBON<
@@ -599,9 +599,9 @@ CONTAINS
             !!! --- AGT: Add nitrogen remineralization --- !!!
             IF ( ln_nitro ) THEN
                     ! [mol N/m2/s]
-                    fpon(ji,jj,jk)    = jp_pon(ji,jj,jk)*e3t(ji,jj,jk,Kmm)/(1.d0+e3t(ji,jj,jk,Kmm)*zremin(ji,jj,jk))
+                    fpon(ji,jj,jk)    = jn_pon(ji,jj,jk)*e3t(ji,jj,jk,Kmm)/(1.d0+e3t(ji,jj,jk,Kmm)*zremin(ji,jj,jk))
                     ! [mol N/m3/s]
-                    jn_remin(ji,jj,jk)=(jp_pon(ji,jj,jk)*e3t(ji,jj,jk,Kmm)-fpon(ji,jj,jk))/(epsln+e3t(ji,jj,jk,Kmm))
+                    jn_remin(ji,jj,jk)=(jn_pon(ji,jj,jk)*e3t(ji,jj,jk,Kmm)-fpon(ji,jj,jk))/(epsln+e3t(ji,jj,jk,Kmm))
             ENDIF
             !!! ------ !!!
 
@@ -691,9 +691,9 @@ CONTAINS
                IF ( ln_nitro ) THEN    
                        fponkm1 = fpon(ji,jj,jk-1)
                        ! [mol N/m2/s]
-                       fpon(ji,jj,jk)    = (fponkm1+jp_pon(ji,jj,jk)*e3t(ji,jj,jk,Kmm))/(1.d0+e3t(ji,jj,jk,Kmm)*zremin(ji,jj,jk))
+                       fpon(ji,jj,jk)    = (fponkm1+jn_pon(ji,jj,jk)*e3t(ji,jj,jk,Kmm))/(1.d0+e3t(ji,jj,jk,Kmm)*zremin(ji,jj,jk))
                        ! [mol N/m3/s]
-                       jn_remin(ji,jj,jk)= (fponkm1+jp_pon(ji,jj,jk)*e3t(ji,jj,jk,Kmm)-fpon(ji,jj,jk))/(epsln+e3t(ji,jj,jk,Kmm))
+                       jn_remin(ji,jj,jk)= (fponkm1+jn_pon(ji,jj,jk)*e3t(ji,jj,jk,Kmm)-fpon(ji,jj,jk))/(epsln+e3t(ji,jj,jk,Kmm))
                ENDIF
                !!! ------ !!!
 

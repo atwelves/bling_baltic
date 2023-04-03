@@ -20,9 +20,10 @@ MODULE vars_bling
    REAL(wp), PUBLIC, ALLOCATABLE, SAVE, DIMENSION(:,:,:) :: htotal, co3_ion  !DO_CARBON
    REAL(wp), PUBLIC, ALLOCATABLE, SAVE, DIMENSION(:,:)   :: fpop_b,fpofe_b,fcaco3_b
    !!! --- AGT --- !!!
-   IF ( ln_nitro ) THEN
-           REAL(wp), PUBLIC, ALLOCATABLE, SAVE, DIMENSION(:,:)   :: fpon_b
-   ENDIF
+   !IF ( ln_nitro ) THEN
+   REAL(wp), PUBLIC, ALLOCATABLE, SAVE, DIMENSION(:,:,:) :: biomass_p_diaz
+   REAL(wp), PUBLIC, ALLOCATABLE, SAVE, DIMENSION(:,:)   :: fpon_b
+   !ENDIF
    !!! ------ !!!
    REAL(wp), PUBLIC, ALLOCATABLE, SAVE, DIMENSION(:,:)   :: co2_csurf, co2_alpha
 
@@ -72,10 +73,10 @@ MODULE vars_bling
    REAL(wp) :: gam_biomass
    !REAL(wp) ::
    !!! --- AGT --- !!!
-   IF ( ln_nitro ) THEN
-           LOGICAL  :: ln_nitro
-           REAL(wp) :: kno3
-   ENDIF 
+   !IF ( ln_nitro ) THEN
+   LOGICAL  :: ln_nitro
+   REAL(wp) :: kno3
+   !ENDIF 
    
    !! Optical parameters                                
    !! ------------------                                
