@@ -164,6 +164,7 @@ CONTAINS
      
      !!! --- AGT --- !!!
      IF ( ln_nitro ) THEN
+             ALLOCATE(  biomass_p_diaz(jpi,jpj,jpk) )
              ALLOCATE(  fpon_b(jpi,jpj) )
      ENDIF
      !!! ------ !!!
