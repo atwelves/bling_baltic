@@ -92,6 +92,10 @@ MODULE vars_bling
    REAL(wp) :: kappa_remin
    REAL(wp) :: gamma_dop
    REAL(wp) :: gamma_pop
+   !!! --- AGT: Add variables for sedimentary exchange of phosphate --- !!!
+   REAL(wp) :: burial_frac
+   REAL(wp  :: po4_remob
+   !!! ------ !!!
 
    !! Air-sea interaction parameters
    !! ------------------------------

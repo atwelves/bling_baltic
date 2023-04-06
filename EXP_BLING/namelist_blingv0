@@ -99,6 +99,8 @@ gam_irr_mem = 1          ! photoadaptation time constant         [d-1]
    kappa_remin = -0.032      ! T dependence of particulate production         [(deg C)-1]   
    gamma_dop   = 0.25d0      ! decay timescale of DOM                         [y-1]
    gamma_pop   = 0.12d0      ! remineralization rate of sinking POM           [d-1]
+   burial_frac = 0.1         ! fraction of phosphate bound in sediments       [dimensionless]
+   po4_remob   = 1.d-3       ! phosphate remobilized from anoxic sediments    [mol PO4 m-2 d-1]
 /
 !'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
 &namblingairsea   !   Air-sea interaction parameters

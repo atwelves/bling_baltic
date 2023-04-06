@@ -745,7 +745,7 @@ WRITE(numout,*) '      min oxygen trend        = ', minval(joxy)
 !      tr(:,:,:,jp_blg0:jp_blg1,Krhs) = 0.e0
 
       ! add external fluxes
-      !CALL trc_ext_bling (kt,Kbb,Kmm,Krhs)
+      CALL trc_ext_bling (kt,Kbb,Kmm,Krhs)
 
       DO jn=jp_blg0, jp_blg1
          CALL lbc_lnk( 'trcsms_blingv0', tr(:,:,:,jn,Kmm), 'T', 1.0_wp )

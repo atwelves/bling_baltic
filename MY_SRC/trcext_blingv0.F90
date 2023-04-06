@@ -279,6 +279,12 @@ CONTAINS
       ! the PO4 flux, causes a negative flux of alkalinity.
       ! -------------------------------------
 
+
+      !!! --- AGT --- !!!
+      ! The original code for exhange with sediment does not include the effect of
+      ! anoxic waters on phosphate exchange.  Implement this here.
+      !!! ------ !!!
+
       DO jj = 1, jpj
         DO ji = 1, jpi
 
@@ -291,17 +297,28 @@ CONTAINS
             zrfact  = rfact / e3t(ji,jj,ikb,Kmm)
 
             ! Phosphate [mol P/m2/s]
-            bpo4(ji,jj)=fpop_b(ji,jj)
+            !bpo4(ji,jj)=fpop_b(ji,jj)
+            !!! --- AGT --- !!!
+            IF (foxy>oxy_min) THEN
+               bpo4(ji,jj)=(1-burial_frac)*fpop_b(ji,jj)
+            ELSE
+               bpo4(ji,jj)=po4_remob
+            ENDIF
+            !!! ------ !!!
 
             ! Oxygen [mol O2/m2/s]
             boxy(ji,jj) = -oxy2p*fpop_b(ji,jj)
 
             ! Iron [mol Fe/m2/s]
             IF (foxy>oxy_min) THEN
-               bfed(ji,jj)= fe_2_p_sed*fpop_b(ji,jj)
+            !!! --- AGT: Also apply to iron bound with phosphate --- !!!
+            !   bfed(ji,jj)= fe_2_p_sed*fpop_b(ji,jj)
+               bfed(ji,jj)= (1-burial_frac)*fe_2_p_sed*fpop_b(ji,jj)
             ELSE
-               bfed(ji,jj)=(fe_2_p_sed*fpop_b(ji,jj)+fpofe_b(ji,jj))
+            !   bfed(ji,jj)=(fe_2_p_sed*fpop_b(ji,jj)+fpofe_b(ji,jj))   
+               bfed(ji,jj)=(1-burial_frac)*fe_2_p_sed*fpop_b(ji,jj)+fpofe_b(ji,jj)
             ENDIF
+            !!! ------ !!!
 
             ! DIC [mol C/m2/s]
             bdic(ji,jj)=fpop_b(ji,jj)*c2p+fcaco3_b(ji,jj)
