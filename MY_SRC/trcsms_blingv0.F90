@@ -777,7 +777,12 @@ CONTAINS
                    joxy(ji,jj,jk)=0.d0
                ELSE
                    ! [mol O2/m3/s]
-                   joxy(ji,jj,jk)=-oxy2p*jpo4(ji,jj,jk)
+                   !!! --- AGT: Include oxygen correction from nitrogen fixation --- !!!
+                   IF ( ln_nitro ) THEN
+                           joxy(ji,jj,jk)=-oxy2p*jpo4(ji,jj,jk) - 1.25d0*jn_fix(ji,jj,jk)
+                   ELSE
+                           joxy(ji,jj,jk)=-oxy2p*jpo4(ji,jj,jk)
+                   ENDIF
                ENDIF
             ENDDO
 
@@ -799,6 +804,13 @@ WRITE(numout,*) '      max uptake              = ', maxval(jfe_uptake)
 WRITE(numout,*) '      max organic ads         = ', maxval(jfe_ads_org)
 WRITE(numout,*) '      max inorganic ads       = ', maxval(jfe_ads_inorg)
 WRITE(numout,*) '      max oxygen trend        = ', maxval(joxy)
+WRITE(numout,*) '      max nitrate trend       = ', maxval(jno3)
+WRITE(numout,*) '      max n recycling         = ', maxval(jn_recycle)
+WRITE(numout,*) '      max n remin             = ', maxval(jn_remin)
+WRITE(numout,*) '      max n uptake            = ', maxval(jn_uptake)
+WRITE(numout,*) '      max n fixation          = ', maxval(jn_fix)
+WRITE(numout,*) '      max particulate n flux  = ', maxval(jn_pon)
+WRITE(numout,*) '      max don trend           = ', maxval(jdon)
 
 WRITE(numout,*) '      min carbon trend        = ', minval(jdic)
 WRITE(numout,*) '      min alkalinity trend    = ', minval(jalk)
@@ -815,6 +827,13 @@ WRITE(numout,*) '      min uptake              = ', minval(jfe_uptake)
 WRITE(numout,*) '      min organic ads         = ', minval(jfe_ads_org)
 WRITE(numout,*) '      min inorganic ads       = ', minval(jfe_ads_inorg)
 WRITE(numout,*) '      min oxygen trend        = ', minval(joxy)
+WRITE(numout,*) '      min nitrate trend       = ', minval(jno3)
+WRITE(numout,*) '      min n recycling         = ', minval(jn_recycle)
+WRITE(numout,*) '      min n remin             = ', minval(jn_remin)
+WRITE(numout,*) '      min n uptake            = ', minval(jn_uptake)
+WRITE(numout,*) '      min n fixation          = ', minval(jn_fix)
+WRITE(numout,*) '      min particulate n flux  = ', minval(jn_pon)
+WRITE(numout,*) '      min don trend           = ', minval(jdon)
 
       ! Add dissolved inorganic carbon terms from po4 final fluxes
       jdic(:,:,:)=jdic(:,:,:)+jpo4(:,:,:)*c2p
