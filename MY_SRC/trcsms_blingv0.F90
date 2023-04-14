@@ -867,9 +867,10 @@ WRITE(numout,*) '      min don trend           = ', minval(jdon)
             DO jj = 1, jpj
                DO ji = 1, jpi
                   IF( ( tr(ji,jj,jk,jn,Kmm) + tr(ji,jj,jk,jn,Krhs) ) < 0.e0 ) THEN 
-                     ztra             = ABS(  ( tr(ji,jj,jk,jn,Kmm) - rtrn ) &
-                                            / ( tr(ji,jj,jk,jn,Krhs) + rtrn ) )
-                     xnegtr(ji,jj,jk) = MIN( xnegtr(ji,jj,jk),  ztra )
+!                     ztra             = ABS(  ( tr(ji,jj,jk,jn,Kmm) - rtrn ) &
+!                                            / ( tr(ji,jj,jk,jn,Krhs) + rtrn ) )
+!                     xnegtr(ji,jj,jk) = MIN( xnegtr(ji,jj,jk),  ztra )
+                      xnegtr(ji,jj,jk) = 0.e0
                   ENDIF
               END DO
             END DO
@@ -880,8 +881,11 @@ WRITE(numout,*) '      min don trend           = ', minval(jdon)
       DO jn = jp_blg0, jp_blg1
          WRITE(numout,*) '   ==>>>   AGT: updating tracer conc. '
          !write(*,'(I3,2(1X,E11.4))') jp_bling0, trn(ji,jj,jk,jn),tra(ji,jj,jk,jn)
-         tr(:,:,:,jn,Kmm) = tr(:,:,:,jn,Kmm) + tr(:,:,:,jn,Krhs)!xnegtr(:,:,:) * tr(:,:,:,jn,Krhs)
+!         tr(:,:,:,jn,Kmm) = tr(:,:,:,jn,Kmm) + xnegtr(:,:,:) * tr(:,:,:,jn,Krhs)
+         tr(:,:,:,jn,Kmm) = tr(:,:,:,jn,Kmm) + xnegtr(:,:,:) * tr(:,:,:,jn,Krhs) &
+                                 + (1 - xnegtr(:,:,:))*(1.e-11 - tr(:,:,:,jn,Kmm))
       END DO
+
       ! Feb 10, 2017, xianmin force last level to be zero
 !      tr(:,:,jpk,jp_blg0:jp_blg1,Kmm)=0.0_wp
 
