@@ -103,6 +103,10 @@ MODULE vars_bling
    REAL(wp) :: kappa_remin
    REAL(wp) :: gamma_dop
    REAL(wp) :: gamma_pop
+   !!! --- AGT: Add variables for nitrogen in sediment --- !!!
+   REAL(wp) :: fden
+   REAL(wp) :: fbur
+   !!! ------ !!!
 
    !! Air-sea interaction parameters
    !! ------------------------------

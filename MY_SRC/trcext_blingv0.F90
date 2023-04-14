@@ -56,7 +56,7 @@ CONTAINS
       REAL(wp), ALLOCATABLE, DIMENSION(:,:) :: sch_no_term_co2, co2_flx
       REAL(wp), ALLOCATABLE, DIMENSION(:,:) :: sch_no_term_o2 , o2_flx
       REAL(wp), ALLOCATABLE, DIMENSION(:,:) :: bpo4, bfed, boxy, bdic, balk
-
+      REAL(wp), ALLOCATABLE, DIMENSION(:,:) :: bno3
 
       IF(lwp) WRITE(numout,*)
       IF(lwp) WRITE(numout,*) ' trc_ext_bling:  BLINGv0 model'
@@ -72,6 +72,9 @@ CONTAINS
       ALLOCATE ( boxy(jpi,jpj) )
       ALLOCATE ( bdic(jpi,jpj) )
       ALLOCATE ( balk(jpi,jpj) )
+      IF ( ln_nitro ) THEN
+              ALLOCATE ( bno3(jpi,jpj) )
+      ENDIF
 
       !---------------------------------------------------------------------
       ! Calculate air-sea exhange for O2/CO2
@@ -320,6 +323,27 @@ CONTAINS
             bfed(ji,jj)=bfed(ji,jj)*tmask(ji,jj,ikb)
             boxy(ji,jj)=boxy(ji,jj)*tmask(ji,jj,ikb)
 
+            !!! --- AGT: Nitrogen fluxes in bottom cell --- !!!
+            ! Choose here not to calculate denitrification rates (as in MITgcm), or burial rates
+            ! Instead impose constant denitrification and sediment burial rates
+            ! based on review paper "Nitrogen in the Baltic Sea..." (Lonborg & Markager, 2021)
+            ! i) If the flux of particulate nitrogen is less than the combined loss rate 
+            ! due to burial and denitrification, there is zero nitrate flux from sediments.
+            ! ii) If the flux of particulate nitrogen excees the combined loss rate then
+            ! the excess particulate flux forms the nitrate flux out of sediments.
+            
+            IF ( ln_nitro ) THEN
+                    ! Nitrate [mol N/m2/s]
+                    bno3(ji,jj) = fpon_b(ji,jj) - fbur - fden 
+                    bno3(ji,jj) = MAX(bno3(ji,jj),0.e0)
+                    ! Also need to reduce oxygen consumption according to denitrification
+                    boxy(ji,jj) = boxy(ji,jj) + 1.25d0*fden
+                    boxy(ji,jj) = MIN(boxy(ji,jj),0.e0)
+
+                    tr(ji,jj,ikb,jpNO3_bling,Krhs) = tr(ji,jj,ikb,jpNO3_bling,Krhs) + bno3(ji,jj)*zrfact
+                    bno3(ji,jj)=bno3(ji,jj)*tmask(ji,jj,ikb)
+            ENDIF
+
          END DO
       END DO
 
@@ -385,6 +409,9 @@ CONTAINS
       DEALLOCATE ( boxy )
       DEALLOCATE ( bdic )
       DEALLOCATE ( balk )
+      IF ( ln_nitro ) THEN
+              DEALLOCATE ( bno3 )
+      ENDIF
 
    END SUBROUTINE trc_ext_bling
 

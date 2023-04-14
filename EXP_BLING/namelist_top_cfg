@@ -41,22 +41,22 @@
 !-----------------------------------------------------------------------
 !                !  file name   ! frequency (hours) ! variable  ! time interp. !  clim  ! 'yearly'/ ! weights  ! rotation ! land/sea mask !
 !                !              !  (if <0  months)  !   name    !   (logical)  !  (T/F) ! 'monthly' ! filename ! pairing  ! filename      !
-   sn_trcdta(1)  = 'data_sal_new_degen.nc',        -1        ,  'vosaline'  ,    .true.   , .true. , 'yearly'  , ''       , ''   , ''
-   sn_trcdta(2)  = 'data_sal_new_degen.nc',        -1        ,  'vosaline'   ,    .true.   , .true. , 'yearly'  , ''       , ''   , ''
-   sn_trcdta(3)  = 'data_sal_new_degen.nc',        -1         ,  'vosaline'     ,    .true.    , .true. , 'yearly'  , ''       , ''   , ''
-   sn_trcdta(4)  = 'data_sal_new_degen.nc',        -1         ,  'vosaline'    ,    .true.    , .true. , 'yearly'  , ''       , ''   , ''
-   sn_trcdta(5)  = 'data_sal_new_degen.nc',        -1         ,  'vosaline'     ,    .true.    , .true. , 'yearly'  , ''       , ''   , ''
-   sn_trcdta(6)  = 'data_sal_new_degen.nc',        -1         ,  'vosaline'    ,    .true.    , .true. , 'yearly'  , ''       , ''   , ''
-   sn_trcdta(7)  = 'data_sal_new_degen.nc',        -1         ,  'vosaline'     ,    .true.    , .true. , 'yearly'  , ''       , ''   , ''
-   sn_trcdta(8)  = 'data_sal_new_degen.nc',        -1         ,  'vosaline'    ,    .true.    , .true. , 'yearly'  , ''       , ''   , ''
-   rn_trfac(1)   = 0.00001   !  multiplicative factor
-   rn_trfac(2)   = 0.00001
-   rn_trfac(3)   = 0.0000001  
-   rn_trfac(4)   = 0.01 
-   rn_trfac(5)   = 0.1
-   rn_trfac(6)  = 1.0   
-   rn_trfac(7)   = 0.001   !  multiplicative factor
-   rn_trfac(8)   = 0.001
+   sn_trcdta(1)  = 'bling_init.nc',        -1       ,  'po4'    ,    .true.   , .true. , 'yearly'  , ''       , ''   , ''
+   sn_trcdta(2)  = 'bling_init.nc',        -1       ,  'dop'    ,    .true.   , .true. , 'yearly'  , ''       , ''   , ''
+   sn_trcdta(3)  = 'bling_init.nc',        -1       ,  'fe'     ,    .true.    , .true. , 'yearly'  , ''       , ''   , ''
+   sn_trcdta(4)  = 'bling_init.nc',        -1       ,  'oxy'    ,    .true.    , .true. , 'yearly'  , ''       , ''   , ''
+   sn_trcdta(5)  = 'bling_init.nc',        -1       ,  'dic'    ,    .true.    , .true. , 'yearly'  , ''       , ''   , ''
+   sn_trcdta(6)  = 'bling_init.nc',        -1       ,  'alk'    ,    .true.    , .true. , 'yearly'  , ''       , ''   , ''
+   sn_trcdta(7)  = 'bling_init.nc',        -1       ,  'po4'    ,    .true.    , .true. , 'yearly'  , ''       , ''   , ''
+   sn_trcdta(8)  = 'bling_init.nc',        -1       ,  'dop'    ,    .true.    , .true. , 'yearly'  , ''       , ''   , ''
+   rn_trfac(1)   = 1.0   !  multiplicative factor
+   rn_trfac(2)   = 1.0
+   rn_trfac(3)   = 1.0  
+   rn_trfac(4)   = 1.0 
+   rn_trfac(5)   = 1.0
+   rn_trfac(6)   = 1.0   
+   rn_trfac(7)   = 16.0   !  multiplicative factor
+   rn_trfac(8)   = 16.0
 /
 !-----------------------------------------------------------------------
 &namtrc_adv      !   advection scheme for passive tracer                (default: NO selection)
@@ -97,22 +97,22 @@
    cn_dir_obc    =  './'     !  root directory for the location of OPEN data files
    !                !  file name        ! frequency (hours) ! variable      ! time interp. !  clim  ! 'yearly'/ ! weights  ! rotation ! land/sea mask !
    !                !                   !  (if <0  months)  !   name        !   (logical)  !  (T/F) ! 'monthly' ! filename ! pairing  ! filename      !
-   sn_trcobc(1)  =  'bdy_ts'           ,        1.       , 'vosaline',    .true.   , .false. , 'daily'  , ''       , ''       , ''          !
-   sn_trcobc(2)  =  'bdy_ts'           ,        1.        , 'vosaline' ,   .true.   , .false.,  'daily'  , ''       , ''       , ''          !
-   sn_trcobc(3)  =  'bdy_ts'           ,        1.       , 'vosaline',    .true.   , .false. , 'daily'  , ''       , ''       , ''          !
-   sn_trcobc(4)  =  'bdy_ts'           ,        1.        , 'vosaline' ,   .true.   , .false.,  'daily'  , ''       , ''       , ''          !   
-   sn_trcobc(5)  =  'bdy_ts'           ,        1.       , 'vosaline',    .true.   , .false. , 'daily'  , ''       , ''       , ''          !
-   sn_trcobc(6)  =  'bdy_ts'           ,        1.        , 'vosaline' ,   .true.   , .false.,  'daily'  , ''       , ''       , ''          !
-   sn_trcobc(7)  =  'bdy_ts'           ,        1.       , 'vosaline',    .true.   , .false. , 'daily'  , ''       , ''       , ''          !
-   sn_trcobc(8)  =  'bdy_ts'           ,        1.        , 'vosaline' ,   .true.   , .false.,  'daily'  , ''       , ''       , ''          !
-   rn_trofac(1)  =  0.00001
-   rn_trofac(2)  =  0.00001
-   rn_trofac(3)  =  0.0000001
-   rn_trofac(4)  =  0.01
-   rn_trofac(5)  =  0.1
+   sn_trcobc(1)  =  'bling_init.nc'           ,        1.       , 'po4',    .true.   , .true. , 'yearly'  , ''       , ''       , ''          !
+   sn_trcobc(2)  =  'bling_init.nc'           ,        1.        , 'dop' ,   .true.   , .true.,  'yearly'  , ''       , ''       , ''          !
+   sn_trcobc(3)  =  'bling_init.nc'           ,        1.       , 'fe',    .true.   , .true. , 'yearly'  , ''       , ''       , ''          !
+   sn_trcobc(4)  =  'bling_init.nc'           ,        1.        , 'oxy' ,   .true.   , .true.,  'yearly'  , ''       , ''       , ''          !   
+   sn_trcobc(5)  =  'bling_init.nc'           ,        1.       , 'dic',    .true.   , .true. , 'yearly'  , ''       , ''       , ''          !
+   sn_trcobc(6)  =  'bling_init.nc'           ,        1.        , 'alk' ,   .true.   , .true.,  'yearly'  , ''       , ''       , ''          !
+   sn_trcobc(7)  =  'bling_init.nc'           ,        1.       , 'po4',    .true.   , .true. , 'yearly'  , ''       , ''       , ''          !
+   sn_trcobc(8)  =  'bling_init.nc'           ,        1.        , 'dop' ,   .true.   , .true.,  'yearly'  , ''       , ''       , ''          !
+   rn_trofac(1)  =  1.0
+   rn_trofac(2)  =  1.0
+   rn_trofac(3)  =  1.0
+   rn_trofac(4)  =  1.0
+   rn_trofac(5)  =  1.0
    rn_trofac(6)  =  1.0
-   rn_trofac(7)  =  0.001
-   rn_trofac(8)  =  0.001
+   rn_trofac(7)  =  16.0
+   rn_trofac(8)  =  16.0
    cn_dir_cbc    =  './'     !  root directory for the location of COASTAL data files
    cn_dir_obc    =  './'     !  root directory for the location of OPEN data files
    ln_rnf_ctl    = .false.   !  Remove runoff dilution on tracers with absent river load

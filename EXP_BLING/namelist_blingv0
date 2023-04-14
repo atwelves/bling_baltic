@@ -101,6 +101,8 @@
    kappa_remin = -0.032      ! T dependence of particulate production         [(deg C)-1]   
    gamma_dop   = 0.25d0      ! decay timescale of DOM                         [y-1]
    gamma_pop   = 0.12d0      ! remineralization rate of sinking POM           [d-1]
+   fden        = 0.0003      ! rate of benthic denitrification                [mol N m-2 d-1]
+   fbur        = 0.0003      ! rate of sediment burial                        [mol N m-2 d-1]
 /
 !'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
 &namblingairsea   !   Air-sea interaction parameters

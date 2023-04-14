@@ -54,6 +54,9 @@ CONTAINS
       NAMELIST/namblingprod/   alpha_min, alpha_max, resp_frac, p_star, lambda0, gam_biomass, ln_nitro, kno3
       NAMELIST/namblingremin/  wsink0_z, wsink0, wsink_acc, koxy, remin_min, phi_dop, phi_sm
       NAMELIST/namblingremin/  phi_lg, kappa_remin, gamma_dop, gamma_pop
+      !!! --- AGT --- !!!
+      NAMELIST/namblingremin/  fden, fbur
+      !!! ------ !!!
       NAMELIST/namblingairsea/ a_0, a_1, a_2, a_3, a_4, a_5, b_0, b_1, b_2, b_3, c_0
       NAMELIST/namblingairsea/ a_1_o2, a_2_o2, a_3_o2, a_4_o2, a_5_o2
       NAMELIST/namblingairsea/ a_1_co2, a_2_co2, a_3_co2, a_4_co2, a_5_co2
@@ -147,6 +150,10 @@ CONTAINS
       wsink_acc=wsink_acc/86400.d0
       gamma_dop=gamma_dop/365.25/86400.d0
       gamma_pop=gamma_pop/86400.d0
+      !!! --- AGT --- !!!
+      fden     =fden/86400.d0
+      fbur     =fbur/86400.d0
+      !!! ------ !!!
 
       IF (lwp) THEN                         
          WRITE(numout,*)
@@ -162,6 +169,10 @@ CONTAINS
          WRITE(numout,*) '    T dependence of particulate production           kappa_remin =', kappa_remin
          WRITE(numout,*) '    decay timescale of DOM                           gamma_dop   =', gamma_dop
          WRITE(numout,*) '    remineralization rate of sinking POM             gamma_pop   =', gamma_pop
+         !!! --- AGT: parameters for nitrogen in sediment --- !!!
+         WRITE(numout,*) '    rate of benthic denitrification                  fden        =', fden
+         WRITE(numout,*) '    rate of sediment burial                          fbur        =', fbur
+         !!! ------ !!!
          !WRITE(numout,*) ' '
       ENDIF
 
