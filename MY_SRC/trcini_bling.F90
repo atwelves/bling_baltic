@@ -58,6 +58,9 @@ CONTAINS
       ! Allocate BLINGv0 arrays
       IF( bling_alloc() /= 0 )   CALL ctl_stop( 'STOP', 'trc_ini_bling: unable to allocate BLINGv0 arrays' )                   
 
+      ! Set time step
+      rfact = rn_Dt
+
       IF( .NOT. ln_rsttr ) THEN
         ! initialize prognostic tracers
         tr(:,:,:,jpPO4_bling,Kmm) = 2.174e-6_wp * tmask(:,:,:) 

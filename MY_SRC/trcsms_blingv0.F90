@@ -353,7 +353,7 @@ CONTAINS
                IF (kt==nittrc000) biomass_p(ji,jj,jk)=biomass_p_ts
 
                biomass_p(ji,jj,jk) =   biomass_p(ji,jj,jk) &
-                                    + (biomass_p_ts-biomass_p(ji,jj,jk))*MIN(1.d0,gam_biomass)!*rfact)!*tmask(ji,jj,jk)
+                                    + (biomass_p_ts-biomass_p(ji,jj,jk))*MIN(1.d0,gam_biomass*rfact)!*tmask(ji,jj,jk)
 
                !!! --- AGT: this needs some more thought... --- !!!
                IF ( ln_nitro ) THEN
@@ -362,7 +362,7 @@ CONTAINS
                        IF (kt==nittrc000) biomass_p_diaz(ji,jj,jk)=biomass_p_ts_diaz
 
                        biomass_p_diaz(ji,jj,jk) =   biomass_p_diaz(ji,jj,jk) &
-                                    + (biomass_p_ts_diaz-biomass_p_diaz(ji,jj,jk))*MIN(1.d0,gam_biomass)!*rfact)!*tmask(ji,jj,jk)
+                                    + (biomass_p_ts_diaz-biomass_p_diaz(ji,jj,jk))*MIN(1.d0,gam_biomass*rfact)!*tmask(ji,jj,jk)
                ENDIF
                !!! ------ !!!
 
@@ -839,23 +839,23 @@ WRITE(numout,*) '      min don trend           = ', minval(jdon)
       jdic(:,:,:)=jdic(:,:,:)+jpo4(:,:,:)*c2p
       jalk(:,:,:)=jalk(:,:,:)-jpo4(:,:,:)*n2p
 
-      tr(:,:,:,jpPO4_bling,Krhs) = tr(:,:,:,jpPO4_bling,Krhs) + jpo4(:,:,:)!*rfact
-      tr(:,:,:,jpDOP_bling,Krhs) = tr(:,:,:,jpDOP_bling,Krhs) + jdop(:,:,:)!*rfact
-      tr(:,:,:,jpFed_bling,Krhs) = tr(:,:,:,jpFed_bling,Krhs) + jfed(:,:,:)!*rfact
-      tr(:,:,:,jpOxy_bling,Krhs) = tr(:,:,:,jpOxy_bling,Krhs) + joxy(:,:,:)!*rfact
+      tr(:,:,:,jpPO4_bling,Krhs) = tr(:,:,:,jpPO4_bling,Krhs) + jpo4(:,:,:)*rfact
+      tr(:,:,:,jpDOP_bling,Krhs) = tr(:,:,:,jpDOP_bling,Krhs) + jdop(:,:,:)*rfact
+      tr(:,:,:,jpFed_bling,Krhs) = tr(:,:,:,jpFed_bling,Krhs) + jfed(:,:,:)*rfact
+      tr(:,:,:,jpOxy_bling,Krhs) = tr(:,:,:,jpOxy_bling,Krhs) + joxy(:,:,:)*rfact
 
       !!! --- AGT: Add nitrogen terms --- !!!
       IF ( ln_nitro ) THEN
-              tr(:,:,:,jpNO3_bling,Krhs) = tr(:,:,:,jpNO3_bling,Krhs) + jno3(:,:,:)!*rfact
-              tr(:,:,:,jpDON_bling,Krhs) = tr(:,:,:,jpDON_bling,Krhs) + jdon(:,:,:)!*rfact
+              tr(:,:,:,jpNO3_bling,Krhs) = tr(:,:,:,jpNO3_bling,Krhs) + jno3(:,:,:)*rfact
+              tr(:,:,:,jpDON_bling,Krhs) = tr(:,:,:,jpDON_bling,Krhs) + jdon(:,:,:)*rfact
       ENDIF
       !!! ------ !!!
 
       !jdic(:,:,:)=0.e0
-      tr(:,:,:,jpDIC_bling,Krhs) = tr(:,:,:,jpDIC_bling,Krhs) + jdic(:,:,:)!*rfact
+      tr(:,:,:,jpDIC_bling,Krhs) = tr(:,:,:,jpDIC_bling,Krhs) + jdic(:,:,:)*rfact
 
       !jalk(:,:,:)=0.e0
-      tr(:,:,:,jpalk_bling,Krhs) = tr(:,:,:,jpalk_bling,Krhs) + jalk(:,:,:)!*rfact
+      tr(:,:,:,jpalk_bling,Krhs) = tr(:,:,:,jpalk_bling,Krhs) + jalk(:,:,:)*rfact
 
       ! Feb 10, 2017, xianmin force last level to be zero
 !      tr(:,:,jpk,jp_blg0:jp_blg1,Krhs)=0.0_wp
