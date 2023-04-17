@@ -243,3 +243,12 @@ CONTAINS
    
    !!======================================================================
 END MODULE trcnam_bling
+g to check mass conservation of phosphate = ', ln_bling_mass
+         WRITE(numout,*) '    Flag to check external fluxes of tracers     = ', ln_bling_ext
+      ENDIF
+
+      !                
+   END  SUBROUTINE  trc_nam_bling
+   
+   !!======================================================================
+END MODULE trcnam_bling

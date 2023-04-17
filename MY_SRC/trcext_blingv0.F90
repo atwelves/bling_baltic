@@ -493,3 +493,15 @@ CONTAINS
    END SUBROUTINE trc_ext_init_bling
 
 END MODULE trcext_blingv0
+numpatm )
+        !DEALLOCATE( zpatm)
+
+      ELSE
+
+        patm_bling(:,:)=1.e0;
+
+      ENDIF
+
+   END SUBROUTINE trc_ext_init_bling
+
+END MODULE trcext_blingv0

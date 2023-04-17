@@ -103,6 +103,8 @@
    gamma_pop   = 0.12d0      ! remineralization rate of sinking POM           [d-1]
    fden        = 0.0003      ! rate of benthic denitrification                [mol N m-2 d-1]
    fbur        = 0.0003      ! rate of sediment burial                        [mol N m-2 d-1]
+   river_dop   = 0.0003      ! concentration of dop in river inflow           [mol P m-3]  
+   river_don   = 0.08        ! concentration of don in river inflow           [mol N m-3]
 /
 !'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
 &namblingairsea   !   Air-sea interaction parameters
