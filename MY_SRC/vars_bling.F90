@@ -106,6 +106,9 @@ MODULE vars_bling
    !!! --- AGT: Add variables for nitrogen in sediment --- !!!
    REAL(wp) :: fden
    REAL(wp) :: fbur
+   ! Also, add variables for organic matter in rivers...
+   REAL(wp) :: river_dop
+   REAL(wp) :: river_don
    !!! ------ !!!
 
    !! Air-sea interaction parameters
@@ -189,10 +192,6 @@ CONTAINS
      IF( lk_mpp )   CALL mpp_sum ( 'vars_bling',bling_alloc )
 
    END FUNCTION bling_alloc
-
-   !!======================================================================
-END MODULE vars_bling
-g_alloc
 
    !!======================================================================
 END MODULE vars_bling

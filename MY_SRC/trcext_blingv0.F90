@@ -209,7 +209,7 @@ CONTAINS
 
       !---------------------------------------------------------------------
 
-#if defined key_rnf_nutrients
+!if defined key_rnf_nutrients
      ! Nutrient in river inflow
      ! Add nutrients in the river inflow (Laura Castro Oct 2016)
      ! -------------------------------------
@@ -218,11 +218,14 @@ CONTAINS
      zrfact=rfact/1027.0_wp !density 1027kg/m3 consistant with other uses of density by bling
      !  deltaC = rnf_c * rnf/h_rnf * rdt / rho
      !         = mol/m^3 * kg/m^2/s * 1/m * s * m^3/kg = mol/m^3
-     tr(:,:,1,jpPO4_bling,Krhs) = tr(:,:,1,jpPO4_bling,Krhs) + rnfpo4(:,:)*rnf(:,:)/e3t(:,:,1,Kmm)*zrfact
-     tr(:,:,1,jpFed_bling,Krhs) = tr(:,:,1,jpFed_bling,Krhs) + rnffed(:,:)*rnf(:,:)/e3t(:,:,1,Kmm)*zrfact
-     tr(:,:,1,jpDOP_bling,Krhs) = tr(:,:,1,jpDOP_bling,Krhs) + rnfdop(:,:)*rnf(:,:)/e3t(:,:,1,Kmm)*zrfact
-     tr(:,:,1,jpDIC_bling,Krhs) = tr(:,:,1,jpDIC_bling,Krhs) + rnfdic(:,:)*rnf(:,:)/e3t(:,:,1,Kmm)*zrfact
-     tr(:,:,1,jpalk_bling,Krhs) = tr(:,:,1,jpalk_bling,Krhs) + rnfalk(:,:)*rnf(:,:)/e3t(:,:,1,Kmm)*zrfact     
+!     tr(:,:,1,jpPO4_bling,Krhs) = tr(:,:,1,jpPO4_bling,Krhs) + rnfpo4(:,:)*rnf(:,:)/e3t(:,:,1,Kmm)*zrfact
+!     tr(:,:,1,jpFed_bling,Krhs) = tr(:,:,1,jpFed_bling,Krhs) + rnffed(:,:)*rnf(:,:)/e3t(:,:,1,Kmm)*zrfact
+     tr(:,:,1,jpDOP_bling,Krhs) = tr(:,:,1,jpDOP_bling,Krhs) + river_dop*rnf(:,:)/e3t(:,:,1,Kmm)*zrfact
+     IF ( ln_nitro ) THEN
+             tr(:,:,1,jpDON_bling,Krhs) = tr(:,:,1,jpDON_bling,Krhs) + river_don*rnf(:,:)/e3t(:,:,1,Kmm)*zrfact 
+     ENDIF
+!     tr(:,:,1,jpDIC_bling,Krhs) = tr(:,:,1,jpDIC_bling,Krhs) + rnfdic(:,:)*rnf(:,:)/e3t(:,:,1,Kmm)*zrfact
+!     tr(:,:,1,jpalk_bling,Krhs) = tr(:,:,1,jpalk_bling,Krhs) + rnfalk(:,:)*rnf(:,:)/e3t(:,:,1,Kmm)*zrfact     
     !nkk=1
     !DO jk = 1, nkk  
     !   DO jj = 1, jpj
@@ -233,7 +236,7 @@ CONTAINS
     !      END DO
     !   END DO
     !END DO
-#endif
+!endif
       !---------------------------------------------------------------------
       ! Calculate external fluxes for iron. 
       !---------------------------------------------------------------------
@@ -438,13 +441,13 @@ CONTAINS
       IF( sn_dust_bling%ln_tint ) ALLOCATE( sf_dust_bling(1)%fdta(jpi,jpj,1,2) )
 
 #if defined key_rnf_nutrients
-      CALL iom_open ( 'bling_rnf_nutrients.nc',numrnf_nutrient)         ! open file
-      CALL iom_get  ( numrnf_nutrient, jpdom_data,'rnf_po4',rnfpo4)    ! read the river mouth array
-      CALL iom_get  ( numrnf_nutrient, jpdom_data,'rnf_dop',rnfdop)    ! read the river mouth array
-      CALL iom_get  ( numrnf_nutrient, jpdom_data,'rnf_fed',rnffed)    ! read the river mouth array
-      CALL iom_get  ( numrnf_nutrient, jpdom_data,'rnf_dic',rnfdic)    ! read the river mouth array
-      CALL iom_get  ( numrnf_nutrient, jpdom_data,'rnf_alk',rnfalk)    ! read the river mouth array
-      CALL iom_close( numrnf_nutrient )                                   ! close file
+!      CALL iom_open ( 'bling_rnf_nutrients.nc',numrnf_nutrient)         ! open file
+!      CALL iom_get  ( numrnf_nutrient, jpdom_data,'rnf_po4',rnfpo4)    ! read the river mouth array
+!      CALL iom_get  ( numrnf_nutrient, jpdom_data,'rnf_dop',rnfdop)    ! read the river mouth array
+!      CALL iom_get  ( numrnf_nutrient, jpdom_data,'rnf_fed',rnffed)    ! read the river mouth array
+!      CALL iom_get  ( numrnf_nutrient, jpdom_data,'rnf_dic',rnfdic)    ! read the river mouth array
+!      CALL iom_get  ( numrnf_nutrient, jpdom_data,'rnf_alk',rnfalk)    ! read the river mouth array
+!      CALL iom_close( numrnf_nutrient )                                   ! close file
 #endif
 
      !CALL iom_open (  TRIM( sn_dust_bling%clname ) , numdust )
@@ -482,18 +485,6 @@ CONTAINS
         !ENDDO
         
         !CALL iom_close( numpatm )
-        !DEALLOCATE( zpatm)
-
-      ELSE
-
-        patm_bling(:,:)=1.e0;
-
-      ENDIF
-
-   END SUBROUTINE trc_ext_init_bling
-
-END MODULE trcext_blingv0
-numpatm )
         !DEALLOCATE( zpatm)
 
       ELSE

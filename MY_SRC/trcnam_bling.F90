@@ -56,6 +56,7 @@ CONTAINS
       NAMELIST/namblingremin/  phi_lg, kappa_remin, gamma_dop, gamma_pop
       !!! --- AGT --- !!!
       NAMELIST/namblingremin/  fden, fbur
+      NAMELIST/namblingremin/  river_dop, river_don
       !!! ------ !!!
       NAMELIST/namblingairsea/ a_0, a_1, a_2, a_3, a_4, a_5, b_0, b_1, b_2, b_3, c_0
       NAMELIST/namblingairsea/ a_1_o2, a_2_o2, a_3_o2, a_4_o2, a_5_o2
@@ -172,6 +173,9 @@ CONTAINS
          !!! --- AGT: parameters for nitrogen in sediment --- !!!
          WRITE(numout,*) '    rate of benthic denitrification                  fden        =', fden
          WRITE(numout,*) '    rate of sediment burial                          fbur        =', fbur
+         ! Also, global concentrations for DOM in river inflows...
+         WRITE(numout,*) '    concentration of DOP in river runoff             river_dop   =', river_dop
+         WRITE(numout,*) '    concentration of DON in river runoff             river_don   =', river_don
          !!! ------ !!!
          !WRITE(numout,*) ' '
       ENDIF
@@ -235,15 +239,6 @@ CONTAINS
          WRITE(numout,*)
          WRITE(numout,*) ' Namelist parameter for mass conservation checking BLING'
          WRITE(numout,*) '    Flag to check mass conservation of phosphate = ', ln_bling_mass
-         WRITE(numout,*) '    Flag to check external fluxes of tracers     = ', ln_bling_ext
-      ENDIF
-
-      !                
-   END  SUBROUTINE  trc_nam_bling
-   
-   !!======================================================================
-END MODULE trcnam_bling
-g to check mass conservation of phosphate = ', ln_bling_mass
          WRITE(numout,*) '    Flag to check external fluxes of tracers     = ', ln_bling_ext
       ENDIF
 
