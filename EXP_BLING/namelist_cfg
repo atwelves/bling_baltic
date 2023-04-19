@@ -37,8 +37,8 @@
    cn_exp      =  "NORD_TEST"  !  experience name
    nn_it000    =    1   !  first time step
    nn_itend    =    86400   !  last  time step (std 5475)
-   nn_date0    =  20201002   !  date at nit_0000 (format yyyymmdd) used if ln_rstart=F or (ln_rstart=T and nn_rstctl=0 or 1)
-   nn_time0    =       1200   !  initial time of day in hhmm
+   nn_date0    =  20210101   !  date at nit_0000 (format yyyymmdd) used if ln_rstart=F or (ln_rstart=T and nn_rstctl=0 or 1)
+   nn_time0    =       0000   !  initial time of day in hhmm
    nn_leapy    =       1   !  Leap year calendar (1) or not (0)
    ln_rstart   = .true.   !  start from rest (F) or from a restart file (T)
       ln_1st_euler = .true.      !  = 0 : start with forward time step if ln_rstart=T
@@ -240,7 +240,7 @@
    nn_fwb      = 0         !  FreshWater Budget: =0 unchecked
       !                    !     =1 global mean of e-p-r set to zero at each time step
       !                    !     =2 annual global mean of e-p-r set to zero
-   ln_rnf      = .false.   !  runoffs                                   (T => fill namsbc_rnf)
+   ln_rnf      = .true.   !  runoffs                                   (T => fill namsbc_rnf)
    ln_apr_dyn  = .true.   !  Patm gradient added in ocean & ice Eqs.   (T => fill namsbc_apr )
    ln_wave     = .false.   !  Activate coupling with wave  (T => fill namsbc_wave)
    nn_lsm      = 0         !  =0 land/sea mask for input fields is not applied (keep empty land/sea mask filename field) ,

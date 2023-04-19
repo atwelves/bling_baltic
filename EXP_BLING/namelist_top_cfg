@@ -61,8 +61,11 @@
 !-----------------------------------------------------------------------
 &namtrc_adv      !   advection scheme for passive tracer                (default: NO selection)
 !-----------------------------------------------------------------------
-   ln_trcadv_mus =  .true.   !  MUSCL scheme
-      ln_mus_ups =  .true.         !  use upstream scheme near river mouths
+   ln_trcadv_fct =  .true.  !  FCT scheme
+      nn_fct_h   =  4               !  =2/4, horizontal 2nd / 4th order
+      nn_fct_v   =  4               !  =2/4, vertical   2nd / COMPACT 4th order
+   ln_trcadv_mus =  .false.   !  MUSCL scheme
+      ln_mus_ups =  .false.         !  use upstream scheme near river mouths
 /
 !-----------------------------------------------------------------------
 &namtrc_ldf      !   lateral diffusion scheme for passive tracer        (default: NO selection)
@@ -122,14 +125,14 @@
 !----------------------------------------------------------------------
 &namtrc_bdy      !   Setup of tracer boundary conditions
 !-----------------------------------------------------------------------
-   cn_trc(1)  = 'orlanski'
-   cn_trc(2)  = 'orlanski'
-   cn_trc(3)  = 'orlanski'
-   cn_trc(4)  = 'orlanski'
-   cn_trc(5)  = 'orlanski'
-   cn_trc(6)  = 'orlanski'
-   cn_trc(7)  = 'orlanski'
-   cn_trc(8)  = 'orlanski'
+   cn_trc(1)  = 'frs'
+   cn_trc(2)  = 'frs'
+   cn_trc(3)  = 'frs'
+   cn_trc(4)  = 'frs'
+   cn_trc(5)  = 'frs'
+   cn_trc(6)  = 'frs'
+   cn_trc(7)  = 'frs'
+   cn_trc(8)  = 'frs'
 /
 !-----------------------------------------------------------------------
 &namtrc_ais      !  Representation of Antarctic Ice Sheet tracers supply

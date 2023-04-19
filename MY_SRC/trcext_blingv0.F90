@@ -161,7 +161,7 @@ CONTAINS
           co2_flx(ji,jj)=co2_sat-co2_sur
 
           ! add trend
-          tr(ji,jj,1,jpDIC_bling,Krhs)=tr(ji,jj,1,jpDIC_bling,Krhs)+co2_flx(ji,jj)*zrfact
+          tr(ji,jj,1,jpDIC_bling,Kmm)=tr(ji,jj,1,jpDIC_bling,Kmm)+co2_flx(ji,jj)*zrfact
 
           !----------------
           ! O2 air-sea flux
@@ -191,13 +191,13 @@ CONTAINS
           o2_sat=po2_atm*o2_alpha2*sch_no_term_o2(ji,jj)
 
           ! surface concentration * piston v [mol/m2/s]
-          o2_sur=tr(ji,jj,1,jpOxy_bling,Kbb)*sch_no_term_o2(ji,jj)
+          o2_sur=tr(ji,jj,1,jpOxy_bling,Kmm)*sch_no_term_o2(ji,jj)
 
 
           ! Flux of oxygen (mol/m2/s)
           o2_flx(ji,jj)=o2_sat-o2_sur
 
-          tr(ji,jj,1,jpOxy_bling,Krhs)=tr(ji,jj,1,jpOxy_bling,Krhs)+o2_flx(ji,jj)*zrfact
+          tr(ji,jj,1,jpOxy_bling,Kmm)=tr(ji,jj,1,jpOxy_bling,Kmm)+o2_flx(ji,jj)*zrfact
 
           !sumtfoxy=sumtfoxy+o2flx(ji,jj)*zrfact*cvol(ji,jj,1)*tmask(ji,jj,1)
 
@@ -220,9 +220,9 @@ CONTAINS
      !         = mol/m^3 * kg/m^2/s * 1/m * s * m^3/kg = mol/m^3
 !     tr(:,:,1,jpPO4_bling,Krhs) = tr(:,:,1,jpPO4_bling,Krhs) + rnfpo4(:,:)*rnf(:,:)/e3t(:,:,1,Kmm)*zrfact
 !     tr(:,:,1,jpFed_bling,Krhs) = tr(:,:,1,jpFed_bling,Krhs) + rnffed(:,:)*rnf(:,:)/e3t(:,:,1,Kmm)*zrfact
-     tr(:,:,1,jpDOP_bling,Krhs) = tr(:,:,1,jpDOP_bling,Krhs) + river_dop*rnf(:,:)/e3t(:,:,1,Kmm)*zrfact
+     tr(:,:,1,jpDOP_bling,Kmm) = tr(:,:,1,jpDOP_bling,Kmm) + river_dop*rnf(:,:)/e3t(:,:,1,Kmm)*zrfact
      IF ( ln_nitro ) THEN
-             tr(:,:,1,jpDON_bling,Krhs) = tr(:,:,1,jpDON_bling,Krhs) + river_don*rnf(:,:)/e3t(:,:,1,Kmm)*zrfact 
+             tr(:,:,1,jpDON_bling,Kmm) = tr(:,:,1,jpDON_bling,Kmm) + river_don*rnf(:,:)/e3t(:,:,1,Kmm)*zrfact 
      ENDIF
 !     tr(:,:,1,jpDIC_bling,Krhs) = tr(:,:,1,jpDIC_bling,Krhs) + rnfdic(:,:)*rnf(:,:)/e3t(:,:,1,Kmm)*zrfact
 !     tr(:,:,1,jpalk_bling,Krhs) = tr(:,:,1,jpalk_bling,Krhs) + rnfalk(:,:)*rnf(:,:)/e3t(:,:,1,Kmm)*zrfact     
@@ -242,25 +242,25 @@ CONTAINS
       !---------------------------------------------------------------------
 
       !Get dust field
-      IF( ln_dust_bling ) THEN
-         CALL fld_read( kt, 1, sf_dust_bling )
-         dust_bling(:,:) = sf_dust_bling(1)%fnow(:,:,1)
-      ENDIF
+!      IF( ln_dust_bling ) THEN
+!         CALL fld_read( kt, 1, sf_dust_bling )
+!         dust_bling(:,:) = sf_dust_bling(1)%fnow(:,:,1)
+!      ENDIF
 
       fe_2_p_sed=106.0e-4
 
-      DO jj = 1, jpj
-         DO ji = 1, jpi
+!      DO jj = 1, jpj
+!         DO ji = 1, jpi
             ! [s/m] -> dust deposition in mol Fe/m3
             zrfact  = rfact / e3t(ji,jj,1,Kmm)
 
-            ! [mol Fe/m3]
-            tr(ji,jj,1,jpFed_bling,Krhs) =  tr(ji,jj,1,jpFed_bling,Krhs) + dust_bling(ji,jj)*zrfact
+!            ! [mol Fe/m3]
+!            tr(ji,jj,1,jpFed_bling,Kmm) =  tr(ji,jj,1,jpFed_bling,Kmm) + dust_bling(ji,jj)*zrfact
 
             !sumtffed=sumtffed+dust_bling(ji,jj)*zrfact*cvol(ji,jj,1)*tmask(ji,jj,1)
 
-         ENDDO
-      ENDDO
+!         ENDDO
+!      ENDDO
 
       !---------------------------------------------------------------------
 
@@ -293,7 +293,7 @@ CONTAINS
             ikb     = mbkt(ji,jj)
             tmask_ikb(ji,jj)=tmask(ji,jj,ikb)
 
-            foxy   = tr(ji,jj,ikb,jpOxy_bling,Krhs)
+            foxy   = tr(ji,jj,ikb,jpOxy_bling,Kmm)
             zrfact  = rfact / e3t(ji,jj,ikb,Kmm)
 
             ! Phosphate [mol P/m2/s]
@@ -316,11 +316,11 @@ CONTAINS
             balk(ji,jj)=2.d0*fcaco3_b(ji,jj)-fpop_b(ji,jj)*n2p
 
             ! Add the bottom flux trend [mol/m3]
-            tr(ji,jj,ikb,jpPO4_bling,Krhs) = tr(ji,jj,ikb,jpPO4_bling,Krhs) + bpo4(ji,jj)*zrfact
-            tr(ji,jj,ikb,jpFed_bling,Krhs) = tr(ji,jj,ikb,jpFed_bling,Krhs) + bfed(ji,jj)*zrfact
-            tr(ji,jj,ikb,jpOxy_bling,Krhs) = tr(ji,jj,ikb,jpOxy_bling,Krhs) + boxy(ji,jj)*zrfact
-            tr(ji,jj,ikb,jpDIC_bling,Krhs) = tr(ji,jj,ikb,jpDIC_bling,Krhs) + bdic(ji,jj)*zrfact
-            tr(ji,jj,ikb,jpalk_bling,Krhs) = tr(ji,jj,ikb,jpalk_bling,Krhs) + balk(ji,jj)*zrfact
+            tr(ji,jj,ikb,jpPO4_bling,Kmm) = tr(ji,jj,ikb,jpPO4_bling,Kmm) + bpo4(ji,jj)*zrfact
+            tr(ji,jj,ikb,jpFed_bling,Kmm) = tr(ji,jj,ikb,jpFed_bling,Kmm) + bfed(ji,jj)*zrfact
+            tr(ji,jj,ikb,jpOxy_bling,Kmm) = tr(ji,jj,ikb,jpOxy_bling,Kmm) + boxy(ji,jj)*zrfact
+            tr(ji,jj,ikb,jpDIC_bling,Kmm) = tr(ji,jj,ikb,jpDIC_bling,Kmm) + bdic(ji,jj)*zrfact
+            tr(ji,jj,ikb,jpalk_bling,Kmm) = tr(ji,jj,ikb,jpalk_bling,Kmm) + balk(ji,jj)*zrfact
 
             bpo4(ji,jj)=bpo4(ji,jj)*tmask(ji,jj,ikb)
             bfed(ji,jj)=bfed(ji,jj)*tmask(ji,jj,ikb)
@@ -343,7 +343,7 @@ CONTAINS
                     boxy(ji,jj) = boxy(ji,jj) + 1.25d0*fden
                     boxy(ji,jj) = MIN(boxy(ji,jj),0.e0)
 
-                    tr(ji,jj,ikb,jpNO3_bling,Krhs) = tr(ji,jj,ikb,jpNO3_bling,Krhs) + bno3(ji,jj)*zrfact
+                    tr(ji,jj,ikb,jpNO3_bling,Kmm) = tr(ji,jj,ikb,jpNO3_bling,Kmm) + bno3(ji,jj)*zrfact
                     bno3(ji,jj)=bno3(ji,jj)*tmask(ji,jj,ikb)
             ENDIF
 

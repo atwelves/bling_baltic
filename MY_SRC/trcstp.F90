@@ -97,9 +97,11 @@ CONTAINS
       CALL trc_rst_opn  ( kt )                            ! Open tracer restart file 
       IF( lrst_trc )  CALL trc_rst_cal  ( kt, 'WRITE' )   ! calendar
       CALL trc_sms      ( kt, Kbb, Kmm, Krhs      )       ! tracers: sinks and sources
-      CALL trc_wri      ( kt,      Kmm            )       ! output of passive tracers with iom I/O manager
+!      CALL trc_wri      ( kt,      Kmm            )       ! output of passive tracers with iom I/O manager
 #if ! defined key_sed_off
+      tr(:,:,:,:,Krhs) = 0._wp
       CALL trc_trp      ( kt, Kbb, Kmm, Krhs, Kaa )       ! transport of passive tracers
+      CALL trc_wri      ( kt,      Kmm            )       ! output of passive tracers with iom I/O manager
 #endif
            !
            ! Note passive tracers have been time-filtered in trc_trp but the time level

@@ -835,6 +835,12 @@ WRITE(numout,*) '      min n fixation          = ', minval(jn_fix)
 WRITE(numout,*) '      min particulate n flux  = ', minval(jn_pon)
 WRITE(numout,*) '      min don trend           = ', minval(jdon)
 
+WRITE(numout,*) '      max fpop_b              = ', maxval(fpop_b)
+WRITE(numout,*) '      max fpon_b              = ', maxval(fpon_b)
+
+WRITE(numout,*) '      min fpop_b              = ', minval(fpop_b)
+WRITE(numout,*) '      min fpon_b              = ', minval(fpon_b)
+
       ! Add dissolved inorganic carbon terms from po4 final fluxes
       jdic(:,:,:)=jdic(:,:,:)+jpo4(:,:,:)*c2p
       jalk(:,:,:)=jalk(:,:,:)-jpo4(:,:,:)*n2p
@@ -861,7 +867,7 @@ WRITE(numout,*) '      min don trend           = ', minval(jdon)
 !      tr(:,:,jpk,jp_blg0:jp_blg1,Krhs)=0.0_wp
 
       !test if concentrations fall below 0
-      xnegtr(:,:,:) = 1.e0
+      xnegtr(:,:,:) = 0.e0
       DO jn = jp_blg0, jp_blg1
          DO jk = 1, jpk
             DO jj = 1, jpj
@@ -870,11 +876,12 @@ WRITE(numout,*) '      min don trend           = ', minval(jdon)
 !                     ztra             = ABS(  ( tr(ji,jj,jk,jn,Kmm) - rtrn ) &
 !                                            / ( tr(ji,jj,jk,jn,Krhs) + rtrn ) )
 !                     xnegtr(ji,jj,jk) = MIN( xnegtr(ji,jj,jk),  ztra )
-                      xnegtr(ji,jj,jk) = 0.e0
+                      xnegtr(ji,jj,jk) = - tr(ji,jj,jk,jn,Kmm) -tr(ji,jj,jk,jn,Krhs)
                   ENDIF
               END DO
             END DO
          END DO
+         tr(:,:,:,jn,Krhs) = tr(:,:,:,jn,Krhs) + xnegtr(:,:,:)
       END DO
 
       ! Prgonostic tracer fields
@@ -882,8 +889,9 @@ WRITE(numout,*) '      min don trend           = ', minval(jdon)
          WRITE(numout,*) '   ==>>>   AGT: updating tracer conc. '
          !write(*,'(I3,2(1X,E11.4))') jp_bling0, trn(ji,jj,jk,jn),tra(ji,jj,jk,jn)
 !         tr(:,:,:,jn,Kmm) = tr(:,:,:,jn,Kmm) + xnegtr(:,:,:) * tr(:,:,:,jn,Krhs)
-         tr(:,:,:,jn,Kmm) = tr(:,:,:,jn,Kmm) + xnegtr(:,:,:) * tr(:,:,:,jn,Krhs) &
-                                 + (1 - xnegtr(:,:,:))*(1.e-11 - tr(:,:,:,jn,Kmm))
+!         tr(:,:,:,jn,Kmm) = tr(:,:,:,jn,Kmm) + xnegtr(:,:,:) * tr(:,:,:,jn,Krhs) &
+!                                 + (1 - xnegtr(:,:,:))*(1.e-11 - tr(:,:,:,jn,Kmm))
+         tr(:,:,:,jn,Kmm) = tr(:,:,:,jn,Kmm) + tr(:,:,:,jn,Krhs)
       END DO
 
       ! Feb 10, 2017, xianmin force last level to be zero
@@ -915,6 +923,7 @@ WRITE(numout,*) '      min don trend           = ', minval(jdon)
       ! Copy to trb to use BLING updated tracer values to compute transport
       ! trends
       DO jn=jp_blg0, jp_blg1
+!         tr(:,:,:,jn,Krhs)=tr(:,:,:,jn,Kmm)
          tr(:,:,:,jn,Kbb)=tr(:,:,:,jn,Kmm)
       ENDDO
 
