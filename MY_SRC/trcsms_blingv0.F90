@@ -784,8 +784,22 @@ CONTAINS
                            joxy(ji,jj,jk)=-oxy2p*jpo4(ji,jj,jk)
                    ENDIF
                ENDIF
-            ENDDO
+                             ! Add dissolved inorganic carbon terms from po4 final fluxes
+                jdic(ji,jj,jk)=jdic(ji,jj,jk)+jpo4(ji,jj,jk)*c2p
+                jalk(ji,jj,jk)=jalk(ji,jj,jk)-jpo4(ji,jj,jk)*n2p
 
+                ! Check for negative values
+
+                tr(ji,jj,jk,jpPO4_bling,Krhs) = MAX(-tr(ji,jj,jk,jpPO4_bling,Kmm),jpo4(ji,jj,jk)*rfact)
+                tr(ji,jj,jk,jpDOP_bling,Krhs) = MAX(-tr(ji,jj,jk,jpDOP_bling,Kmm),jdop(ji,jj,jk)*rfact)
+                tr(ji,jj,jk,jpOxy_bling,Krhs) = MAX(-tr(ji,jj,jk,jpOxy_bling,Kmm),joxy(ji,jj,jk)*rfact)
+                tr(ji,jj,jk,jpFed_bling,Krhs) = MAX(-tr(ji,jj,jk,jpFed_bling,Kmm),jfed(ji,jj,jk)*rfact)
+                tr(ji,jj,jk,jpDIC_bling,Krhs) = MAX(-tr(ji,jj,jk,jpDIC_bling,Kmm),jdic(ji,jj,jk)*rfact)
+                tr(ji,jj,jk,jpalk_bling,Krhs) = MAX(-tr(ji,jj,jk,jpalk_bling,Kmm),jalk(ji,jj,jk)*rfact)
+                tr(ji,jj,jk,jpNO3_bling,Krhs) = MAX(-tr(ji,jj,jk,jpNO3_bling,Kmm),jno3(ji,jj,jk)*rfact)
+                tr(ji,jj,jk,jpDON_bling,Krhs) = MAX(-tr(ji,jj,jk,jpDON_bling,Kmm),jdon(ji,jj,jk)*rfact)
+
+            ENDDO
          ENDDO
       ENDDO
 
@@ -842,47 +856,47 @@ WRITE(numout,*) '      min fpop_b              = ', minval(fpop_b)
 WRITE(numout,*) '      min fpon_b              = ', minval(fpon_b)
 
       ! Add dissolved inorganic carbon terms from po4 final fluxes
-      jdic(:,:,:)=jdic(:,:,:)+jpo4(:,:,:)*c2p
-      jalk(:,:,:)=jalk(:,:,:)-jpo4(:,:,:)*n2p
+!      jdic(:,:,:)=jdic(:,:,:)+jpo4(:,:,:)*c2p
+!      jalk(:,:,:)=jalk(:,:,:)-jpo4(:,:,:)*n2p
 
-      tr(:,:,:,jpPO4_bling,Krhs) = tr(:,:,:,jpPO4_bling,Krhs) + jpo4(:,:,:)*rfact
-      tr(:,:,:,jpDOP_bling,Krhs) = tr(:,:,:,jpDOP_bling,Krhs) + jdop(:,:,:)*rfact
-      tr(:,:,:,jpFed_bling,Krhs) = tr(:,:,:,jpFed_bling,Krhs) + jfed(:,:,:)*rfact
-      tr(:,:,:,jpOxy_bling,Krhs) = tr(:,:,:,jpOxy_bling,Krhs) + joxy(:,:,:)*rfact
+ !     tr(:,:,:,jpPO4_bling,Krhs) = tr(:,:,:,jpPO4_bling,Krhs) + jpo4(:,:,:)*rfact
+ !     tr(:,:,:,jpDOP_bling,Krhs) = tr(:,:,:,jpDOP_bling,Krhs) + jdop(:,:,:)*rfact
+ !     tr(:,:,:,jpFed_bling,Krhs) = tr(:,:,:,jpFed_bling,Krhs) + jfed(:,:,:)*rfact
+ !     tr(:,:,:,jpOxy_bling,Krhs) = tr(:,:,:,jpOxy_bling,Krhs) + joxy(:,:,:)*rfact
 
       !!! --- AGT: Add nitrogen terms --- !!!
-      IF ( ln_nitro ) THEN
-              tr(:,:,:,jpNO3_bling,Krhs) = tr(:,:,:,jpNO3_bling,Krhs) + jno3(:,:,:)*rfact
-              tr(:,:,:,jpDON_bling,Krhs) = tr(:,:,:,jpDON_bling,Krhs) + jdon(:,:,:)*rfact
-      ENDIF
+!      IF ( ln_nitro ) THEN
+!              tr(:,:,:,jpNO3_bling,Krhs) = tr(:,:,:,jpNO3_bling,Krhs) + jno3(:,:,:)*rfact
+!              tr(:,:,:,jpDON_bling,Krhs) = tr(:,:,:,jpDON_bling,Krhs) + jdon(:,:,:)*rfact
+!      ENDIF
       !!! ------ !!!
 
       !jdic(:,:,:)=0.e0
-      tr(:,:,:,jpDIC_bling,Krhs) = tr(:,:,:,jpDIC_bling,Krhs) + jdic(:,:,:)*rfact
+!      tr(:,:,:,jpDIC_bling,Krhs) = tr(:,:,:,jpDIC_bling,Krhs) + jdic(:,:,:)*rfact
 
       !jalk(:,:,:)=0.e0
-      tr(:,:,:,jpalk_bling,Krhs) = tr(:,:,:,jpalk_bling,Krhs) + jalk(:,:,:)*rfact
+!      tr(:,:,:,jpalk_bling,Krhs) = tr(:,:,:,jpalk_bling,Krhs) + jalk(:,:,:)*rfact
 
       ! Feb 10, 2017, xianmin force last level to be zero
 !      tr(:,:,jpk,jp_blg0:jp_blg1,Krhs)=0.0_wp
 
       !test if concentrations fall below 0
-      xnegtr(:,:,:) = 0.e0
-      DO jn = jp_blg0, jp_blg1
-         DO jk = 1, jpk
-            DO jj = 1, jpj
-               DO ji = 1, jpi
-                  IF( ( tr(ji,jj,jk,jn,Kmm) + tr(ji,jj,jk,jn,Krhs) ) < 0.e0 ) THEN 
+!      xnegtr(:,:,:) = 0.e0
+!      DO jn = jp_blg0, jp_blg1
+!         DO jk = 1, jpk
+!            DO jj = 1, jpj
+!               DO ji = 1, jpi
+!                  IF( ( tr(ji,jj,jk,jn,Kmm) + tr(ji,jj,jk,jn,Krhs) ) < 0.e0 ) THEN 
 !                     ztra             = ABS(  ( tr(ji,jj,jk,jn,Kmm) - rtrn ) &
 !                                            / ( tr(ji,jj,jk,jn,Krhs) + rtrn ) )
 !                     xnegtr(ji,jj,jk) = MIN( xnegtr(ji,jj,jk),  ztra )
-                      xnegtr(ji,jj,jk) = - tr(ji,jj,jk,jn,Kmm) -tr(ji,jj,jk,jn,Krhs)
-                  ENDIF
-              END DO
-            END DO
-         END DO
-         tr(:,:,:,jn,Krhs) = tr(:,:,:,jn,Krhs) + xnegtr(:,:,:)
-      END DO
+!                      xnegtr(ji,jj,jk) = - tr(ji,jj,jk,jn,Kmm) -tr(ji,jj,jk,jn,Krhs)
+!                  ENDIF
+!              END DO
+!            END DO
+!         END DO
+!         tr(:,:,:,jn,Krhs) = tr(:,:,:,jn,Krhs) + xnegtr(:,:,:)
+!      END DO
 
       ! Prgonostic tracer fields
       DO jn = jp_blg0, jp_blg1
