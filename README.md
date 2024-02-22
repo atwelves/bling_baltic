@@ -19,20 +19,20 @@ To compile:
 3) Copy all MY_SRC files from this repository to cfgs/BLING_TEST/MY_SRC
 4) Copy cpp_BLING_BALTIC.fcm from this repository to cfgs/BLING_TEST
 
-./makenemo -m [insert_your_architecture file] -r ORCA2_ICE_PISCES -n BLING_TEST
+*./makenemo -m [insert_your_architecture file] -r ORCA2_ICE_PISCES -n BLING_TEST*
 
 -------------------------------------
 
 References:
 
-BLING with MOM:
+*BLING with MOM*:
   - Galbraith, Eric D., Anand Gnanadesikan, John P. Dunne, and Michael R. Hiscock. "Regional impacts of iron-light colimitation in a global biogeochemical model." Biogeosciences 7, no. 3 (2010): 1043-1064.
   - Galbraith, Eric D., John P. Dunne, Anand Gnanadesikan, Richard D. Slater, Jorge L. Sarmiento, Carolina O. Dufour, Gregory F. De Souza et al. "Complex functionality with minimal computation: Promise and pitfalls of reduced‐tracer ocean biogeochemistry models." Journal of Advances in Modeling Earth Systems 7, no. 4 (2015): 2012-2028.
 
-BLING with NEMO:
+*BLING with NEMO*:
   - Castro de la Guardia, Laura, Yarisbel Garcia‐Quintana, M. Claret, Xianmin Hu, E. D. Galbraith, and Paul G. Myers. "Assessing the role of high‐frequency winds and sea ice loss on Arctic phytoplankton blooms in an ice‐ocean‐biogeochemical model." Journal of Geophysical Research: Biogeosciences 124, no. 9 (2019): 2728-2750.
   - de la Guardia, Laura Castro, Tania Hernández Fariñas, Christian Marchese, Martí Amargant-Arumí, Paul G. Myers, Simon Bélanger, Philipp Assmy, Rolf Gradinger, and Pedro Duarte. "Assessing net primary production in the northwestern Barents Sea using in situ, remote sensing and modelling approaches." Progress in Oceanography 219 (2023): 103160.
 
-BLING with MITgcm:
+*BLING with MITgcm*:
   - Verdy, Ariane, and Matthew R. Mazloff. "A data assimilating model for estimating Southern Ocean biogeochemistry." Journal of Geophysical Research: Oceans 122, no. 9 (2017): 6968-6988.
   - Twelves, Andrew G., Daniel N. Goldberg, Sian Frances Henley, Matthew R. Mazloff, and Daniel C. Jones. "Self‐shading and meltwater spreading control the transition from light to iron limitation in an Antarctic coastal polynya." Journal of Geophysical Research: Oceans 126, no. 2 (2021): e2020JC016636.
