@@ -23,14 +23,14 @@
    ln_trcbc      =  .true.  !  Enables Boundary conditions
 !                !           !                                           !             !         !
 !                !    name   !           title of the field              !   units     ! init    ! sbc    ! cbc    !  obc    !  ais
-   sn_tracer(1)   = 'vopo4' , 'Dissolved phosphate                    ',  'mol/m³'     , .true.  , .false., .false. , .true. , .false.
-   sn_tracer(2)   = 'vodop' , 'Dissolved organic phosphate            ',  'mol/m³'     , .true.  , .false., .false. , .true. , .false.
-   sn_tracer(3)   = 'vofed' , 'Dissolved iron concentration           ',  'mol/m³'     , .true.  , .false., .false., .true. , .false.
-   sn_tracer(4)   = 'vooxy' , 'Dissolved oxygen concentration         ',  'mol/m³'     , .true.  , .false., .false., .true. , .false.
-   sn_tracer(5)   = 'vodic' , 'Dissolved inorganic carbon             ',  'mol/m³'     , .true.  , .false., .false., .true. , .false.
-   sn_tracer(6)   = 'voalk' , 'Total alkalinity concentration         ',  'mol/m³'     , .true.  , .false., .false., .true. , .false.
-   sn_tracer(7)   = 'vono3' , 'Dissolved nitrate                      ',  'mol/m³'     , .true.  , .false., .false., .true. , .false.
-   sn_tracer(8)   = 'vodon' , 'Dissolved organic nitrogen             ',  'mol/m³'     , .true.  , .false., .false., .true. , .false.
+   sn_tracer(1)   = 'vopo4' , 'Dissolved phosphate                    ',  'mol/m³'     , .true.  , .false., .false. , .false. , .false.
+   sn_tracer(2)   = 'vodop' , 'Dissolved organic phosphate            ',  'mol/m³'     , .true.  , .false., .false. , .false. , .false.
+   sn_tracer(3)   = 'vofed' , 'Dissolved iron concentration           ',  'mol/m³'     , .true.  , .false., .false., .false. , .false.
+   sn_tracer(4)   = 'vooxy' , 'Dissolved oxygen concentration         ',  'mol/m³'     , .true.  , .false., .false., .false. , .false.
+   sn_tracer(5)   = 'vodic' , 'Dissolved inorganic carbon             ',  'mol/m³'     , .true.  , .false., .false., .false. , .false.
+   sn_tracer(6)   = 'voalk' , 'Total alkalinity concentration         ',  'mol/m³'     , .true.  , .false., .false., .false. , .false.
+   sn_tracer(7)   = 'vono3' , 'Dissolved nitrate                      ',  'mol/m³'     , .true.  , .false., .false., .false. , .false.
+   sn_tracer(8)   = 'vodon' , 'Dissolved organic nitrogen             ',  'mol/m³'     , .true.  , .false., .false., .false. , .false.
 /
 !-----------------------------------------------------------------------
 &namage          !   AGE 
@@ -41,22 +41,22 @@
 !-----------------------------------------------------------------------
 !                !  file name   ! frequency (hours) ! variable  ! time interp. !  clim  ! 'yearly'/ ! weights  ! rotation ! land/sea mask !
 !                !              !  (if <0  months)  !   name    !   (logical)  !  (T/F) ! 'monthly' ! filename ! pairing  ! filename      !
-   sn_trcdta(1)  = 'bling_init.nc',        -1       ,  'po4'    ,    .true.   , .true. , 'yearly'  , ''       , ''   , ''
-   sn_trcdta(2)  = 'bling_init.nc',        -1       ,  'dop'    ,    .true.   , .true. , 'yearly'  , ''       , ''   , ''
-   sn_trcdta(3)  = 'bling_init.nc',        -1       ,  'fe'     ,    .true.    , .true. , 'yearly'  , ''       , ''   , ''
-   sn_trcdta(4)  = 'bling_init.nc',        -1       ,  'oxy'    ,    .true.    , .true. , 'yearly'  , ''       , ''   , ''
-   sn_trcdta(5)  = 'bling_init.nc',        -1       ,  'dic'    ,    .true.    , .true. , 'yearly'  , ''       , ''   , ''
-   sn_trcdta(6)  = 'bling_init.nc',        -1       ,  'alk'    ,    .true.    , .true. , 'yearly'  , ''       , ''   , ''
-   sn_trcdta(7)  = 'bling_init.nc',        -1       ,  'po4'    ,    .true.    , .true. , 'yearly'  , ''       , ''   , ''
-   sn_trcdta(8)  = 'bling_init.nc',        -1       ,  'dop'    ,    .true.    , .true. , 'yearly'  , ''       , ''   , ''
-   rn_trfac(1)   = 1.0   !  multiplicative factor
+   sn_trcdta(1)  = 'init_bgc.nc',        -12       ,  'po4'    ,    .false.   , .true. , 'yearly'  , ''       , ''   , ''
+   sn_trcdta(2)  = 'init_bgc.nc',        -12       ,  'zero'   ,    .false.   , .true. , 'yearly'  , ''       , ''   , ''
+   sn_trcdta(3)  = 'init_iron.nc',        -12       , 'iron'   ,    .false.    , .true. , 'yearly'  , ''       , ''   , ''
+   sn_trcdta(4)  = 'init_bgc.nc',        -12       ,  'o2'    ,    .false.    , .true. , 'yearly'  , ''       , ''   , ''
+   sn_trcdta(5)  = 'init_bgc.nc',        -12       ,  'dic'    ,    .false.    , .true. , 'yearly'  , ''       , ''   , ''
+   sn_trcdta(6)  = 'init_bgc.nc',        -12       ,  'alk'    ,    .false.    , .true. , 'yearly'  , ''       , ''   , ''
+   sn_trcdta(7)  = 'init_bgc.nc',        -12       ,  'no3'    ,    .false.    , .true. , 'yearly'  , ''       , ''   , ''
+   sn_trcdta(8)  = 'init_bgc.nc',        -12       ,  'zero'   ,    .false.    , .true. , 'yearly'  , ''       , ''   , ''
+   rn_trfac(1)   = 0.001   !  multiplicative factor
    rn_trfac(2)   = 1.0
    rn_trfac(3)   = 1.0  
-   rn_trfac(4)   = 1.0 
-   rn_trfac(5)   = 1.0
-   rn_trfac(6)   = 1.0   
-   rn_trfac(7)   = 16.0   !  multiplicative factor
-   rn_trfac(8)   = 16.0
+   rn_trfac(4)   = 0.001 
+   rn_trfac(5)   = 0.001
+   rn_trfac(6)   = 0.001   
+   rn_trfac(7)   = 0.001   !  multiplicative factor
+   rn_trfac(8)   = 1.0
 /
 !-----------------------------------------------------------------------
 &namtrc_adv      !   advection scheme for passive tracer                (default: NO selection)
@@ -100,22 +100,22 @@
    cn_dir_obc    =  './'     !  root directory for the location of OPEN data files
    !                !  file name        ! frequency (hours) ! variable      ! time interp. !  clim  ! 'yearly'/ ! weights  ! rotation ! land/sea mask !
    !                !                   !  (if <0  months)  !   name        !   (logical)  !  (T/F) ! 'monthly' ! filename ! pairing  ! filename      !
-   sn_trcobc(1)  =  'bling_init.nc'           ,        1.       , 'po4',    .true.   , .true. , 'yearly'  , ''       , ''       , ''          !
-   sn_trcobc(2)  =  'bling_init.nc'           ,        1.        , 'dop' ,   .true.   , .true.,  'yearly'  , ''       , ''       , ''          !
-   sn_trcobc(3)  =  'bling_init.nc'           ,        1.       , 'fe',    .true.   , .true. , 'yearly'  , ''       , ''       , ''          !
-   sn_trcobc(4)  =  'bling_init.nc'           ,        1.        , 'oxy' ,   .true.   , .true.,  'yearly'  , ''       , ''       , ''          !   
-   sn_trcobc(5)  =  'bling_init.nc'           ,        1.       , 'dic',    .true.   , .true. , 'yearly'  , ''       , ''       , ''          !
-   sn_trcobc(6)  =  'bling_init.nc'           ,        1.        , 'alk' ,   .true.   , .true.,  'yearly'  , ''       , ''       , ''          !
-   sn_trcobc(7)  =  'bling_init.nc'           ,        1.       , 'po4',    .true.   , .true. , 'yearly'  , ''       , ''       , ''          !
-   sn_trcobc(8)  =  'bling_init.nc'           ,        1.        , 'dop' ,   .true.   , .true.,  'yearly'  , ''       , ''       , ''          !
-   rn_trofac(1)  =  1.0
+   sn_trcobc(1)  =  'init_bgc.nc'           ,        1.       , 'po4',    .false.   , .true. , 'yearly'  , ''       , ''       , ''          !
+   sn_trcobc(2)  =  'init_bgc.nc'           ,        1.        , 'dop' ,   .false.   , .true.,  'yearly'  , ''       , ''       , ''          !
+   sn_trcobc(3)  =  'init_iron.nc'           ,        1.       , 'fe',    .false.   , .true. , 'yearly'  , ''       , ''       , ''          !
+   sn_trcobc(4)  =  'init_bgc.nc'           ,        1.        , 'oxy' ,   .false.   , .true.,  'yearly'  , ''       , ''       , ''          !   
+   sn_trcobc(5)  =  'init_bgc.nc'           ,        1.       , 'dic',    .false.   , .true. , 'yearly'  , ''       , ''       , ''          !
+   sn_trcobc(6)  =  'init_bgc.nc'           ,        1.        , 'alk' ,   .false.   , .true.,  'yearly'  , ''       , ''       , ''          !
+   sn_trcobc(7)  =  'init_bgc.nc'           ,        1.       , 'po4',    .false.   , .true. , 'yearly'  , ''       , ''       , ''          !
+   sn_trcobc(8)  =  'init_bgc.nc'           ,        1.        , 'zero' ,   .false.   , .true.,  'yearly'  , ''       , ''       , ''          !
+   rn_trofac(1)  =  0.001
    rn_trofac(2)  =  1.0
    rn_trofac(3)  =  1.0
-   rn_trofac(4)  =  1.0
-   rn_trofac(5)  =  1.0
-   rn_trofac(6)  =  1.0
-   rn_trofac(7)  =  16.0
-   rn_trofac(8)  =  16.0
+   rn_trofac(4)  =  0.001
+   rn_trofac(5)  =  0.001
+   rn_trofac(6)  =  0.001
+   rn_trofac(7)  =  0.001
+   rn_trofac(8)  =  1.0
    cn_dir_cbc    =  './'     !  root directory for the location of COASTAL data files
    cn_dir_obc    =  './'     !  root directory for the location of OPEN data files
    ln_rnf_ctl    = .false.   !  Remove runoff dilution on tracers with absent river load

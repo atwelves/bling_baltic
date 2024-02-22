@@ -8,9 +8,9 @@
 ============================================================================================================
     -->
 
-    <file_definition type="one_file" name="@expname@_@freq@_@startdate@_@enddate@" sync_freq="1ts" min_digits="4">
+    <file_definition type="one_file" name="@expname@_@freq@_@startdate@_@enddate@" sync_freq="1h" min_digits="4">
 
-      <file_group id="1ts" output_freq="1ts" output_level="10" enabled=".TRUE."> <!-- 1h files -->
+      <file_group id="1h" output_freq="1h" output_level="10" enabled=".TRUE."> <!-- 1h files -->
         <file id="file32" name_suffix="_bling_T" description="bling variables" >
 		<field field_ref="vopo4"       name="po4"      operation="instant" /> 
 		<field field_ref="vodop"        name="dop"       operation="instant" />

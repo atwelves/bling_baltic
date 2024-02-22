@@ -1,0 +1,49 @@
+  jpnij jpimax jpjmax    jpk jpiglo jpjglo ( local:   narea    jpi    jpj )
+      4     18     18     56     33     33 ( local:       1     18     18 )
+ 
+ ------------------------------------
+ Mapping of the default neighnourgs 
+ ------------------------------------
+ 
+  rank    ii    ij   jpi   jpj nimpp njmpp mpiwe mpiea mpiso mpino mpisw mpise mpinw mpine
+     0     1     1    18    18     1     1    -1     1    -1     2    -1    -1    -1     3
+     1     2     1    17    18    17     1     0    -1    -1     3    -1    -1     2    -1
+     2     1     2    18    17     1    17    -1     3     0    -1    -1     1    -1    -1
+     3     2     2    17    17    17    17     2    -1     1    -1     0    -1    -1    -1
+ 
+ ----------------------------------------------------------------------
+ Mapping of the neighnourgs once excluding comm with only land points 
+ ----------------------------------------------------------------------
+ 
+halo size:  1
+ ---------
+  rank    ii    ij mpiwe mpiea mpiso mpino mpisw mpise mpinw mpine
+     0     1     1    -1     1    -1     2    -1    -1    -1     3 <- Org
+                      -1     1    -1     2    -1    -1    -1    -1 <- Send 1 modif
+                      -1     1    -1     2    -1    -1    -1    -1 <- Recv 1 modif
+  total changes among all mpi tasks:
+        mpiwe mpiea mpiso mpino mpisw mpise mpinw mpine
+ Send:      0     0     0     0     1     1     1     1
+ Recv:      0     0     0     0     1     1     1     1
+ 
+halo size:  2
+ ---------
+  rank    ii    ij mpiwe mpiea mpiso mpino mpisw mpise mpinw mpine
+     0     1     1    -1     1    -1     2    -1    -1    -1     3 <- Org
+                      -1     1    -1     2    -1    -1    -1     3 <- Send 0 modif
+                      -1     1    -1     2    -1    -1    -1     3 <- Recv 0 modif
+  total changes among all mpi tasks:
+        mpiwe mpiea mpiso mpino mpisw mpise mpinw mpine
+ Send:      0     0     0     0     0     0     0     0
+ Recv:      0     0     0     0     0     0     0     0
+ 
+halo size:  3
+ ---------
+  rank    ii    ij mpiwe mpiea mpiso mpino mpisw mpise mpinw mpine
+     0     1     1    -1     1    -1     2    -1    -1    -1     3 <- Org
+                      -1     1    -1     2    -1    -1    -1     3 <- Send 0 modif
+                      -1     1    -1     2    -1    -1    -1     3 <- Recv 0 modif
+  total changes among all mpi tasks:
+        mpiwe mpiea mpiso mpino mpisw mpise mpinw mpine
+ Send:      0     0     0     0     0     0     0     0
+ Recv:      0     0     0     0     0     0     0     0
