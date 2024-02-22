@@ -4,9 +4,9 @@ This repository contains a version of the Biology Light Iron Nutrients and Gases
 
 The BLING code in this repository is compatible with NEMO version 4.2.1 (https://forge.nemo-ocean.eu/nemo/nemo/-/releases/4.2.1).
 
-This code was adapted from previous NEMO 3.6-compatible BLING code developed at the University of Alberta: this is stored at https://borealisdata.ca/dataset.xhtml?persistentId=doi:10.5683/SP3/DMGYXI and is described by Castro de la Guardia et al. (2019, https://doi.org/10.1029/2018JG004869). 
+This code was adapted from previous NEMO 3.6-compatible BLING code developed at the **University of Alberta**: this is stored at **https://borealisdata.ca/dataset.xhtml?persistentId=doi:10.5683/SP3/DMGYXI** and is described by **Castro de la Guardia et al. (2019**, https://doi.org/10.1029/2018JG004869). 
 
-Between versions 3.6 and 4.2.1 of NEMO there were substantial changes to the TOP module, which this new version of NEMO-BLING accounts for.  Other modifications include a basic representation of nitrogen limitation, inspired by the MITgcm version of BLING (https://github.com/MITgcm/MITgcm/tree/master/pkg/bling).
+Between versions 3.6 and 4.2.1 of NEMO there were substantial changes to the TOP module of NEMO, which this new version of NEMO-BLING accounts for.  Other modifications include a basic representation of nitrogen limitation, inspired by the MITgcm version of BLING (https://github.com/MITgcm/MITgcm/tree/master/pkg/bling).
 
 All code necessary to compile BLING with NEMO 4.2.1 is available in the MY_SRC directory.  The directory 'EXP_BLING' contains some example namelists and xml files for a low resolution test case covering the Baltic Sea.  Input and boundary files are not included.
 
