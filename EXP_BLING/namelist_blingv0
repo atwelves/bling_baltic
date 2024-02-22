@@ -69,6 +69,8 @@
    p_star       = 1.7436d-5    ! Pivotal phytoplankton biomass                          [mol P m-3] 
    lambda0      = 0.19         ! Carbon-specific phytoplankton mortality rate           [d-1]
    gam_biomass  = 0.5          ! Biomass adjustment time constant                       [d-1] 
+   ln_nitro     = .true.      ! Enable nitrogen cycle (T) or use original BLING (F)
+   kno3         = 0.001        ! Nitrate uptake half saturation constant                [mol N m-3]
 /
 !'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
 &namblingopt     !   Optical parameters
@@ -83,7 +85,7 @@
    xlb      = 0.674      ! blue chl exposant for absorption
    rpig     = 0.7        ! chla/chla+pheo ratio
    rcchl    = 60.        ! Carbone/Chlorophyl ratio              [mgC.mgChla-1]
-gam_irr_mem = 1          ! photoadaptation time constant         [d-1]
+   gam_irr_mem = 1       ! photoadaptation time constant         [d-1]
 /
 !'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
 &namblingremin    !   Remineralization parameters
@@ -99,8 +101,10 @@ gam_irr_mem = 1          ! photoadaptation time constant         [d-1]
    kappa_remin = -0.032      ! T dependence of particulate production         [(deg C)-1]   
    gamma_dop   = 0.25d0      ! decay timescale of DOM                         [y-1]
    gamma_pop   = 0.12d0      ! remineralization rate of sinking POM           [d-1]
-   burial_frac = 0.1         ! fraction of phosphate bound in sediments       [dimensionless]
-   po4_remob   = 1.d-3       ! phosphate remobilized from anoxic sediments    [mol PO4 m-2 d-1]
+   fden        = 0.0003      ! rate of benthic denitrification                [mol N m-2 d-1]
+   fbur        = 0.0003      ! rate of sediment burial                        [mol N m-2 d-1]
+   river_dop   = 0.0003      ! concentration of dop in river inflow           [mol P m-3]  
+   river_don   = 0.08        ! concentration of don in river inflow           [mol N m-3]
 /
 !'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
 &namblingairsea   !   Air-sea interaction parameters

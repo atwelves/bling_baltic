@@ -1,5 +1,5 @@
 !!>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
-!! SI3 namelist:  
+!! SI3 Reference namelist:
 !!              1 - Generic parameters                 (nampar)
 !!              2 - Ice thickness discretization       (namitd)
 !!              3 - Ice dynamics                       (namdyn)
@@ -23,7 +23,7 @@
 !------------------------------------------------------------------------------
    jpl              =   5             !  number of ice  categories
    nlay_i           =   2             !  number of ice  layers
-   nlay_s           =   1             !  number of snow layers (only 1 is working)
+   nlay_s           =   2             !  number of snow layers
    ln_virtual_itd   =   .false.       !  virtual ITD mono-category parameterization (jpl=1 only)
                                       !     i.e. enhanced thermal conductivity & virtual thin ice melting
    ln_icedyn        = .true.          !  ice dynamics (T) or not (F)
@@ -32,16 +32,16 @@
    rn_amax_s        =   0.997         !  maximum tolerated ice concentration SH
    cn_icerst_in     = "restart_ice"   !  suffix of ice restart name (input)
    cn_icerst_out    = "restart_ice"   !  suffix of ice restart name (output)
-   cn_icerst_indir  = "."             !  directory to read   input ice restarts
-   cn_icerst_outdir = "."             !  directory to write output ice restarts
+   cn_icerst_indir  = "./restart_in"             !  directory to read   input ice restarts
+   cn_icerst_outdir = "./restart_out"             !  directory to write output ice restarts
 /
 !------------------------------------------------------------------------------
 &namitd         !   Ice discretization
 !------------------------------------------------------------------------------
-   ln_cat_hfn       = .true.          !  ice categories are defined by a function following rn_himean**(-0.05)
+   ln_cat_hfn       = .false.          !  ice categories are defined by a function following rn_himean**(-0.05)
       rn_himean     =   2.0           !  expected domain-average ice thickness (m)
-   ln_cat_usr       = .false.         !  ice categories are defined by rn_catbnd below (m)
-      rn_catbnd     =   0.,0.45,1.1,2.1,3.7,6.0  
+   ln_cat_usr       = .true.         !  ice categories are defined by rn_catbnd below (m)
+      rn_catbnd     =   0.,0.15,0.25,0.5,0.75,1.0  
    rn_himin         =   0.1           !  minimum ice thickness (m) allowed
    rn_himax         =  99.0           !  maximum ice thickness (m) allowed
 /
@@ -73,7 +73,7 @@
 !------------------------------------------------------------------------------
           ! -- ice_rdgrft_strength -- !
    ln_str_H79       = .true.          !  ice strength param.: Hibler_79   => P = pstar*<h>*exp(-c_rhg*A)
-      rn_pstar      =   2.0e+04       !     ice strength thickness parameter [N/m2]
+      rn_pstar      =   2.5e+04       !     ice strength thickness parameter [N/m2]
       rn_crhg       =  20.0           !     ice strength conc. parameter (-)
    ln_str_R75       = .false.         !  ice strength param.: Rothrock_75 => P = fn of potential energy
       rn_pe_rdg     =  17.0           !     coef accouting for frictional dissipation
@@ -96,7 +96,7 @@
       rn_fsnwrdg    =   0.5           !     snow volume fraction that survives in ridging
       rn_fpndrdg    =   1.0           !     pond fraction that survives in ridging (small a priori)
    ln_rafting       = .true.          !  rafting activated (T) or not (F)
-      rn_hraft      =   0.75          !     threshold thickness for rafting [m]
+      rn_hraft      =   0.35          !     threshold thickness for rafting [m]
       rn_craft      =   5.0           !     squeezing coefficient used in the rafting function
       rn_fsnwrft    =   0.5           !     snow volume fraction that survives in rafting
       rn_fpndrft    =   1.0           !     pond fraction that survives in rafting (0.5 a priori)
@@ -227,7 +227,7 @@
 !------------------------------------------------------------------------------
 &namini         !   Ice initialization
 !------------------------------------------------------------------------------
-   ln_iceini        = .false.          !  activate ice initialization (T) or not (F)
+   ln_iceini        = .true.         !  activate ice initialization (T) or not (F)
    nn_iceini_file   =   0             !     0 = Initialise sea ice based on SSTs
                                       !     1 = Initialise sea ice from single category netcdf file
                                       !     2 = Initialise sea ice from multi category restart file
