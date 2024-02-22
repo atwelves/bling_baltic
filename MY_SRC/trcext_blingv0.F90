@@ -72,9 +72,9 @@ CONTAINS
       ALLOCATE ( boxy(jpi,jpj) )
       ALLOCATE ( bdic(jpi,jpj) )
       ALLOCATE ( balk(jpi,jpj) )
-      IF ( ln_nitro ) THEN
+!      IF ( ln_nitro ) THEN
               ALLOCATE ( bno3(jpi,jpj) )
-      ENDIF
+!      ENDIF
 
       !---------------------------------------------------------------------
       ! Calculate air-sea exhange for O2/CO2
@@ -221,9 +221,9 @@ CONTAINS
 !     tr(:,:,1,jpPO4_bling,Krhs) = tr(:,:,1,jpPO4_bling,Krhs) + rnfpo4(:,:)*rnf(:,:)/e3t(:,:,1,Kmm)*zrfact
 !     tr(:,:,1,jpFed_bling,Krhs) = tr(:,:,1,jpFed_bling,Krhs) + rnffed(:,:)*rnf(:,:)/e3t(:,:,1,Kmm)*zrfact
      tr(:,:,1,jpDOP_bling,Kmm) = tr(:,:,1,jpDOP_bling,Kmm) + river_dop*rnf(:,:)/e3t(:,:,1,Kmm)*zrfact
-     IF ( ln_nitro ) THEN
+ !    IF ( ln_nitro ) THEN
              tr(:,:,1,jpDON_bling,Kmm) = tr(:,:,1,jpDON_bling,Kmm) + river_don*rnf(:,:)/e3t(:,:,1,Kmm)*zrfact 
-     ENDIF
+  !   ENDIF
 !     tr(:,:,1,jpDIC_bling,Krhs) = tr(:,:,1,jpDIC_bling,Krhs) + rnfdic(:,:)*rnf(:,:)/e3t(:,:,1,Kmm)*zrfact
 !     tr(:,:,1,jpalk_bling,Krhs) = tr(:,:,1,jpalk_bling,Krhs) + rnfalk(:,:)*rnf(:,:)/e3t(:,:,1,Kmm)*zrfact     
     !nkk=1
@@ -335,7 +335,7 @@ CONTAINS
             ! ii) If the flux of particulate nitrogen excees the combined loss rate then
             ! the excess particulate flux forms the nitrate flux out of sediments.
             
-            IF ( ln_nitro ) THEN
+   !         IF ( ln_nitro ) THEN
                     ! Nitrate [mol N/m2/s]
                     bno3(ji,jj) = fpon_b(ji,jj) - fbur - fden 
                     bno3(ji,jj) = MAX(bno3(ji,jj),0.e0)
@@ -345,7 +345,7 @@ CONTAINS
 
                     tr(ji,jj,ikb,jpNO3_bling,Kmm) = tr(ji,jj,ikb,jpNO3_bling,Kmm) + bno3(ji,jj)*zrfact
                     bno3(ji,jj)=bno3(ji,jj)*tmask(ji,jj,ikb)
-            ENDIF
+    !        ENDIF
 
          END DO
       END DO
@@ -412,9 +412,9 @@ CONTAINS
       DEALLOCATE ( boxy )
       DEALLOCATE ( bdic )
       DEALLOCATE ( balk )
-      IF ( ln_nitro ) THEN
+  !    IF ( ln_nitro ) THEN
               DEALLOCATE ( bno3 )
-      ENDIF
+  !    ENDIF
 
    END SUBROUTINE trc_ext_bling
 

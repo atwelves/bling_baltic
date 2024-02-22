@@ -186,7 +186,7 @@ CONTAINS
 #if defined key_rnf_nutrients
       ALLOCATE( rnfpo4(jpi,jpj), rnfdop(jpi, jpj), rnfdic(jpi,jpj), rnfalk(jpi,jpj), rnffed(jpi,jpj), STAT=ierr(7))   
 #endif
-     WRITE(numout,*) '   ==>>>   AGT: irradiance memory allocated '
+    ! WRITE(numout,*) '   ==>>>   AGT: irradiance memory allocated '
      bling_alloc=MAXVAL(ierr)
 
      IF( lk_mpp )   CALL mpp_sum ( 'vars_bling',bling_alloc )
