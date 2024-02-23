@@ -4,7 +4,7 @@ This repository contains a version of the Biology Light Iron Nutrients and Gases
 
 The BLING code in this repository is compatible with NEMO version 4.2.1 (https://forge.nemo-ocean.eu/nemo/nemo/-/releases/4.2.1).
 
-This code was adapted from previous NEMO 3.6-compatible BLING code developed at the **University of Alberta**: this is stored at **https://borealisdata.ca/dataset.xhtml?persistentId=doi:10.5683/SP3/DMGYXI** and is described by **Castro de la Guardia et al. (2019**, https://doi.org/10.1029/2018JG004869). 
+This code was adapted from previous NEMO 3.6-compatible BLING code developed at the **University of Alberta**: this is stored at **https://borealisdata.ca/dataset.xhtml?persistentId=doi:10.5683/SP3/DMGYXI** and is described in detail by **Laura Castro de la Guardia in her PhD thesis (https://doi.org/10.7939/R31G0J98H)**. 
 
 Between versions 3.6 and 4.2.1 of NEMO there were substantial changes to the TOP module of NEMO, which this new version of NEMO-BLING accounts for.  Other modifications include a basic representation of nitrogen limitation, inspired by the MITgcm version of BLING (https://github.com/MITgcm/MITgcm/tree/master/pkg/bling).
 
@@ -30,8 +30,9 @@ References:
   - Galbraith, Eric D., John P. Dunne, Anand Gnanadesikan, Richard D. Slater, Jorge L. Sarmiento, Carolina O. Dufour, Gregory F. De Souza et al. "Complex functionality with minimal computation: Promise and pitfalls of reduced‐tracer ocean biogeochemistry models." Journal of Advances in Modeling Earth Systems 7, no. 4 (2015): 2012-2028.
 
 *BLING with NEMO*:
+  - Castro de la Guardia, Laura. 2018. Modelling the response of Arctic and SubArctic marine systems to climate warming. Doctor of Philosophy, University of Alberta.
   - Castro de la Guardia, Laura, Yarisbel Garcia‐Quintana, M. Claret, Xianmin Hu, E. D. Galbraith, and Paul G. Myers. "Assessing the role of high‐frequency winds and sea ice loss on Arctic phytoplankton blooms in an ice‐ocean‐biogeochemical model." Journal of Geophysical Research: Biogeosciences 124, no. 9 (2019): 2728-2750.
-  - de la Guardia, Laura Castro, Tania Hernández Fariñas, Christian Marchese, Martí Amargant-Arumí, Paul G. Myers, Simon Bélanger, Philipp Assmy, Rolf Gradinger, and Pedro Duarte. "Assessing net primary production in the northwestern Barents Sea using in situ, remote sensing and modelling approaches." Progress in Oceanography 219 (2023): 103160.
+  - Castro de la Guardia, Laura, Tania Hernández Fariñas, Christian Marchese, Martí Amargant-Arumí, Paul G. Myers, Simon Bélanger, Philipp Assmy, Rolf Gradinger, and Pedro Duarte. "Assessing net primary production in the northwestern Barents Sea using in situ, remote sensing and modelling approaches." Progress in Oceanography 219 (2023): 103160.
 
 *BLING with MITgcm*:
   - Verdy, Ariane, and Matthew R. Mazloff. "A data assimilating model for estimating Southern Ocean biogeochemistry." Journal of Geophysical Research: Oceans 122, no. 9 (2017): 6968-6988.
