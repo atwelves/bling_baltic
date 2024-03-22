@@ -19,7 +19,7 @@ To compile:
 3) Copy all MY_SRC files from this repository to cfgs/BLING_TEST/MY_SRC
 4) Copy cpp_BLING_BALTIC.fcm from this repository to cfgs/BLING_TEST
 
-*./makenemo -m [insert_your_architecture file] -r ORCA2_ICE_PISCES -n BLING_TEST*
+*./makenemo -m [insert_your_architecture file] -r ORCA2_ICE_PISCES -n BLING_TEST -j 16*
 
 -------------------------------------
 
