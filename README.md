@@ -2,7 +2,7 @@
 
 This repository contains a version of the Biology Light Iron Nutrients and Gases (BLING) model (Galbraith et al. 2010, https://doi.org/10.5194/bg-7-1043-2010), originally developed as a component of the Modular Ocean Model (MOM, https://github.com/mom-ocean/MOM5). 
 
-The BLING code in this repository is compatible with NEMO version 4.2.1 (https://forge.nemo-ocean.eu/nemo/nemo/-/releases/4.2.1).
+The BLING code in this repository is compatible with NEMO version 4.2.1 (https://forge.nemo-ocean.eu/nemo/nemo/-/releases/4.2.1) and with Xios version 2.5
 
 This code was adapted from previous NEMO 3.6-compatible BLING code developed at the **University of Alberta**: this is stored at **https://borealisdata.ca/dataset.xhtml?persistentId=doi:10.5683/SP3/DMGYXI** and is described in detail by **Laura Castro de la Guardia in her PhD thesis (https://doi.org/10.7939/R31G0J98H)**. 
 
