@@ -58,10 +58,6 @@ CONTAINS
       REAL(wp), ALLOCATABLE, DIMENSION(:,:) :: bpo4, bfed, boxy, bdic, balk
       REAL(wp), ALLOCATABLE, DIMENSION(:,:) :: bno3
 
-      IF(lwp) WRITE(numout,*)
-      IF(lwp) WRITE(numout,*) ' trc_ext_bling:  BLINGv0 model'
-      IF(lwp) WRITE(numout,*) ' ~~~~~~~~~~~~~~'
-
       ALLOCATE ( tmask_ikb(jpi,jpj) )
       ALLOCATE ( sch_no_term_co2(jpi,jpj) )
       ALLOCATE ( co2_flx(jpi,jpj) )
