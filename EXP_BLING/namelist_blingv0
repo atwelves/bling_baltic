@@ -91,7 +91,7 @@
 &namblingremin    !   Remineralization parameters
 !,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
    wsink0_z    = 80.d0       ! depth at which sinking rate starts increasing  [m]
-   wsink0      = 16.         ! initial sinking rate                           [m d-1]   
+   wsink0      = 3.         ! initial sinking rate                           [m d-1]   
    wsink_acc   = 0.05        ! accerelation rate of sinking with depth        [d-1] 
    koxy        = 20.d-3      ! half saturation const for aerobic respiration  [mol O2 m-3] 
    remin_min   = 0.3         ! minimum anaerobic respiration rate             [dimensionless] 
@@ -103,8 +103,8 @@
    gamma_pop   = 0.12d0      ! remineralization rate of sinking POM           [d-1]
    fden        = 0.0003      ! rate of benthic denitrification                [mol N m-2 d-1]
    fbur        = 0.0003      ! rate of sediment burial                        [mol N m-2 d-1]
-   river_dop   = 0.0003      ! concentration of dop in river inflow           [mol P m-3]  
-   river_don   = 0.08        ! concentration of don in river inflow           [mol N m-3]
+   river_dop   = 0.0      ! concentration of dop in river inflow           [mol P m-3]  
+   river_don   = 0.0        ! concentration of don in river inflow           [mol N m-3]
 /
 !'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
 &namblingairsea   !   Air-sea interaction parameters
@@ -194,7 +194,7 @@
    blidia2d(9)  = 'JDIC_BTF'  , 'DIC sediment outflux (positive into ocean) BLINGv0', 'mol C/m2/s'
    blidia2d(10) = 'JALK_BTF'  , 'ALK sediment outflux (positive into ocean) BLINGv0', 'mol eq/m2/s'
 
-   blidia3d(1)  = 'CHL'           , 'Diagnosed chlorophyll BLINGv0'               ,  'ug/m3'
+   blidia3d(1)  = 'CHL_bling'           , 'Diagnosed chlorophyll BLINGv0'               ,  'ug/m3'
    blidia3d(2)  = 'JPO4'          , 'PO4 sms    (z integral) BLINGv0 '            ,  'mol P/m2/s'
    blidia3d(3)  = 'JDOP'          , 'DOP sms    (z integral) BLINGv0 '            ,  'mol P/m2/s'
    blidia3d(4)  = 'JP_POP'        , 'POP source (z integral) BLINGv0'             ,  'mol P/m2/s'

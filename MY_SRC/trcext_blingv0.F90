@@ -314,13 +314,11 @@ CONTAINS
             ! Add the bottom flux trend [mol/m3]
             tr(ji,jj,ikb,jpPO4_bling,Kmm) = tr(ji,jj,ikb,jpPO4_bling,Kmm) + bpo4(ji,jj)*zrfact
             tr(ji,jj,ikb,jpFed_bling,Kmm) = tr(ji,jj,ikb,jpFed_bling,Kmm) + bfed(ji,jj)*zrfact
-            tr(ji,jj,ikb,jpOxy_bling,Kmm) = tr(ji,jj,ikb,jpOxy_bling,Kmm) + boxy(ji,jj)*zrfact
             tr(ji,jj,ikb,jpDIC_bling,Kmm) = tr(ji,jj,ikb,jpDIC_bling,Kmm) + bdic(ji,jj)*zrfact
             tr(ji,jj,ikb,jpalk_bling,Kmm) = tr(ji,jj,ikb,jpalk_bling,Kmm) + balk(ji,jj)*zrfact
 
             bpo4(ji,jj)=bpo4(ji,jj)*tmask(ji,jj,ikb)
             bfed(ji,jj)=bfed(ji,jj)*tmask(ji,jj,ikb)
-            boxy(ji,jj)=boxy(ji,jj)*tmask(ji,jj,ikb)
 
             !!! --- AGT: Nitrogen fluxes in bottom cell --- !!!
             ! Choose here not to calculate denitrification rates (as in MITgcm), or burial rates
@@ -335,13 +333,20 @@ CONTAINS
                     ! Nitrate [mol N/m2/s]
                     bno3(ji,jj) = fpon_b(ji,jj) - fbur - fden 
                     bno3(ji,jj) = MAX(bno3(ji,jj),0.e0)
-                    ! Also need to reduce oxygen consumption according to denitrification
+                    ! Oxygen consumption from 
+                    ! Also need to reduce oxygen consumption according to denitrification 
                     boxy(ji,jj) = boxy(ji,jj) + 1.25d0*fden
                     boxy(ji,jj) = MIN(boxy(ji,jj),0.e0)
 
                     tr(ji,jj,ikb,jpNO3_bling,Kmm) = tr(ji,jj,ikb,jpNO3_bling,Kmm) + bno3(ji,jj)*zrfact
                     bno3(ji,jj)=bno3(ji,jj)*tmask(ji,jj,ikb)
     !        ENDIF
+            tr(ji,jj,ikb,jpOxy_bling,Kmm) = tr(ji,jj,ikb,jpOxy_bling,Kmm) + boxy(ji,jj)*zrfact
+
+            ! add in benthic uptake of oxygen
+            boxy(ji,jj) = boxy(ji,jj) - fben
+
+            boxy(ji,jj)=boxy(ji,jj)*tmask(ji,jj,ikb)
 
          END DO
       END DO

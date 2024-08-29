@@ -55,7 +55,7 @@ CONTAINS
       NAMELIST/namblingremin/  wsink0_z, wsink0, wsink_acc, koxy, remin_min, phi_dop, phi_sm
       NAMELIST/namblingremin/  phi_lg, kappa_remin, gamma_dop, gamma_pop
       !!! --- AGT --- !!!
-      NAMELIST/namblingremin/  fden, fbur
+      NAMELIST/namblingremin/  fden, fbur, fben
       NAMELIST/namblingremin/  river_dop, river_don
       !!! ------ !!!
       NAMELIST/namblingairsea/ a_0, a_1, a_2, a_3, a_4, a_5, b_0, b_1, b_2, b_3, c_0
@@ -154,6 +154,7 @@ CONTAINS
       !!! --- AGT --- !!!
       fden     =fden/86400.d0
       fbur     =fbur/86400.d0
+      fben     =fben/86400.d0
       !!! ------ !!!
 
       IF (lwp) THEN                         
@@ -173,6 +174,8 @@ CONTAINS
          !!! --- AGT: parameters for nitrogen in sediment --- !!!
          WRITE(numout,*) '    rate of benthic denitrification                  fden        =', fden
          WRITE(numout,*) '    rate of sediment burial                          fbur        =', fbur
+         ! Oxygen consumption in benthos
+         WRITE(numout,*) '    rate of benthic oxygen consumption               fben        =', fben
          ! Also, global concentrations for DOM in river inflows...
          WRITE(numout,*) '    concentration of DOP in river runoff             river_dop   =', river_dop
          WRITE(numout,*) '    concentration of DON in river runoff             river_don   =', river_don

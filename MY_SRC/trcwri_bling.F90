@@ -23,9 +23,10 @@ CONTAINS
       END DO
 
       ! diagnostic tracers output
-!      CALL iom_put( "CHL_bling" , chl_bling(:,:,:) * tmask(:,:,:) )
-!      CALL iom_put( "co3_ion"   ,   co3_ion(:,:,:) * tmask(:,:,:) )
-!      CALL iom_put( "htotal"    ,    htotal(:,:,:) * tmask(:,:,:) )
+      CALL iom_put( "CHL_bling" , chl_bling(:,:,:) * tmask(:,:,:) )
+      CALL iom_put( "FPOP"      , fpop_b(:,:) * tmask(1,:,:) )
+      !CALL iom_put( "co3_ion"   ,   co3_ion(:,:,:) * tmask(:,:,:) )
+      !CALL iom_put( "htotal"    ,    htotal(:,:,:) * tmask(:,:,:) )
 
    END SUBROUTINE trc_wri_bling
 

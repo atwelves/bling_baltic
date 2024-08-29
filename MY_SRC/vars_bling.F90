@@ -103,9 +103,11 @@ MODULE vars_bling
    REAL(wp) :: kappa_remin
    REAL(wp) :: gamma_dop
    REAL(wp) :: gamma_pop
-   !!! --- AGT: Add variables for nitrogen in sediment --- !!!
+   !!! --- AGT: Add variables for nitrogen in bottom level --- !!!
    REAL(wp) :: fden
    REAL(wp) :: fbur
+   !...and benthic oxygen consumption....
+   REAL(wp) :: fben
    ! Also, add variables for organic matter in rivers...
    REAL(wp) :: river_dop
    REAL(wp) :: river_don
