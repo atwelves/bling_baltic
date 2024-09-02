@@ -341,10 +341,11 @@ CONTAINS
                     tr(ji,jj,ikb,jpNO3_bling,Kmm) = tr(ji,jj,ikb,jpNO3_bling,Kmm) + bno3(ji,jj)*zrfact
                     bno3(ji,jj)=bno3(ji,jj)*tmask(ji,jj,ikb)
     !        ENDIF
-            tr(ji,jj,ikb,jpOxy_bling,Kmm) = tr(ji,jj,ikb,jpOxy_bling,Kmm) + boxy(ji,jj)*zrfact
-
-            ! add in benthic uptake of oxygen
+            
+            ! add in benthic uptake of oxygen, based on...
             boxy(ji,jj) = boxy(ji,jj) - fben
+
+            tr(ji,jj,ikb,jpOxy_bling,Kmm) = tr(ji,jj,ikb,jpOxy_bling,Kmm) + boxy(ji,jj)*zrfact
 
             boxy(ji,jj)=boxy(ji,jj)*tmask(ji,jj,ikb)
 
