@@ -779,7 +779,7 @@ CONTAINS
                    ! [mol O2/m3/s]
                    !!! --- AGT: Include oxygen correction from nitrogen fixation --- !!!
 !                   IF ( ln_nitro ) THEN
-                           joxy(ji,jj,jk)=-oxy2p*jpo4(ji,jj,jk) - 1.25d0*jn_fix(ji,jj,jk)
+                           joxy(ji,jj,jk)=-oxy2p*jno3(ji,jj,jk)/n2p - 1.25d0*jn_fix(ji,jj,jk) + oxy2p*jn_fix(ji,jj,jk)/n2p
  !                  ELSE
   !                         joxy(ji,jj,jk)=-oxy2p*jpo4(ji,jj,jk)
  !                  ENDIF

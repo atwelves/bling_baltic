@@ -113,8 +113,8 @@ CONTAINS
          DO jj=1, jpj
             DO ji=1, jpi
                irr_mem(ji,jj,jk)=irr_mem(ji,jj,jk)                                                    &
-                                 + (irr_mix (ji,jj,jk)-irr_mem(ji,jj,jk))*MIN(1.d0,gam_irr_mem*rfact)*tmask(ji,jj,jk)
-                                 !+ (irr_inst (ji,jj,jk)-irr_mem(ji,jj,jk))*MIN(1.d0,gam_irr_mem*rfact)*tmask(ji,jj,jk)
+                                 !+ (irr_mix (ji,jj,jk)-irr_mem(ji,jj,jk))*MIN(1.d0,gam_irr_mem*rfact)*tmask(ji,jj,jk)
+                                 + (irr_inst (ji,jj,jk)-irr_mem(ji,jj,jk))*MIN(1.d0,gam_irr_mem*rfact)*tmask(ji,jj,jk)
             END DO
          END DO
       END DO

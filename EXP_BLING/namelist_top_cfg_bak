@@ -5,14 +5,6 @@
 &namtrc_run      !   run information
 !-----------------------------------------------------------------------
    ln_top_euler  = .false.
-   ln_rsttr      = .false.   !  start from a restart file (T) or not (F)
-   nn_rsttr      =   0       !  restart control = 0 initial time step is not compared to the restart file value
-                             !                  = 1 do not use the value in the restart file
-                             !                  = 2 calendar parameters read in the restart file
-   cn_trcrst_in  = "restart_trc"   !  suffix of pass. sn_tracer restart name (input)
-   cn_trcrst_indir = "."           !  directory from which to read input passive tracer restarts
-   cn_trcrst_out = "restart_trc"   !  suffix of pass. sn_tracer restart name (output)
-   cn_trcrst_outdir = "."          !  directory to which to write output passive tracer restarts
 /
 !-----------------------------------------------------------------------
 &namtrc          !   tracers definition
@@ -49,22 +41,22 @@
 !-----------------------------------------------------------------------
 !                !  file name   ! frequency (hours) ! variable  ! time interp. !  clim  ! 'yearly'/ ! weights  ! rotation ! land/sea mask !
 !                !              !  (if <0  months)  !   name    !   (logical)  !  (T/F) ! 'monthly' ! filename ! pairing  ! filename      !
-   sn_trcdta(1)  = 'init_iow_Jan2020_4.nc',        -12       ,  't_po4'    ,    .false.   , .true. , 'yearly'  , ''       , ''   , ''
-   sn_trcdta(2)  = 'init_iow_Jan2020_4.nc',        -12       ,  't_dop'   ,    .false.   , .true. , 'yearly'  , ''       , ''   , ''
-   sn_trcdta(3)  = 'ergom_t_fe.nc',                 -12       ,  'ergom_t_fe'   ,    .false.    , .true. , 'yearly'  , ''       , ''   , ''
-   sn_trcdta(4)  = 'init_iow_Jan2020.nc',          -12       ,  't_o2'    ,    .false.    , .true. , 'yearly'  , ''       , ''   , ''
-   sn_trcdta(5)  = 'init_iow_Jan2020_4.nc',        -12       ,  't_dic'    ,    .false.    , .true. , 'yearly'  , ''       , ''   , ''
-   sn_trcdta(6)  = 'init_iow_Jan2020_4.nc',        -12       ,  't_alk'    ,    .false.    , .true. , 'yearly'  , ''       , ''   , ''
-   sn_trcdta(7)  = 'init_iow_Jan2020_4.nc',        -12       ,  't_no3'    ,    .false.    , .true. , 'yearly'  , ''       , ''   , ''
-   sn_trcdta(8)  = 'init_iow_Jan2020_4.nc',        -12       ,  't_don'   ,    .false.    , .true. , 'yearly'  , ''       , ''   , ''
-   rn_trfac(1)   = 1e3   !  multiplicative factor
-   rn_trfac(2)   = 1e3
-   rn_trfac(3)   = 1e3  
-   rn_trfac(4)   = 1e3
-   rn_trfac(5)   = 1e3
-   rn_trfac(6)   = 1e3   
-   rn_trfac(7)   = 1e3  !  multiplicative factor
-   rn_trfac(8)   = 1e3
+   sn_trcdta(1)  = 'init_po4.nc',        -12       ,  'ergom_t_po4'    ,    .false.   , .true. , 'yearly'  , ''       , ''   , ''
+   sn_trcdta(2)  = 'init_po4.nc',        -12       ,  'ergom_t_po4'   ,    .false.   , .true. , 'yearly'  , ''       , ''   , ''
+   sn_trcdta(3)  = 'init_iron.nc',        -12      ,  'ergom_t_po4'   ,    .false.    , .true. , 'yearly'  , ''       , ''   , ''
+   sn_trcdta(4)  = 'init_o2.nc',        -12        ,  'ergom_t_o2'    ,    .false.    , .true. , 'yearly'  , ''       , ''   , ''
+   sn_trcdta(5)  = 'init_dic.nc',        -12       ,  'ergom_t_dic'    ,    .false.    , .true. , 'yearly'  , ''       , ''   , ''
+   sn_trcdta(6)  = 'init_alk.nc',        -12       ,  'ergom_t_alk'    ,    .false.    , .true. , 'yearly'  , ''       , ''   , ''
+   sn_trcdta(7)  = 'init_no3.nc',        -12       ,  'ergom_t_no3'    ,    .false.    , .true. , 'yearly'  , ''       , ''   , ''
+   sn_trcdta(8)  = 'init_no3.nc',        -12       ,  'ergom_t_no3'   ,    .false.    , .true. , 'yearly'  , ''       , ''   , ''
+   rn_trfac(1)   = 1.0   !  multiplicative factor
+   rn_trfac(2)   = 0.1
+   rn_trfac(3)   = 1.0  
+   rn_trfac(4)   = 1.0
+   rn_trfac(5)   = 1.0
+   rn_trfac(6)   = 1.0   
+   rn_trfac(7)   = 1.0  !  multiplicative factor
+   rn_trfac(8)   = 0.1
 /
 !-----------------------------------------------------------------------
 &namtrc_adv      !   advection scheme for passive tracer                (default: NO selection)
@@ -83,7 +75,6 @@
 !-----------------------------------------------------------------------
 &namtrc_rad      !  treatment of negative concentrations 
 !-----------------------------------------------------------------------
-   ln_trcrad     =  .false.   !  artificially correct negative concentrations (T) or not (F)
 /
 !-----------------------------------------------------------------------
 &namtrc_snk      !  sedimentation of particles
@@ -106,53 +97,40 @@
 !-----------------------------------------------------------------------
    cn_dir_sbc    =  './'     !  root directory for the location of SURFACE data files
    cn_dir_cbc    =  './'     !  root directory for the location of COASTAL data files
-   cn_dir_obc    =  './ergom_obcs/'
-!                   !  file name  ! frequency (hours) ! variable  ! time interp. !  clim    ! 'yearly'/ ! weights  ! rotation ! land/sea mask !
-!                   !             !  (if <0  months)  !   name    !   (logical)  !  (T/F)   ! 'monthly' ! filename ! pairing  ! filename      !
-   sn_trcobc(1) = 'ERGOM_OBC',          -12             , 'dummy'     ,   .false.     , .false. , 'yearly'   , ''       , ''       , ''
-
-  cn_tronam(1)  = 'po4'    !  Tracer-name to variable-name translation
-  cn_tronam(2)  = 'po4'    !  Tracer-name to variable-name translation
-  cn_tronam(3)  = 'fe'    !  Tracer-name to variable-name translation
-  cn_tronam(4)  = 'oxy'    !  Tracer-name to variable-name translation
-  cn_tronam(5)  = 'dic'    !  Tracer-name to variable-name translation
-  cn_tronam(6)  = 'dic'    !  Tracer-name to variable-name translation
-  cn_tronam(7)  = 'no3'    !  Tracer-name to variable-name translation
-  cn_tronam(8)  = 'no3'    !  Tracer-name to variable-name translation
-
-!rn_trofac  ! ! multiplicative factor for tracer values
-   rn_trofac(1) = 1e-3
-   rn_trofac(2) = 1e-4
-   rn_trofac(3) = 1e-2
-   rn_trofac(4) = 1e-3
-   rn_trofac(5) = 1e-3
-   rn_trofac(6) = 1e-3
-   rn_trofac(7) = 1e-3
-   rn_trofac(8) = 1e-4
-
-   ln_rnf_ctl    = .false.   !  Remove runoff dilution on tracers with absent river load
-   rn_sbc_time   =  1.   !  Time scaling factor for SBC data (seconds in a day)
-   rn_cbc_time   =  1.   !  Time scaling factor for CBC data (seconds in a day)
+   cn_dir_obc    =  './balmfc_bdy/'     !  root directory for the location of OPEN data files
+   !                !  file name        ! frequency (hours) ! variable      ! time interp. !  clim  ! 'yearly'/ ! weights  ! rotation ! land/sea mask !
+   !                !                   !  (if <0  months)  !   name        !   (logical)  !  (T/F) ! 'monthly' ! filename ! pairing  ! filename      !
+   sn_trcobc(1)  =  'bdy_ts'           ,        1       , 'vosaline',    .true.   , .false. , 'daily'  , ''       , ''       , ''          !
+   sn_trcobc(2)  =  'bdy_ts'           ,        1        , 'vosaline' ,   .true.   , .false.,  'daily'  , ''       , ''       , ''          !
+   sn_trcobc(3)  =  'bdy_ts'           ,        1       , 'vosaline',    .true.   , .false. , 'daily'  , ''       , ''       , ''          !
+   sn_trcobc(4)  =  'bdy_ts'           ,        1        , 'vosaline' ,   .true.   , .false.,  'daily'  , ''       , ''       , ''          !   
+   sn_trcobc(5)  =  'bdy_ts'           ,        1       , 'vosaline',    .true.   , .false. , 'daily'  , ''       , ''       , ''          !
+   sn_trcobc(6)  =  'bdy_ts'           ,        1        , 'vosaline' ,   .true.   , .false.,  'daily'  , ''       , ''       , ''          !
+   sn_trcobc(7)  =  'bdy_ts'           ,        1       , 'vosaline',    .true.   , .false. , 'daily'  , ''       , ''       , ''          !
+   sn_trcobc(8)  =  'bdy_ts'           ,        1        , 'vosaline' ,   .true.   , .false.,  'daily'  , ''       , ''       , ''          !
+   rn_trofac(1)  =  0.001
+   rn_trofac(2)  =  1.0
+   rn_trofac(3)  =  1.0
+   rn_trofac(4)  =  0.001
+   rn_trofac(5)  =  0.001
+   rn_trofac(6)  =  0.001
+   rn_trofac(7)  =  0.001
+   rn_trofac(8)  =  1.0
+   ln_rnf_ctl    = .true.   !  Remove runoff dilution on tracers with absent river load
+   rn_sbc_time   =  86400.   !  Time scaling factor for SBC data (seconds in a day)
+   rn_cbc_time   =  86400.   !  Time scaling factor for CBC data (seconds in a day)
 /
 !----------------------------------------------------------------------
 &namtrc_bdy      !   Setup of tracer boundary conditions
 !-----------------------------------------------------------------------
-   cn_trc_dflt   = 'neumann' !  OBC applied by default to all tracers
-   cn_trc        = 'frs' !'none'    !  Boundary conditions used for tracers with data files (selected in namtrc)
-   cn_trc(1)     = 'frs'
-   cn_trc(2)     = 'frs'
-   cn_trc(3)     = 'frs'
-   cn_trc(4)     = 'frs' 
-   cn_trc(5)     = 'frs'
-   cn_trc(6)     = 'frs'
-   cn_trc(7)     = 'frs'
-   cn_trc(8)     = 'frs'
-   nn_trcdmp_bdy = 0         !  Use damping timescales defined in nambdy of namelist
-                             !  = 0 NO damping of tracers at open boudaries
-                             !  = 1 Only for tracers forced with external data
-                             !  = 2 Damping applied to all tracers
-   ln_zintobc    = .false.   ! T if a vertical interpolation is required. Variables gdep[t] and e3[t] must exist in the file
-                             !  automatically defined to T if the number of vertical levels in bdy dta /= jpk
+   cn_trc(1)  = 'frs'
+   cn_trc(2)  = 'frs'
+   cn_trc(3)  = 'frs'
+   cn_trc(4)  = 'frs'
+   cn_trc(5)  = 'frs'
+   cn_trc(6)  = 'frs'
+   cn_trc(7)  = 'frs'
+   cn_trc(8)  = 'frs'
 /
 !-----------------------------------------------------------------------
 &namtrc_ais      !  Representation of Antarctic Ice Sheet tracers supply
