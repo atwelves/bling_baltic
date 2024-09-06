@@ -350,7 +350,7 @@ CONTAINS
                mulamb0expkT = mu(ji,jj,jk)/(lambda0*expkT(ji,jj,jk))  ![no units]
                biomass_p_ts = p_star*mulamb0expkT*(1.d0+(mulamb0expkT)**2)
 
-               IF (kt==nittrc000) biomass_p(ji,jj,jk)=biomass_p_ts
+               IF (kt==nittrc000) biomass_p(ji,jj,jk)=epsln
 
                biomass_p(ji,jj,jk) =   biomass_p(ji,jj,jk) &
                                     + (biomass_p_ts-biomass_p(ji,jj,jk))*MIN(1.d0,gam_biomass*rfact)!*tmask(ji,jj,jk)
@@ -359,7 +359,7 @@ CONTAINS
               ! IF ( ln_nitro ) THEN
                        mulamb0expkT_diaz = mu_diaz(ji,jj,jk)/(lambda0*expkT(ji,jj,jk))  ![no units]
                        biomass_p_ts_diaz = p_star*mulamb0expkT_diaz*(1.d0+(mulamb0expkT_diaz)**2)
-                       IF (kt==nittrc000) biomass_p_diaz(ji,jj,jk)=biomass_p_ts_diaz
+                       IF (kt==nittrc000) biomass_p_diaz(ji,jj,jk)=epsln
 
                        biomass_p_diaz(ji,jj,jk) =   biomass_p_diaz(ji,jj,jk) &
                                     + (biomass_p_ts_diaz-biomass_p_diaz(ji,jj,jk))*MIN(1.d0,gam_biomass*rfact)!*tmask(ji,jj,jk)
@@ -586,8 +586,12 @@ CONTAINS
             ! Remineralization lengthscale (oxygen dependent process)
             ! [mol O2/m3/s]
             foxy = tr(ji,jj,jk,jpOxy_bling,Kmm)       
+            IF (foxy>oxy_min) THEN
             ! [no units]
-            oxy_up =foxy**2 / (koxy**2 + foxy**2) 
+                oxy_up =foxy**2 / (koxy**2 + foxy**2) 
+            ELSE
+                oxy_up = 0.0d0
+            ENDIF
             ! [m-1]
             zremin(ji,jj,jk) =gamma_pop*(oxy_up*(1.d0-remin_min)+remin_min)/(epsln+wsink)
 
@@ -678,7 +682,12 @@ CONTAINS
 
                ! Phosphorous
                foxy = tr(ji,jj,jk,jpOxy_bling,Kmm)
-               oxy_up =foxy**2 / (koxy**2 + foxy**2)
+               
+               IF (foxy>oxy_min) THEN
+                  oxy_up=foxy**2 / (koxy**2 + foxy**2)
+               ELSE
+                  oxy_up=0.0d0
+               ENDIF
                ! [m-1]
                zremin(ji,jj,jk) =gamma_pop*(oxy_up*(1.d0-remin_min)+remin_min)/(epsln+wsink)
 
@@ -792,7 +801,9 @@ CONTAINS
 
                 tr(ji,jj,jk,jpPO4_bling,Krhs) = MAX(-tr(ji,jj,jk,jpPO4_bling,Kmm),jpo4(ji,jj,jk)*rfact)
                 tr(ji,jj,jk,jpDOP_bling,Krhs) = MAX(-tr(ji,jj,jk,jpDOP_bling,Kmm),jdop(ji,jj,jk)*rfact)
-                tr(ji,jj,jk,jpOxy_bling,Krhs) = MAX(-tr(ji,jj,jk,jpOxy_bling,Kmm),joxy(ji,jj,jk)*rfact)
+                !!! AGT - try allowing negative oxygen
+                tr(ji,jj,jk,jpOxy_bling,Krhs) = joxy(ji,jj,jk)*rfact
+                !tr(ji,jj,jk,jpOxy_bling,Krhs) = MAX(-tr(ji,jj,jk,jpOxy_bling,Kmm),joxy(ji,jj,jk)*rfact)
                 tr(ji,jj,jk,jpFed_bling,Krhs) = MAX(-tr(ji,jj,jk,jpFed_bling,Kmm),jfed(ji,jj,jk)*rfact)
                 tr(ji,jj,jk,jpDIC_bling,Krhs) = MAX(-tr(ji,jj,jk,jpDIC_bling,Kmm),jdic(ji,jj,jk)*rfact)
                 tr(ji,jj,jk,jpalk_bling,Krhs) = MAX(-tr(ji,jj,jk,jpalk_bling,Kmm),jalk(ji,jj,jk)*rfact)

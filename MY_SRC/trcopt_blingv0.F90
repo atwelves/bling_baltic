@@ -73,10 +73,12 @@ CONTAINS
       DO ji=1, jpi
          DO jj=1, jpj
                !One-wavelength biopt
-               zparr=qsr(ji,jj)*0.43d0
+               !!! AGT fix here!!!
+               zkr   = xkr0 + xkrp * chl_bling(ji,jj,1)
+               zparr = qsr(ji,jj)*0.43d0 
+               zparr = zparr * EXP(-zkr*0.5d0*e3t(ji,jj,1,Kmm))
                irr_inst(ji,jj,1)=zparr
-               irr_mix (ji,jj,1)=zparr
-               
+               irr_mix (ji,jj,1)=zparr               
                kblt=1
                !Irradiance at the surface
                sumz_irrad_ML=irr_mix(ji,jj,1)*e3t(ji,jj,1,Kmm)
@@ -85,8 +87,9 @@ CONTAINS
                DO jk=2, jpk
                
                   zkr   = xkr0 + xkrp * chl_bling(ji,jj,jk-1)
-                  zparr = zparr * EXP(-zkr*e3t(ji,jj,jk-1,Kmm))
-                  
+                  zparr = zparr * EXP(-zkr*0.5d0*e3t(ji,jj,jk-1,Kmm))
+                  zkr   = xkr0 + xkrp * chl_bling(ji,jj,jk)
+                  zparr = zparr * EXP(-zkr*0.5d0*e3t(ji,jj,jk,Kmm))
                   irr_inst(ji,jj,jk)=zparr
                   irr_mix (ji,jj,jk)=irr_inst(ji,jj,jk)
                
@@ -105,7 +108,7 @@ CONTAINS
       END DO
 
       ! Initialize memory irradiance
-      IF (kt==nittrc000) irr_mem(:,:,:)=irr_mix(:,:,:)
+      IF (kt==nittrc000) irr_mem(:,:,:)=irr_inst(:,:,:)
       !WRITE(numout,*) '   ==>>>   AGT: irradiance memory initialised ' 
       ! Phytoplankton photoadaptation timescale
       ! Forward time-stepping for memory irradiance
