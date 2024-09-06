@@ -87,7 +87,7 @@
    xlb      = 1.0      ! blue chl exposant for absorption
    rpig     = 0.7        ! chla/chla+pheo ratio
    rcchl    = 60.        ! Carbone/Chlorophyl ratio              [mgC.mgChla-1]
-   gam_irr_mem = 2.0       ! photoadaptation time constant         [d-1]
+   gam_irr_mem = 1.0       ! photoadaptation time constant         [d-1]
 /
 !'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
 &namblingremin    !   Remineralization parameters
@@ -105,6 +105,7 @@
    gamma_pop   = 0.10d0      ! remineralization rate of sinking POM           [d-1]
    fden        = 0.0003      ! rate of benthic denitrification                [mol N m-2 d-1]
    fbur        = 0.0003      ! rate of sediment burial                        [mol N m-2 d-1]
+   ! follow Niemistö et al. 2018
    fben        = 0.02        ! rate of benthic oxygen consumption             [mol O2 m-2 d-1]
    river_dop   = 0.00001      ! concentration of dop in river inflow           [mol P m-3]  
    river_don   = 0.0001        ! concentration of don in river inflow           [mol N m-3]
