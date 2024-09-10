@@ -52,6 +52,7 @@ CONTAINS
       NAMELIST/namblingopt/    xkr0, xkb0, xkrp, xkbp, xlr, xlb, rpig, rcchl, gam_irr_mem
       NAMELIST/namblingprod/   pc_0, kappa_eppley, kpo4, kfe, fe2p_max, kfe2p_up, def_fe_min, thetamax_lo, thetamax_hi
       NAMELIST/namblingprod/   alpha_min, alpha_max, resp_frac, p_star, lambda0, gam_biomass, ln_nitro, kno3
+      NAMELIST/namblingprod/   sn_biomass_init, cn_dir_biomass_init
       NAMELIST/namblingremin/  wsink0_z, wsink0, wsink_acc, koxy, remin_min, phi_dop, phi_sm
       NAMELIST/namblingremin/  phi_lg, kappa_remin, gamma_dop, gamma_pop
       !!! --- AGT --- !!!
@@ -101,6 +102,7 @@ CONTAINS
       REWIND (numnatg)
       READ   (numnatg, namblingprod)
 
+      pc_0       =    pc_0/86400.d0
       lambda0    =    lambda0/86400.d0
       gam_biomass=gam_biomass/86400.d0
 

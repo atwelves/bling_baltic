@@ -41,7 +41,7 @@ MODULE vars_bling
    REAL(wp), PUBLIC :: rfact
    REAL(wp), PUBLIC, PARAMETER :: epsln=1.0e-30
    ! Minimum chl value allowed for numerical stability
-   REAL(wp), PUBLIC, PARAMETER :: chl_min=1.e-5 ![ug chl/kg]
+   REAL(wp), PUBLIC, PARAMETER :: chl_min=1.e-8 !mg chl/kg]
 
    !! Stochiometric ratios
    !! ----------------------
@@ -77,7 +77,10 @@ MODULE vars_bling
    LOGICAL  :: ln_nitro
    REAL(wp) :: kno3
    !ENDIF 
-   
+   ! Initial biomass
+   TYPE(FLD_N) :: sn_biomass_init
+   CHARACTER(len=100) :: cn_dir_biomass_init 
+
    !! Optical parameters                                
    !! ------------------                                
    REAL(wp) ::   xkr0     !: water coefficient absorption in red      (NAMELIST)

@@ -24,6 +24,9 @@ MODULE trcsms_blingv0
    PRIVATE
 
    PUBLIC   trc_sms_bling       ! called by trcsms.F90 module
+   PUBLIC   trc_sms_init_bling
+
+   TYPE(FLD), ALLOCATABLE, DIMENSION(:) :: sf_biomass_init ! structure of input fields (file informations, fields read)
 
 #include "domzgr_substitute.h90"
 
@@ -332,7 +335,7 @@ CONTAINS
                mu(ji,jj,jk) = MAX (0.d0,pc_tot-resp_frac*pc_m(ji,jj,jk))
                !!! --- AGT --- !!!
               ! IF ( ln_nitro ) THEN
-               mu_diaz = MAX (0.d0,pc_tot_diaz-resp_frac*pc_m_diaz(ji,jj,jk))
+               mu_diaz(ji,jj,jk) = MAX (0.d0,pc_tot_diaz-resp_frac*pc_m_diaz(ji,jj,jk))
               ! ENDIF
                !!! ------ !!!
                !-----------------------------------------------------------------------
@@ -350,7 +353,7 @@ CONTAINS
                mulamb0expkT = mu(ji,jj,jk)/(lambda0*expkT(ji,jj,jk))  ![no units]
                biomass_p_ts = p_star*mulamb0expkT*(1.d0+(mulamb0expkT)**2)
 
-               IF (kt==nittrc000) biomass_p(ji,jj,jk)=epsln
+               !IF (kt==nittrc000) biomass_p(ji,jj,jk)=epsln
 
                biomass_p(ji,jj,jk) =   biomass_p(ji,jj,jk) &
                                     + (biomass_p_ts-biomass_p(ji,jj,jk))*MIN(1.d0,gam_biomass*rfact)!*tmask(ji,jj,jk)
@@ -359,7 +362,7 @@ CONTAINS
               ! IF ( ln_nitro ) THEN
                        mulamb0expkT_diaz = mu_diaz(ji,jj,jk)/(lambda0*expkT(ji,jj,jk))  ![no units]
                        biomass_p_ts_diaz = p_star*mulamb0expkT_diaz*(1.d0+(mulamb0expkT_diaz)**2)
-                       IF (kt==nittrc000) biomass_p_diaz(ji,jj,jk)=epsln
+                       !IF (kt==nittrc000) biomass_p_diaz(ji,jj,jk)=epsln
 
                        biomass_p_diaz(ji,jj,jk) =   biomass_p_diaz(ji,jj,jk) &
                                     + (biomass_p_ts_diaz-biomass_p_diaz(ji,jj,jk))*MIN(1.d0,gam_biomass*rfact)!*tmask(ji,jj,jk)
@@ -377,10 +380,10 @@ CONTAINS
                ! Chl:C ration [g chl/g C]
                theta   = thetamax_fe / (1.d0 + (thetamax_fe*alpha_chl*irr_mem(ji,jj,jk))/(2.d0*pc_m(ji,jj,jk)+epsln) )
 
-               ! Chl biomass [ug chl/m3]
+               ! Chl biomass [mg chl/m3]
                !!! --- AGT: include diazotrophs in chlorophyll calculation --- !!!
               ! IF ( ln_nitro ) THEN
-                       chl_dia = (biomass_p(ji,jj,jk)+biomass_p_diaz(ji,jj,jk)) * c2p * 12.011e+6 * theta
+                       chl_dia = (biomass_p(ji,jj,jk)+biomass_p_diaz(ji,jj,jk)) * c2p * 12.011e+3 * theta
               ! ELSE
                !!! ------ !!!
               ! chl_dia = biomass_p(ji,jj,jk) * c2p * 12.011e+6 * theta !* tmask(ji,jj,jk) 
@@ -570,6 +573,22 @@ CONTAINS
             ! calculations since there is no prognostic silica cycle 
             ! GFDL subroutine used to compute H+ that includes the OCMIP2 protocol
             !---------------------------------------------------------------------
+            
+            !!! --- AGT --- !!!
+            ! Here try to account for decaying biomass. If growth rate is <0 then 
+            ! change in biomass = - adjustment time scale x biomass
+            ! assume that this leads to a sinking flux of particulate organic matter
+            !
+            ! Hence after production ends, the biomass field effectively acts as 
+            ! a detritus field.  Note that with this modification there is now 
+            ! a non-conservative term in the N/P budgets!
+            
+            IF ( mulamb0expkT<0 .AND. mulamb0expkT_diaz<0 ) THEN
+                    jp_pop(ji,jj,jk) = - (biomass_p(ji,jj,jk) + biomass_p_diaz(ji,jj,jk))*MIN(1.d0,gam_biomass*rfact)
+                    jn_pon(ji,jj,jk) = n2p * jp_pop(ji,jj,jk)
+            ENDIF
+                        
+            !!! ------ !!!
 
             ! k=1: surface layer
             jk=1
@@ -594,9 +613,11 @@ CONTAINS
             ENDIF
             ! [m-1]
             zremin(ji,jj,jk) =gamma_pop*(oxy_up*(1.d0-remin_min)+remin_min)/(epsln+wsink)
+            
 
             ! [mol P/m2/s]
             fpop(ji,jj,jk)    = jp_pop(ji,jj,jk)*e3t(ji,jj,jk,Kmm)/(1.d0+e3t(ji,jj,jk,Kmm)*zremin(ji,jj,jk)) 
+            
             ! [mol P/m3/s]
             jp_remin(ji,jj,jk)=(jp_pop(ji,jj,jk)*e3t(ji,jj,jk,Kmm)-fpop(ji,jj,jk))/(epsln+e3t(ji,jj,jk,Kmm))
 
@@ -1192,5 +1213,21 @@ CONTAINS
 9500  FORMAT(i10,2(3x,e18.10))
 
    END SUBROUTINE trc_sms_bling_mass_conserv
+   
+   SUBROUTINE trc_sms_init_bling
+
+        INTEGER  :: numbio, kt 
+
+         !!! --- AGT: Add option to read in initial biomass --- !!!
+        ALLOCATE( sf_biomass_init(1) )
+        CALL fld_fill( sf_biomass_init, (/ sn_biomass_init /), cn_dir_biomass_init, 'trc_sms_init_bling', 'Initial biomass ', 'namblingprod' )
+        ALLOCATE( sf_biomass_init(1)%fnow(jpi,jpj,jpk)   )
+        ! Doesn't work for time interpolation !
+        !CALL fld_read( kt, 1, sf_biomass_init ) 
+        !biomass_p(:,:,:) = sf_biomass_init(1)%fnow(:,:,:)     
+        CALL iom_open (  TRIM( sn_biomass_init%clname ) , numbio ) 
+        CALL iom_get( numbio, jpdom_global, TRIM( sn_biomass_init%clvar ), biomass_p(:,:,:) )
+   
+   END SUBROUTINE trc_sms_init_bling
 
 END MODULE trcsms_blingv0

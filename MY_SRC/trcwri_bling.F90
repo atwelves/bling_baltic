@@ -25,6 +25,7 @@ CONTAINS
       ! diagnostic tracers output
       CALL iom_put( "CHL_bling" , chl_bling(:,:,:) * tmask(:,:,:) )
       CALL iom_put( "FPOP"      , fpop_b(:,:) * tmask(1,:,:) )
+      CALL iom_put( "BIOMASS_P" , biomass_p(:,:,:) * tmask(:,:,:) )
       !CALL iom_put( "co3_ion"   ,   co3_ion(:,:,:) * tmask(:,:,:) )
       !CALL iom_put( "htotal"    ,    htotal(:,:,:) * tmask(:,:,:) )
 

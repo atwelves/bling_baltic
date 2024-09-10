@@ -100,6 +100,7 @@ CONTAINS
 
       CALL trc_opt_bling_init
       CALL trc_ext_init_bling
+      CALL trc_sms_init_bling
 
       ! Data from Mauna Loa station (ftp://aftp.cmdl.noaa.gov/products/trends/co2/co2_annmean_mlo.txt) 1959-2018
     !  pco2= (/ 315.97,316.91,317.64,318.45,318.99,319.62,320.04,321.38,322.16,323.04 &
