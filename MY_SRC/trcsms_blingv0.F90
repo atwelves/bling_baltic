@@ -583,16 +583,20 @@ CONTAINS
             ! Hence after production ends, the biomass field effectively acts as 
             ! a detritus field.  Note that with this modification there is now 
             ! a non-conservative term in the N/P budgets!
-            
-            IF ( mulamb0expkT<0 .AND. mulamb0expkT_diaz<0 ) THEN
-                    jp_pop(ji,jj,jk) = - (biomass_p(ji,jj,jk) + biomass_p_diaz(ji,jj,jk))*MIN(1.d0,gam_biomass*rfact)
-                    jn_pon(ji,jj,jk) = n2p * jp_pop(ji,jj,jk)
-            ENDIF
                         
             !!! ------ !!!
 
             ! k=1: surface layer
             jk=1
+
+            IF ( jp_uptake(ji,jj,jk) < epsln ) THEN
+                    jp_pop(ji,jj,jk) = jp_pop(ji,jj,jk) + (biomass_p(ji,jj,jk) + biomass_p_diaz(ji,jj,jk))*MIN(1.d0,gam_biomass*rfact)
+            ENDIF
+
+            IF ( jn_uptake(ji,jj,jk) < epsln ) THEN
+                    jn_pon(ji,jj,jk) = jp_pop(ji,jj,jk) + n2p * (biomass_p(ji,jj,jk) + biomass_p_diaz(ji,jj,jk))*MIN(1.d0,gam_biomass*rfact)
+            ENDIF
+
             ! [m]
             zzz  =e3t(ji,jj,jk,Kmm)
 
@@ -689,6 +693,14 @@ CONTAINS
 
             ! k=2:NK: rest of the water column
             DO jk=2, jpk
+
+               IF ( jp_uptake(ji,jj,jk) < epsln ) THEN
+                    jp_pop(ji,jj,jk) = jp_pop(ji,jj,jk) + (biomass_p(ji,jj,jk) + biomass_p_diaz(ji,jj,jk))*MIN(1.d0,gam_biomass*rfact)
+               ENDIF
+
+               IF ( jn_uptake(ji,jj,jk) < epsln ) THEN
+                    jn_pon(ji,jj,jk) = jp_pop(ji,jj,jk) + n2p * (biomass_p(ji,jj,jk) + biomass_p_diaz(ji,jj,jk))*MIN(1.d0,gam_biomass*rfact)
+               ENDIF
 
                fpopkm1 = fpop(ji,jj,jk-1)
                fcaco3km1 = fcaco3(ji,jj,jk-1)
