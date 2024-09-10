@@ -352,8 +352,9 @@ CONTAINS
                ! Biomass (units of pstar [mol P/m3])
                mulamb0expkT = mu(ji,jj,jk)/(lambda0*expkT(ji,jj,jk))  ![no units]
                biomass_p_ts = p_star*mulamb0expkT*(1.d0+(mulamb0expkT)**2)
-
-               !IF (kt==nittrc000) biomass_p(ji,jj,jk)=epsln
+               
+               ! correct units!
+               IF (kt==nittrc000) biomass_p(ji,jj,jk)=1.d3 * biomass_p(ji,jj,jk)
 
                biomass_p(ji,jj,jk) =   biomass_p(ji,jj,jk) &
                                     + (biomass_p_ts-biomass_p(ji,jj,jk))*MIN(1.d0,gam_biomass*rfact)!*tmask(ji,jj,jk)
@@ -362,7 +363,7 @@ CONTAINS
               ! IF ( ln_nitro ) THEN
                        mulamb0expkT_diaz = mu_diaz(ji,jj,jk)/(lambda0*expkT(ji,jj,jk))  ![no units]
                        biomass_p_ts_diaz = p_star*mulamb0expkT_diaz*(1.d0+(mulamb0expkT_diaz)**2)
-                       !IF (kt==nittrc000) biomass_p_diaz(ji,jj,jk)=epsln
+                       IF (kt==nittrc000) biomass_p_diaz(ji,jj,jk)=epsln
 
                        biomass_p_diaz(ji,jj,jk) =   biomass_p_diaz(ji,jj,jk) &
                                     + (biomass_p_ts_diaz-biomass_p_diaz(ji,jj,jk))*MIN(1.d0,gam_biomass*rfact)!*tmask(ji,jj,jk)
@@ -1218,7 +1219,7 @@ CONTAINS
 
         INTEGER  :: numbio, kt 
 
-         !!! --- AGT: Add option to read in initial biomass --- !!!
+         !!! --- AGT: Add option to read in initial biomass, assumed in mol/kg...  --- !!!
         ALLOCATE( sf_biomass_init(1) )
         CALL fld_fill( sf_biomass_init, (/ sn_biomass_init /), cn_dir_biomass_init, 'trc_sms_init_bling', 'Initial biomass ', 'namblingprod' )
         ALLOCATE( sf_biomass_init(1)%fnow(jpi,jpj,jpk)   )
