@@ -56,7 +56,7 @@
 !'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
 &namblingprod   !   Production parameters
 !,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
-   pc_0         = 1.d-5        ! Maximum carbon-specific growth rate at 0C              [s-1]
+   pc_0         = 5.0        ! Maximum carbon-specific growth rate at 0C              [d-1]
    kappa_eppley = 0.063        ! Temperature dependence of growth                       [(deg C)-1]
    kpo4         = 1.d-4        ! PO4 uptake half-saturation constant                    [mol P m-3]
    kfe          = 8.d-7        ! Dissolved Fe uptake half-saturation constant           [mol Fe m-3]
@@ -73,6 +73,10 @@
    gam_biomass  = 0.1          ! Biomass adjustment time constant                       [d-1] 
    ln_nitro     = .true.      ! Enable nitrogen cycle (T) or use original BLING (F)
    kno3         = 0.001        ! Nitrate uptake half saturation constant                [mol N m-3]
+   cn_dir_biomass_init     = './'    !  root directory for the location of the initial biomass file
+!              !  file name        ! frequency (hours) ! variable    ! time interp. !  clim  ! 'yearly'/ ! weights  ! rotation !
+!              !                   !  (if <0  months)  !   name      !   (logical)  !  (T/F) ! 'monthly' ! filename ! pairing  !
+   sn_biomass_init = 'init_iow_Jan2020_4.nc',        -12       ,  't_pocp'    ,    .false.   , .true. , 'yearly'  , ''       , '',  ''
 /
 !'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
 &namblingopt     !   Optical parameters
@@ -163,7 +167,7 @@
 
 !              !  file name        ! frequency (hours) ! variable    ! time interp. !  clim  ! 'yearly'/ ! weights  ! rotation !
 !              !                   !  (if <0  months)  !   name      !   (logical)  !  (T/F) ! 'monthly' ! filename ! pairing  !
-   sn_dust_bling    = 'FORCE' ,     1            , 'GlobalRadiationFlux'      ,  .true.      , .false. ,   'daily'  , 'weights_bilin' , ''
+!   sn_dust_bling    = 'FORCE' ,     1            , 'GlobalRadiationFlux'      ,  .true.      , .false. ,   'daily'  , 'weights_bilin' , ''
 
 !   
    kfe_eq_lig_max   = 8.e7    ! Equilibrium constant for iron binding with organic ligands [mol lig-1 m-3]

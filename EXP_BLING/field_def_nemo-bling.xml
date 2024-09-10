@@ -26,7 +26,8 @@
     <field id="voalk"         long_name="Total alkalinity concentration"        unit="mol/m³" />
     <field id="vono3"        long_name="Dissolved nitrate"        unit="mol/m³" />
     <field id="vodon"         long_name="Dissolved nitrogen concentration"        unit="mol/m³" />
-    <field id="CHL_bling"     long_name="Chlorophyll concentration"    unit="ug/m³" />
+    <field id="CHL_bling"     long_name="Chlorophyll concentration"    unit="mg/m³" />
+    <field id="BIOMASS_P"     long_name="Biomass concentration"    unit="mol P/m³" />
   </field_group>
 
   <field_group id="bling_2d" grid_ref="grid_T_2D">
