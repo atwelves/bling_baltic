@@ -28,10 +28,7 @@
     <field id="vodon"         long_name="Dissolved nitrogen concentration"        unit="mol/m³" />
     <field id="CHL_bling"     long_name="Chlorophyll concentration"    unit="mg/m³" />
     <field id="BIOMASS_P"     long_name="Biomass concentration"    unit="mol P/m³" />
-  </field_group>
-
-  <field_group id="bling_2d" grid_ref="grid_T_2D">
-    <field id="FPOP"         long_name="Sinking particulate P flux"   unit="mol P/m2/s" />
+    <field id="IRR_MEM"       long_name="Irradiance memory"        unit="W/m²"  />
   </field_group>
 
 </field_definition>

@@ -56,7 +56,7 @@
 !'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
 &namblingprod   !   Production parameters
 !,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
-   pc_0         = 5.0        ! Maximum carbon-specific growth rate at 0C              [d-1]
+   pc_0         = 0.5d0        ! Maximum carbon-specific growth rate at 0C              [d-1]
    kappa_eppley = 0.063        ! Temperature dependence of growth                       [(deg C)-1]
    kpo4         = 1.d-4        ! PO4 uptake half-saturation constant                    [mol P m-3]
    kfe          = 8.d-7        ! Dissolved Fe uptake half-saturation constant           [mol Fe m-3]
@@ -64,12 +64,12 @@
    kfe2p_up     = 7.42d-4      ! Half-saturation cellular Fe:P                          [mol Fe (mol P)-1]
    def_fe_min   = 0.d0         ! Minimum value for iron deficiency term                 [mol Fe (mol P)-1]
    thetamax_lo  = 0.01         ! Maximum Chl:C ration, extreme iron limitation          [g Chl g C-1]
-   thetamax_hi  = 0.05         ! Maximum Chl:C ratio, abundant iron                     [g Chl g C-1]
+   thetamax_hi  = 0.03         ! Maximum Chl:C ratio, abundant iron                     [g Chl g C-1]
    alpha_min    = 1.84d-5      ! Quantum yield under low light, extreme iron limitation [g C (g chl)-1 m2 W-1 s-1]
    alpha_max    = 7.36d-5      ! Quantum yield under low light, abundant iron           [g C (g chl)-1 m2 W-1 s-1]
-   resp_frac    = 0.2d0         ! Fraction of gross production respirated                [dimensionless]
+   resp_frac    = 0.01d0         ! Fraction of gross production respirated                [dimensionless]
    p_star       = 1.7436d-5    ! Pivotal phytoplankton biomass                          [mol P m-3] 
-   lambda0      = 0.19         ! Carbon-specific phytoplankton mortality rate           [d-1]
+   lambda0      = 0.19          ! Carbon-specific phytoplankton mortality rate           [d-1]
    gam_biomass  = 0.1          ! Biomass adjustment time constant                       [d-1] 
    ln_nitro     = .true.      ! Enable nitrogen cycle (T) or use original BLING (F)
    kno3         = 0.001        ! Nitrate uptake half saturation constant                [mol N m-3]
@@ -82,8 +82,8 @@
 &namblingopt     !   Optical parameters
 !,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
 !   xkr0     = 0.225     ! red absorption coefficent of water
-   xkr0     = 0.1      ! red absorption coefficent of water
-   xkb0     = 0.1    ! blue absorption coefficient of water
+   xkr0     = 0.3      ! red absorption coefficent of water
+   xkb0     = 0.3    ! blue absorption coefficient of water
 !   xkrp     = 0.03     ! red absorption coefficient of chl
    xkrp     = 0.03   ! red absorption coefficient of chl
    xkbp     = 0.03      ! blue absorption coefficient of chl
@@ -97,20 +97,20 @@
 &namblingremin    !   Remineralization parameters
 !,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
    wsink0_z    = 8000.d0       ! depth at which sinking rate starts increasing  [m]
-   wsink0      = 3.0         ! initial sinking rate                           [m d-1]   
+   wsink0      = 3.0d0         ! initial sinking rate                           [m d-1]   
    wsink_acc   = 0.05        ! accerelation rate of sinking with depth        [d-1] 
    koxy        = 30.d-3      ! half saturation const for aerobic respiration  [mol O2 m-3] 
-   remin_min   = 0.3         ! minimum anaerobic respiration rate             [dimensionless] 
+   remin_min   = 0.5         ! minimum anaerobic respiration rate             [dimensionless] 
    phi_dop     = 0.1         ! fraction of non-particulate uptake to DOM      [dimensionless]
    phi_sm      = 0.18        ! detritus production by small phyto             [dimensionless]
    phi_lg      = 1           ! detritus production by large phyto             [dimensionless]
    kappa_remin = -0.032      ! T dependence of particulate production         [(deg C)-1]   
-   gamma_dop   = 0.25d0      ! decay timescale of DOM                         [y-1]
+   gamma_dop   = 1.0d0      ! decay timescale of DOM                         [y-1]
    gamma_pop   = 0.10d0      ! remineralization rate of sinking POM           [d-1]
-   fden        = 0.0003      ! rate of benthic denitrification                [mol N m-2 d-1]
-   fbur        = 0.0003      ! rate of sediment burial                        [mol N m-2 d-1]
-   ! follow Niemistö et al. 2018
-   fben        = 0.02        ! rate of benthic oxygen consumption             [mol O2 m-2 d-1]
+   fden        = 3.0d-4      ! rate of benthic denitrification                [mol N m-2 d-1]
+   fbur        = 3.0d-4      ! rate of sediment burial                        [mol N m-2 d-1]
+   ! follow Niemistö et al. 2018? ie. 20mmol??
+   fben        = 2.0d-2        ! rate of benthic oxygen consumption             [mol O2 m-2 d-1]
    river_dop   = 0.00001      ! concentration of dop in river inflow           [mol P m-3]  
    river_don   = 0.0001        ! concentration of don in river inflow           [mol N m-3]
 /
