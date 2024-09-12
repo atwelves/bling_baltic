@@ -108,7 +108,7 @@ CONTAINS
       END DO
 
       ! Initialize memory irradiance
-      IF (kt==nittrc000) irr_mem(:,:,:)=irr_inst(:,:,:)
+      IF (kt==nittrc000) irr_mem(:,:,:) = irr_inst(:,:,:)
       !WRITE(numout,*) '   ==>>>   AGT: irradiance memory initialised ' 
       ! Phytoplankton photoadaptation timescale
       ! Forward time-stepping for memory irradiance
@@ -118,6 +118,7 @@ CONTAINS
                irr_mem(ji,jj,jk)=irr_mem(ji,jj,jk)                                                    &
                                  !+ (irr_mix (ji,jj,jk)-irr_mem(ji,jj,jk))*MIN(1.d0,gam_irr_mem*rfact)*tmask(ji,jj,jk)
                                  + (irr_inst (ji,jj,jk)-irr_mem(ji,jj,jk))*MIN(1.d0,gam_irr_mem*rfact)*tmask(ji,jj,jk)
+               irr_mem(ji,jj,jk) = MAX(irr_mem(ji,jj,jk),0.1d0)                  
             END DO
          END DO
       END DO

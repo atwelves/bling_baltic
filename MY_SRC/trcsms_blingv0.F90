@@ -589,13 +589,13 @@ CONTAINS
             ! k=1: surface layer
             jk=1
 
-            IF ( jp_uptake(ji,jj,jk) < epsln ) THEN
-                    jp_pop(ji,jj,jk) = jp_pop(ji,jj,jk) + (biomass_p(ji,jj,jk) + biomass_p_diaz(ji,jj,jk))*MIN(1.d0,gam_biomass*rfact)
-            ENDIF
+               IF ( (irr_mem(ji,jj,jk) < 1.0d0) .AND. (jp_uptake(ji,jj,jk) < epsln) ) THEN
+                    jp_pop(ji,jj,jk) = phi_sm * (biomass_p(ji,jj,jk) + biomass_p_diaz(ji,jj,jk)) * lambda0*expkT(ji,jj,jk)
+               ENDIF
 
-            IF ( jn_uptake(ji,jj,jk) < epsln ) THEN
-                    jn_pon(ji,jj,jk) = jp_pop(ji,jj,jk) + n2p * (biomass_p(ji,jj,jk) + biomass_p_diaz(ji,jj,jk))*MIN(1.d0,gam_biomass*rfact)
-            ENDIF
+               IF ( (irr_mem(ji,jj,jk) < 1.0d0) .AND. (jn_uptake(ji,jj,jk) < epsln)  ) THEN
+                    jn_pon(ji,jj,jk) = phi_sm * n2p * (biomass_p(ji,jj,jk) + biomass_p_diaz(ji,jj,jk)) * lambda0*expkT(ji,jj,jk)
+               ENDIF
 
             ! [m]
             zzz  =e3t(ji,jj,jk,Kmm)
@@ -694,12 +694,12 @@ CONTAINS
             ! k=2:NK: rest of the water column
             DO jk=2, jpk
 
-               IF ( jp_uptake(ji,jj,jk) < epsln ) THEN
-                    jp_pop(ji,jj,jk) = jp_pop(ji,jj,jk) + (biomass_p(ji,jj,jk) + biomass_p_diaz(ji,jj,jk))*MIN(1.d0,gam_biomass*rfact)
+               IF ( (irr_mem(ji,jj,jk) < 1.0d0) .AND. (jp_uptake(ji,jj,jk) < epsln) ) THEN
+                    jp_pop(ji,jj,jk) = phi_sm * (biomass_p(ji,jj,jk) + biomass_p_diaz(ji,jj,jk)) * lambda0*expkT(ji,jj,jk)
                ENDIF
 
-               IF ( jn_uptake(ji,jj,jk) < epsln ) THEN
-                    jn_pon(ji,jj,jk) = jp_pop(ji,jj,jk) + n2p * (biomass_p(ji,jj,jk) + biomass_p_diaz(ji,jj,jk))*MIN(1.d0,gam_biomass*rfact)
+               IF ( (irr_mem(ji,jj,jk) < 1.0d0) .AND. (jn_uptake(ji,jj,jk) < epsln)  ) THEN
+                    jn_pon(ji,jj,jk) = phi_sm * n2p * (biomass_p(ji,jj,jk) + biomass_p_diaz(ji,jj,jk)) * lambda0*expkT(ji,jj,jk)
                ENDIF
 
                fpopkm1 = fpop(ji,jj,jk-1)

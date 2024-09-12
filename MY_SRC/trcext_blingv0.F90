@@ -193,7 +193,7 @@ CONTAINS
           ! Flux of oxygen (mol/m2/s)
           o2_flx(ji,jj)=o2_sat-o2_sur
 
-!          tr(ji,jj,1,jpOxy_bling,Kmm)=tr(ji,jj,1,jpOxy_bling,Kmm)+o2_flx(ji,jj)*zrfact
+          tr(ji,jj,1,jpOxy_bling,Kmm)=tr(ji,jj,1,jpOxy_bling,Kmm)+o2_flx(ji,jj)*zrfact
 
           !sumtfoxy=sumtfoxy+o2flx(ji,jj)*zrfact*cvol(ji,jj,1)*tmask(ji,jj,1)
 
