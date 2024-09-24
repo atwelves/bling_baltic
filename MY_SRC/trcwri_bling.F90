@@ -24,7 +24,8 @@ CONTAINS
 
       ! diagnostic tracers output
       CALL iom_put( "CHL_bling" , chl_bling(:,:,:) * tmask(:,:,:) )
-      CALL iom_put( "BIOMASS_P" , biomass_p(:,:,:) * tmask(:,:,:) )
+      CALL iom_put( "BIOMASS_P" , (biomass_p(:,:,:)+biomass_p_diaz(:,:,:)) * tmask(:,:,:) )
+      !CALL iom_put( "BIOMASS_P_DIAZ" , biomass_p_diaz(:,:,:) * tmask(:,:,:) )
       CALL iom_put( "IRR_MEM"   , irr_mem(:,:,:) * tmask(:,:,:) )
       !CALL iom_put( "co3_ion"   ,   co3_ion(:,:,:) * tmask(:,:,:) )
       !CALL iom_put( "htotal"    ,    htotal(:,:,:) * tmask(:,:,:) )
