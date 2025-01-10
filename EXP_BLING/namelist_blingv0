@@ -77,11 +77,11 @@
 !              !  file name        ! frequency (hours) ! variable    ! time interp. !  clim  ! 'yearly'/ ! weights  ! rotation !
 !              !                   !  (if <0  months)  !   name      !   (logical)  !  (T/F) ! 'monthly' ! filename ! pairing  !
    sn_biomass_init = 'init_iow_Jan2020_4.nc',        -12       ,  't_pocp'    ,    .false.   , .true. , 'yearly'  , ''       , '',  ''
-   ln_zero_carbs = .true.     ! Switch off biochemical carbon uptake in all or part of the domain
+   ln_zero_carbs = .false.     ! Switch off biochemical carbon uptake in all or part of the domain
    cn_dir_zero_carbs = './'      !  root directory for the location of the carbon uptake mask file
 !              !  file name        ! frequency (hours) ! variable    ! time interp. !  clim  ! 'yearly'/ ! weights  ! rotation !
 !              !                   !  (if <0  months)  !   name      !   (logical)  !  (T/F) ! 'monthly' ! filename ! pairing  !
-   sn_zero_carbs = 'bothbay_mask.nc',        -12       ,  'ergom_t_dic'    ,    .false.   , .true. , 'yearly'  , ''       , '',  ''
+   sn_zero_carbs = 'carbon_mask',        -12       ,  'ergom_t_dic'    ,    .false.   , .true. , 'yearly'  , ''       , '',  ''
 /
 !'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
 &namblingopt     !   Optical parameters

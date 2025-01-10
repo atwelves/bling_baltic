@@ -167,6 +167,13 @@ CONTAINS
       ALLOCATE ( dum4(jpk) )
       ALLOCATE ( xnegtr(jpi,jpj,jpk) )
 
+      !!! --- AGT: add mask for carbon --- !!!
+      IF ( ln_zero_carbs ) THEN
+              CALL fld_read( kt, 1, sf_zero_carbs )
+              zero_carbs(:,:,:) = sf_zero_carbs(1)%fnow(jpi,jpj,jpk)
+      ENDIF
+      !!! ------ !!!!
+
       IF ( ln_bling_mass) THEN      !   Write values for phosphate budget
         CALL trc_sms_bling_mass_conserv (kt, Kbb, Kmm, Krhs)
       ENDIF
@@ -832,8 +839,6 @@ CONTAINS
 
                ! Add dissolved inorganic carbon terms from po4 final fluxes
                IF ( ln_zero_carbs ) THEN
-                       CALL fld_read( kt, 1, sf_zero_carbs )
-                       zero_carbs(:,:,:) = sf_zero_carbs(1)%fnow(jpi,jpj,jpk)
                        jdic(ji,jj,jk)=jdic(ji,jj,jk)+jpo4(ji,jj,jk)*c2p*zero_carbs(ji,jj,jk)
                        jalk(ji,jj,jk)=jalk(ji,jj,jk)-jpo4(ji,jj,jk)*n2p*zero_carbs(ji,jj,jk)
                ELSE 
