@@ -30,7 +30,7 @@ MODULE vars_bling
    REAL(wp), PUBLIC, ALLOCATABLE, SAVE, DIMENSION(:,:,:) :: coast_bling
    REAL(wp), PUBLIC, ALLOCATABLE, SAVE, DIMENSION(:,:)   :: dust_bling     ! dust fields
    REAL(wp), PUBLIC, ALLOCATABLE, SAVE, DIMENSION(:,:)   :: patm_bling    ! atmospheric pressure at kt [N/m2]
-
+   REAL(wp), PUBLIC, ALLOCATABLE, SAVE, DIMENSION(:,:,:)   :: zero_carbs    ! carbon uptake mask
 #if defined key_rnf_nutrients
    ! add nutrients in the river runoff 
    REAL(wp), PUBLIC, ALLOCATABLE, SAVE, DIMENSION(:,:)   :: rnfpo4, rnfdop, rnffed, rnfdic, rnfalk
@@ -80,7 +80,10 @@ MODULE vars_bling
    ! Initial biomass
    TYPE(FLD_N) :: sn_biomass_init
    CHARACTER(len=100) :: cn_dir_biomass_init 
-
+   ! Carbon uptake masking
+   LOGICAL     :: ln_zero_carbs
+   TYPE(FLD_N) :: sn_zero_carbs
+   CHARACTER(len=100) :: cn_dir_zero_carbs
    !! Optical parameters                                
    !! ------------------                                
    REAL(wp) ::   xkr0     !: water coefficient absorption in red      (NAMELIST)
@@ -192,7 +195,12 @@ CONTAINS
       ALLOCATE( rnfpo4(jpi,jpj), rnfdop(jpi, jpj), rnfdic(jpi,jpj), rnfalk(jpi,jpj), rnffed(jpi,jpj), STAT=ierr(7))   
 #endif
     ! WRITE(numout,*) '   ==>>>   AGT: irradiance memory allocated '
-     bling_alloc=MAXVAL(ierr)
+     
+      !!! --- AGT --- !!!
+      ALLOCATE( zero_carbs(jpi,jpj,jpk), STAT=ierr(8))
+      !!! ------ !!!     
+
+      bling_alloc=MAXVAL(ierr)
 
      IF( lk_mpp )   CALL mpp_sum ( 'vars_bling',bling_alloc )
 

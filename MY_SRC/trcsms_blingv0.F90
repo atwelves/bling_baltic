@@ -25,8 +25,10 @@ MODULE trcsms_blingv0
 
    PUBLIC   trc_sms_bling       ! called by trcsms.F90 module
    PUBLIC   trc_sms_init_bling
-
+   !!! --- AGT --- !!!
    TYPE(FLD), ALLOCATABLE, DIMENSION(:) :: sf_biomass_init ! structure of input fields (file informations, fields read)
+   TYPE(FLD), ALLOCATABLE, DIMENSION(:) :: sf_zero_carbs ! structure of input fields (file informations, fields read)
+   !!! ------ !!!
 
 #include "domzgr_substitute.h90"
 
@@ -827,10 +829,17 @@ CONTAINS
   !                         joxy(ji,jj,jk)=-oxy2p*jpo4(ji,jj,jk)
  !                  ENDIF
                ENDIF
-                             ! Add dissolved inorganic carbon terms from po4 final fluxes
-                jdic(ji,jj,jk)=jdic(ji,jj,jk)+jpo4(ji,jj,jk)*c2p
-                jalk(ji,jj,jk)=jalk(ji,jj,jk)-jpo4(ji,jj,jk)*n2p
 
+               ! Add dissolved inorganic carbon terms from po4 final fluxes
+               IF ( ln_zero_carbs ) THEN
+                       CALL fld_read( kt, 1, sf_zero_carbs )
+                       zero_carbs(:,:,:) = sf_zero_carbs(1)%fnow(jpi,jpj,jpk)
+                       jdic(ji,jj,jk)=jdic(ji,jj,jk)+jpo4(ji,jj,jk)*c2p*zero_carbs(ji,jj,jk)
+                       jalk(ji,jj,jk)=jalk(ji,jj,jk)-jpo4(ji,jj,jk)*n2p*zero_carbs(ji,jj,jk)
+               ELSE 
+                       jdic(ji,jj,jk)=jdic(ji,jj,jk)+jpo4(ji,jj,jk)*c2p
+                       jalk(ji,jj,jk)=jalk(ji,jj,jk)-jpo4(ji,jj,jk)*n2p
+               ENDIF
                 ! Check for negative values
 
                 tr(ji,jj,jk,jpPO4_bling,Krhs) = MAX(-tr(ji,jj,jk,jpPO4_bling,Kmm),jpo4(ji,jj,jk)*rfact)
@@ -1240,6 +1249,16 @@ CONTAINS
         !biomass_p(:,:,:) = sf_biomass_init(1)%fnow(:,:,:)     
         CALL iom_open (  TRIM( sn_biomass_init%clname ) , numbio ) 
         CALL iom_get( numbio, jpdom_global, TRIM( sn_biomass_init%clvar ), biomass_p(:,:,:) )
+        !!! ------ !!!
+        !!! --- AGT: Add option to mask out biological carbon uptake... !!!
+        IF ( ln_zero_carbs ) THEN
+                ALLOCATE( sf_zero_carbs(1) )
+                CALL fld_fill( sf_zero_carbs, (/ sn_zero_carbs /), cn_dir_zero_carbs, 'trc_sms_init_bling', 'Carbon uptake mask ', 'namblingprod' )
+                ALLOCATE( sf_zero_carbs(1)%fnow(jpi,jpj,jpk)   )
+                CALL iom_open (  TRIM( sn_zero_carbs%clname ) , numbio )
+                CALL iom_get( numbio, jpdom_global, TRIM( sn_zero_carbs%clvar ), zero_carbs(:,:,:) )
+        ENDIF
+        !!! ------ !!!
    
    END SUBROUTINE trc_sms_init_bling
 

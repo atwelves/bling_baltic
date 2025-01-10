@@ -52,7 +52,7 @@ CONTAINS
       NAMELIST/namblingopt/    xkr0, xkb0, xkrp, xkbp, xlr, xlb, rpig, rcchl, gam_irr_mem
       NAMELIST/namblingprod/   pc_0, kappa_eppley, kpo4, kfe, fe2p_max, kfe2p_up, def_fe_min, thetamax_lo, thetamax_hi
       NAMELIST/namblingprod/   alpha_min, alpha_max, resp_frac, p_star, lambda0, gam_biomass, ln_nitro, kno3
-      NAMELIST/namblingprod/   sn_biomass_init, cn_dir_biomass_init
+      NAMELIST/namblingprod/   sn_biomass_init, cn_dir_biomass_init, ln_zero_carbs, sn_zero_carbs, cn_dir_zero_carbs
       NAMELIST/namblingremin/  wsink0_z, wsink0, wsink_acc, koxy, remin_min, phi_dop, phi_sm
       NAMELIST/namblingremin/  phi_lg, kappa_remin, gamma_dop, gamma_pop
       !!! --- AGT --- !!!
